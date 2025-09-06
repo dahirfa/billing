@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_mgs_payroll_config_form_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.form.payroll</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <div class="row mt16 o_settings_container">
+                    <h2>MGS Payroll Settings</h2>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Payroll</span>
+                            <div class="text-muted">
+                                Payroll Account Export 
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="mgs_payroll_account_exp" string="Rules To Export" class="col-lg-3 o_light_label"/>
+                                    <field name="mgs_payroll_account_exp" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <record id="necsom_view_hr_payslip_form_form" model="ir.ui.view">
+        <field name="name">necsom_view_hr_payslip_form_form.form</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='struct_id']" position="after">
+                <!-- <field name="electricity_deduction" /> -->
+                <field name="e_deduction_amount" />
+                <field name="unused_leave_hours" widget="float_time"/>
+                <field name="overtime_hours" widget="float_time"/>
+                <field name="mgs_hourly_wage" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="necsom_view_hr_payslip_run_form" model="ir.ui.view">
+        <field name="name">necsom_view_hr_payslip_form_form.form</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Export" invisible="payslip_count == 0" name="export_necsom_hr_template" type="object"/>
+                <button string="Account Export" invisible="payslip_count == 0" name="export_account_template" type="object"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mgs_inherit_necsom_view_employee_form" model="ir.ui.view">
+        <field name="name">mgs.hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='application_group']" position="before">
+                <group name="payroll_group" string="Payroll">
+                    <field name="p_employee_account" />
+                    <field name="monthly_advance" widget="boolean_toggle"/>
+                    <field name="monthly_advance_amount" invisible="monthly_advance == False" />
+                    <field name="electricity_deduction" widget="boolean_toggle"/>
+                    <field name="donation1_deduction" widget="boolean_toggle"/>
+                    <field name="donation1_amount" invisible="donation1_deduction == False"/>
+                    <field name="donation2_deduction" widget="boolean_toggle"/>
+                    <field name="donation2_amount" invisible="donation2_deduction == False"/>
+                </group>
+                <!-- <xpath expr="//group[@name='payroll_group']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath> -->
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

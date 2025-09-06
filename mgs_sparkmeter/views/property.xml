@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="property_inherit_template_form" model="ir.ui.view">
+        <field name="name">mgs_billing.property.form.sparkmeter</field>
+        <field name="model">mgs_billing.property</field>
+        <field name="inherit_id" ref="mgs_billing.mgs_billing_property_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//header" position="inside">
+            <button name="%(mgs_sparkmeter_create_customer_action)d" string="Spark: Assign Meter" type="action" data-hotkey="q" invisible="property_sparkmeter_customer_id != False or meter_type != 'smart'" class="btn-info"/>
+            <button name="action_reset_spark_meter" string="Spark: Reset Meter" invisible="property_sparkmeter_customer_id == False or meter_type != 'smart'" groups="mgs_billing.group_billing_manager" type="object" class="btn-danger"/>
+          </xpath>
+
+
+          <group name="meter_info" position="inside">
+            <group name="spark_meter"  string="Smart Meter Settings" invisible="meter_type != 'smart'">    
+              <field name="property_sparkmeter_customer_id" readonly='0'/>
+              <field name="meter_id" readonly='0' options="{'no_create': True, 'no_open': True, 'no_create_edit': True}"/>
+              <field name="auto_reset" widget="boolean_button"/>  
+
+            </group>
+          </group>
+        </field>
+      </record>
+</odoo>

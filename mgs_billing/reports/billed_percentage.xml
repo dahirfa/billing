@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_percentage_report" model="ir.actions.report">
+        <field name="name">House Hold Billed Report</field>
+        <field name="model">mgs_billing.percentage_report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.percentage_report</field>
+        <field name="report_file">mgs_billing.percentage_report</field>
+        <!-- <field name="binding_model_id" ref="model_load_line_dispatch"/> -->
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="percentage_report"> 
+        <t t-call="web.html_container">
+	   <t t-foreach="docs" t-as="doc">
+		  <t t-call="web.internal_layout" t-lang="en_US">
+			 <div class="page">
+				 <style>
+					 .table-sm td, th {border: 1.2px solid black !important; padding-left: 4px; padding-right: 4px}
+                     .mgs_text_right {text-align: right !important}
+                     .mgs_text_center {text-align: center !important}
+				 </style>
+
+			   <div class="container">
+				  <h2 class="text-center">% Of HHS Billed</h2>
+				  <div class="row" style="margin-top: 32px !important;margin-bottom: 10px;font-size: 1.2em; font-family: 'Lato-Reg'">
+					  <div class="col-3" t-if="date_from or date_to">
+						  <strong>Date:</strong><br/>
+						  <!-- <span t-esc="get_month_name(month)"/>, <span t-esc="year"/> -->
+							<p class="m-0" t-esc="date_from"/>
+							<p class="m-0" t-esc="date_to"/>
+					  </div>
+
+					  <div class="col-3" t-if="zone_id[0]">
+						  <strong>Zone:</strong>
+						  <p class="m-0" t-esc="zone_id[1]"/>
+					  </div>
+
+					  <div class="col-3" t-if="collector_id[0]">
+						  <strong>Collector:</strong>
+						  <p class="m-0" t-esc="collector_id[1]"/>
+					  </div>
+				  </div> <!-- Search criteria -->
+
+				  <table class="table table-sm">
+					  <thead>
+						  <tr>
+							  <th class="mgs_text_center" nowrap="nowrap">No</th>
+							  <th nowrap="nowrap">Zone</th>
+							  <th nowrap="nowrap">Collector</th>
+							  <th class="mgs_text_right" nowrap="nowrap">No of HHS In a Zone</th>
+							  <th class="mgs_text_right" nowrap="nowrap">HHS Billed So Far</th>
+							  <th class="mgs_text_right" nowrap="nowrap">% Of HHS Billed</th>
+						  </tr>
+					  </thead>
+
+					  <tbody>
+					  <t t-set="no" t-value="0"/>
+					  <t t-set="total_zone_customers" t-value="0"/>
+					  <t t-set="total_billed_zone_customers" t-value="0"/>
+						  <tr t-foreach="lines(date_from, date_to, zone_id[0], collector_id[0], company_id.id)" t-as="line">
+									<t t-set="total_zone_customers" t-value="total_zone_customers+line['property_count']"/>
+									<t t-set="total_billed_zone_customers" t-value="total_billed_zone_customers+line['billed_count']"/>
+									<t t-set="no" t-value="no + 1"/>
+
+							  <td nowrap="nowrap"><span t-esc="no"/></td>
+								<td nowrap="nowrap"><span t-esc="line['zone_name']"/></td>
+							  <td nowrap="nowrap"><span t-esc="line['collector_name']"/></td>
+							  <td class="mgs_text_right" nowrap="nowrap"><span t-esc="int(line['property_count'])"/></td>
+							  <td class="mgs_text_right" nowrap="nowrap"><span t-esc="int(line['billed_count'])"/></td>
+							  <td class="mgs_text_right" nowrap="nowrap">
+							  		<span t-esc="'{0:,.2f}'.format(line['percentage'])"/>%
+							  </td>
+						  </tr>
+
+						  <tr>
+							  <td colspan="3"/>
+							  <td class="mgs_text_right" style="font-weight: bold" nowrap="nowrap"><span t-esc="int(total_zone_customers)" /></td>
+							  <td class="mgs_text_right" style="font-weight: bold" nowrap="nowrap"><span t-esc="int(total_billed_zone_customers)"/></td>
+							  <t t-set="total_percentage" t-value="total_billed_zone_customers*100"/>
+							   <t t-set="total_percentage" t-value="total_percentage/total_zone_customers" t-if="total_percentage and total_zone_customers"/>
+							  <td class="mgs_text_right" style="font-weight: bold" nowrap="nowrap">
+							      <span t-if="not total_percentage">0</span><span t-if="total_percentage" t-esc="'{0:,.2f}'.format(total_percentage)"/>%
+							  </td>
+						  </tr>
+					  </tbody>
+				  </table>
+			  </div>
+			 </div> <!--page-->
+		   </t> <!--web.external_layout-->
+		 </t>
+	 </t> <!--web.html_container-->
+    </template>
+</odoo>

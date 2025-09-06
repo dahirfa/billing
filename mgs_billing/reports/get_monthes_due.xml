@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+    <template id="get_monthes_due_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <style>
+                        th, td {
+                        padding: 0.30rem !important;
+                        border-top: 1px solid #212529 !important;
+                        border-bottom: 1px solid #212529 !important;
+                        }
+                    </style>
+
+                    <h2>Calling Report</h2>
+
+                    <div class="row"
+                        style="margin-top: 32px; margin-bottom: 15px !important;font-size: 1.2em; font-family: 'Lato-Reg'">
+
+                        <t  t-if="data['zone_id']">
+                            <div class="col-3">
+                                <strong>Zone:</strong>
+                                <p class="m-0" t-esc="data['zone_id'][1]" />
+                            </div>
+                        </t>
+
+                        
+
+                        <div class="col-3" t-if="data['collector_id']">
+                            <strong>Collector:</strong>
+                            <p class="m-0" t-esc="data['collector_id'][1]" />
+                        </div>
+
+
+                    </div>
+
+
+                    <table class="table table-condensed table-sm">
+                        <thead>
+                            <tr>
+                                <th nowrap="nowrap">No</th>
+                                <th nowrap="nowrap">Customer</th>
+                                <th nowrap="nowrap">Mobile</th>
+                                <th nowrap="nowrap">Property</th>
+                                <th nowrap="nowrap">Zone</th>
+                                <th nowrap="nowrap" style="text-align: right">Balance</th>
+                                <th nowrap="nowrap">Monthes Due</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <t t-set="no" t-value="0" />
+                            <t t-set="total_balance" t-value="0" />
+                            <t t-foreach="records" t-as="line">
+                                <tr>
+                                    <t t-set="no" t-value="no+1" />
+                                    <td nowrap="nowrap">
+                                        <span t-esc="no" />
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="line[1]" />
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="line[2]" />
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="line[3]" />
+                                    </td>
+
+
+                                    <td>
+                                        <t t-esc="line[4]" />
+                                    </td>
+
+                                    <td style="text-align: right !important;">
+                                        <t t-esc="line[5]"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+
+                                    <td t-if='months'>
+                                        <t t-esc="len(months)" /> <span>Months</span>
+                                    </td>
+
+
+                                </tr>
+                            </t>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </t>
+        </t>
+    </template>
+
+
+    <record id="action_report_get_monthes_due" model="ir.actions.report">
+        <field name="name">Get Monthes Due</field>
+        <field name="model">get.monthes.due</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.get_monthes_due_report</field>
+        <field name="report_file">mgs_billing.get_monthes_due_report</field>
+        <field name="print_report_name">'Get Monthes Due'</field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

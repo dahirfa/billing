@@ -1,0 +1,101 @@
+<odoo>
+    <template id="tplussuccess">
+        <style>
+            header, footer {
+                display: none;
+            }
+        </style>
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="my-5">
+                <div class="container text-center">
+                    <h2 class="mt-4">NECSOM</h2>
+    
+                    <div class="card mx-auto" style="max-width: 400px; border-radius: 8px;">
+                        <div class="card-body">
+                            <div class="my-3">
+                                <span class="badge rounded-circle" style=" padding: 20px;">
+                                    <i class="fa fa-check-circle" style="color: #0f9d58; font-size: 78px;"></i>
+                                </span>
+                            </div>
+    
+                            <table class="table-collapse">
+                                <tbody>
+                                    <tr>
+                                    
+                                        <td class="text-start" width="100">
+                                            <strong>Status:</strong>
+                                        </td>
+                                        <td class="text-start" width="100">
+                                            <strong  ><t t-esc ="status"/></strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    
+                                        <td class="text-start" width="100">
+                                            <strong>Reference:</strong>
+                                        </td>
+                                        <td class="text-start" width="100">
+                                            <strong  ><t t-esc ="reference"/></strong>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                    
+                                        <td class="text-start" width="100">
+                                            <strong>Amount:</strong>
+                                        </td>
+                                        <td class="text-start" width="100">
+                                            <strong  >$<t t-esc ="amount"/></strong>
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+
+    
+    <template id="tpluserror">
+        <style>
+            header, footer {
+                display: none;
+            }
+        </style>
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="my-5">
+                <div class="container text-center">
+                    <h2 class="mt-4">NECSOM</h2>
+
+                    <div class="card mx-auto" style="max-width: 400px; border-radius: 8px;">
+                        <div class="card-body">
+                            <div class="my-3">
+                                <span class="badge rounded-circle" style=" padding: 20px;">
+                                    <i class="fa fa-times-circle" style="color: red; font-size: 78px;"></i>
+                                </span>
+                            </div>
+                            <table class="table-collapse">
+                                <tbody>
+                                    <tr>
+                                    
+                                        <td class="text-start" width="100">
+                                            <strong>Status:</strong>
+                                        </td>
+                                        <td class="text-start" width="100">
+                                            <strong style="white-space: nowrap;">Payment Error Handled</strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

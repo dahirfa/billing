@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="bulk_sms_form" model="ir.ui.view">
+        <field name="name">bulk_sms.form</field>
+        <field name="model">mgs.send.bulk.sms</field>
+        <field name="arch" type="xml">
+            <form string="Bulk SMS">
+                <header >
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    <button name="process_bulk_sms" type="object" string="Send sms" widget="statinfo" invisible="state != 'draft'"  class="oe_highlight"/>
+                    <button name="send_fee_remaining_sms" type="object" string="Send Fee Remaining Sms" widget="statinfo" invisible="state != 'draft'" class="oe_highlight"/>
+                </header>
+                <sheet>
+                <div class="oe_button_box" name="button_box">
+                       <button name="action_view_logs" type="object" class="oe_stat_button" icon="fa-list-alt">
+                            <field name="log_count" string="LOGS" widget="statinfo" />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1 class="o_row">
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="zone_id"/>
+                            <field name="message" required="True"/>
+                        </group>
+                    </group>
+                </sheet>
+               <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="bulk_sms_tree" model="ir.ui.view">
+        <field name="name">bulk_sms.tree</field>
+        <field name="model">mgs.send.bulk.sms</field>
+        <field name="arch" type="xml">
+            <list string="Bulk SMS Records">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="zone_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="bulk_sms_action" model="ir.actions.act_window">
+        <field name="name">Bulk SMS</field>
+        <field name="res_model">mgs.send.bulk.sms</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_bulk_sms_log_form" model="ir.ui.view">
+        <field name="name">mgs.bulk.sms.log.form</field>
+        <field name="model">mgs.bulk.sms.log</field>
+        <field name="arch" type="xml">
+            <form string="Bulk SMS Log">
+                <header >
+                    <field name="status" widget="statusbar" statusbar_visible="sent,failed"/>
+                    <button name="send_sms" type="object" string="Send SMS"  class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group >
+                            <field name="datetime" readonly="1"/>
+                            
+                            <field name="partner_id" readonly="1"/>
+                            <field name="zone_id" readonly="1"/>
+                            <field name="mobile" readonly="1"/>
+                            <field name="message" readonly="1"/>
+                            <field name="response" readonly="1"/>
+                        </group>
+                        <group></group>
+                        
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+<!-- Tree view for mgs.bulk.sms.log -->
+    <record id="view_bulk_sms_log_tree" model="ir.ui.view">
+        <field name="name">mgs.bulk.sms.log.tree</field>
+        <field name="model">mgs.bulk.sms.log</field>
+        <field name="arch" type="xml">
+            <list string="Bulk SMS Logs">
+                <field name="datetime"/>
+                <field name="partner_id"/>
+                <field name="mobile"/>
+                <field name="zone_id"/>
+                <field name="status" widget="badge" decoration-success="status == 'sent'" decoration-danger="status == 'failed'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action for bulk SMS logs -->
+    <record id="action_bulk_sms_log" model="ir.actions.act_window">
+        <field name="name">Bulk SMS Logs</field>
+        <field name="res_model">mgs.bulk.sms.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'create': False}</field>
+    </record>
+    <record id="seq_your_model_name" model="ir.sequence">
+            <field name="name">BULK SMS SEQ</field>
+            <field name="code">mgs.send.bulk.sms</field>
+            <field name="prefix">BULK/%(year)s/</field>
+            <field name="padding">3</field>
+            <field name="number_increment">1</field>
+    </record>
+    
+
+    <menuitem
+        id="bulk_sms_menu"
+        name="Bulk SMS"
+        action="bulk_sms_action"
+        parent="mgs_sms_integration.mgs_sms_integration_root"
+        sequence="10"/>
+    
+    <menuitem id="menu_bulk_sms_log"
+              name="Bulk SMS Logs"
+              action="action_bulk_sms_log"
+              parent="mgs_sms_integration.mgs_sms_integration_root"
+              sequence="20"/>
+</odoo>

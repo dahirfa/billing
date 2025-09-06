@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+    id="mgs_billing_reading_menu_main"
+    name="Readings"
+    parent="mgs_billing.mgs_billing_root"
+    sequence="2"
+  />
+
+  <menuitem
+    id="mgs_billing.mgs_billing_reading_menu"
+    name="Meter Readings"
+    parent="mgs_billing_reading_menu_main"
+    sequence="1"
+  />
+
+  <menuitem
+    id="mgs_sparkmeter_reading_menu"
+    name="Spark: Meter Readings"
+    action="action_mgs_sparkmeter_reading"
+    parent="mgs_billing_reading_menu_main"
+    sequence="2"/>
+
+    <menuitem
+    id="mgs_sparkmeter_conf_menu"
+    parent="mgs_billing.mgs_billing_root"
+    name="Sparkmeter"
+    sequence="99"/>
+    <menuitem id="mgs_billing_meter_assign_menu_menu"       name="Spark: Bulk Assign"           parent="mgs_sparkmeter_conf_menu"       action="mgs_sparkmeter_meter_assign_action"/>
+    <menuitem id="menu_open_meter_downloader"               name="Spark: Load Meters"           parent="mgs_sparkmeter_conf_menu"       action="action_open_meter_downloader"/>
+    <!-- <menuitem id="menu_mgs_sparkmeter_create_site_action"   name="Spark: Load SparkMeter Sites" parent="mgs_sparkmeter_conf_menu"       action="action_mgs_sparkmeter_site_wiz_form"/> -->
+    <!-- <menuitem id="menu_mgs_sparkmeter_site_action"          name="Spark: Sites"                 parent="mgs_sparkmeter_conf_menu"       action="action_mgs_sparkmeter_site"/> -->
+</odoo>

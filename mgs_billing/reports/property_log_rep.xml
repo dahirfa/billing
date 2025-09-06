@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <template id="property_log_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <style>
+                        th, td {
+                        padding: 0.30rem !important;
+                        border-top: 1px solid #212529 !important;
+                        border-bottom: 1px solid #212529 !important;
+                        }
+                    </style>
+
+                    <div class="row" style="margin-top: 32px; margin-bottom: 15px !important;font-size: 1.2em; font-family: 'Lato-Reg'">
+
+                        <div class="col-3" t-if="data['date_from']">
+                            <strong>Date To:</strong>
+                            <p class="m-0" t-esc="data['date_from']" />
+                        </div>
+
+                        <div class="col-3" t-if="data['date_to']">
+                            <strong>Date To:</strong>
+                            <p class="m-0" t-esc="data['date_to']" />
+                        </div>
+
+
+                        <div class="col-3" t-if="data['property_id']">
+                            <strong>Property:</strong>
+                            <p class="m-0" t-esc="data['property_id'][1]" />
+                        </div>
+
+
+                    </div>
+
+
+
+                    <table class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Time</th>
+                                <th>Comment</th>
+                                <th>By</th>
+                                <th>State</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <t t-foreach="logs" t-as="line">
+                                <tr>
+                    
+                                    <td>
+                                        <t t-esc="line.property_id.name" />
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="line.time" />
+                                    </td>
+
+                                    <td>
+                                        <span t-esc="line.memo" style="word-wrap: break-word;" />
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="line.create_uid.name" />
+                                    </td>
+
+
+                                    <td>
+
+                                        <t t-if="line.state == 'connected'">
+                                            <span t-esc="line.state" style='font-size:13px;  text-transform:capitalize; font-weight:bold; color: green '/>
+                                        </t>
+
+                                        <t t-elif="line.state == 'disconnected'">
+                                            <span t-esc="line.state" style='font-size:13px;  text-transform:capitalize; font-weight:bold; color: red' />
+                                        </t>
+
+                                       
+                                        <t t-else="">
+                                            <span t-esc="line.state"  style='font-size:13px;  text-transform:capitalize; font-weight:bold; color: grey'/>
+                                        </t>
+
+                                    </td>
+
+                                </tr>
+                            </t>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+
+
+
+
+    <record id="action_property_log_report" model="ir.actions.report">
+        <field name="name">Property Log Report</field>
+        <field name="model">mgs_billing.property.log.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.property_log_report_template</field>
+        <field name="report_file">mgs_billing.property_log_report_template</field>
+        <field name="print_report_name">'Property Log Report'</field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

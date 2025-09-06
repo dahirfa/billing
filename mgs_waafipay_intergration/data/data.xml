@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_waafipay" model="payment.provider">
+        <field name="image_128" type="base64" file="mgs_waafipay_intergration/static/description/icon.png"/>
+        <field name="name">Waafipay</field>
+        <field name="code">waafipay</field>
+    </record>
+
+    <record id="payment_method_waafipay" model="account.payment.method">
+        <field name="name">Waafipay</field>
+        <field name="code">waafipay</field>
+        <field name="payment_type">inbound</field>
+    </record>
+</odoo>

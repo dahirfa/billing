@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="inherit_tpluspay_payment_provider_form" model="ir.ui.view">
+        <field name="name">tpluspay Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'tpluspay'">
+                    <field name="tpluspay_user_id" required="code == 'tpluspay' and state != 'disabled'"/>
+                    <field name="tpluspay_pass" required="code == 'tpluspay' and state != 'disabled'" password="1"/>
+                    <field name="auth_url" required="code == 'tpluspay' and state != 'disabled'"/>
+                    <field name="sale_details" required="code == 'tpluspay' and state != 'disabled'"/>
+                    <field name="trans_details" required="code == 'tpluspay' and state != 'disabled'"/>
+                    <field name="success_url" required="code == 'tpluspay' and state != 'disabled'"/>
+                    <field name="error_url" required="code == 'tpluspay' and state != 'disabled'"/>
+                    
+                </group>
+            </group>
+        </field>
+    </record>  
+</odoo>

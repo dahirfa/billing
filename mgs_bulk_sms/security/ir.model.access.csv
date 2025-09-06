@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+create_mgs_send_bulk_sms,mgs_bulk_sms.mgs.send.bulk.sms,model_mgs_send_bulk_sms,base.group_user,1,1,1,0
+create_mgs_bulk_sms_log,mgs_bulk_sms.mgs.bulk.sms.log,model_mgs_bulk_sms_log,base.group_user,1,1,1,0
+

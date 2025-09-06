@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="mgs_billing_apply_extra_charge_wizard_form" model="ir.ui.view">
+        <field name="name">mgs_billing.apply_extra_charge.wizard.form</field>
+        <field name="model">mgs_billing.apply_extra_charge.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="apply_charge"/>
+                    </group>
+                    <group invisible="not apply_charge">
+                        <group>
+                            <field name="partner_id" required="apply_charge" readonly="1" string="Customer" options="{'no_create': True}"/>
+                            <field name="memo"/>
+                            <field name="company_id" required="apply_charge" readonly="1" groups="base.group_multi_company" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <!-- attrs="{'invisible': [('report_by', '!=', 'Zone')]}" -->
+                            <field name="product_id" required="apply_charge" string="Service" options="{'no_create': True}"/>
+                            <field name="amount" required="apply_charge"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <footer>
+					<button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+					<button string="Cancel" special="cancel"/>
+				</footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="mgs_billing_apply_extra_charge_action" model="ir.actions.act_window">
+        <field name="name">Property Suspension Wizard</field>
+        <field name="res_model">mgs_billing.apply_extra_charge.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

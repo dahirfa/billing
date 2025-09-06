@@ -1,0 +1,58 @@
+<odoo>
+    <record id="mgs_payment_base_res_config_settings_view_form" model="ir.ui.view">
+      <field name="name">res.config.settings.view.form.inherit.payment.base</field>
+      <field name="model">res.config.settings</field>
+      <field name="priority" eval="40"/>
+      <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//form" position="inside">
+            <div class="app_settings_block" data-string="mgs_payment_integration" string="Bank Suspanse account" data-key="mgs_payment_integration">
+                <h2>Default Unknown Partner</h2>
+
+                <div class="row mt16 o_settings_container" id="mgs_unknown_partner_id">
+                    <div class="col-12 col-lg-6 o_setting_box" title="mgs_unknown_partner_id">
+                        <label for="mgs_unknown_partner_id" string="Default Unknown Partner"/>
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="mgs_unknown_partner_id" options="{'no_create': True}" required="0" class="o_light_label"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Journal-->
+
+                
+            </div>
+
+
+
+            <div class="app_settings_block" data-string="mgs_payment_integration_allowed_ip" string="Allowed IP Addresses" data-key="mgs_payment_integration_allowed_ip">
+                <h2>Email To Notify</h2>
+
+                <div class="row mt16 o_settings_container" id="mgs_email_to_notify">
+                    <div class="col-12 col-lg-6 o_setting_box" title="mgs_email_to_notify">
+                        <label for="mgs_email_to_notify" string="Enter Email"/>
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="mgs_email_to_notify" required="0" class="o_light_label"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Journal-->
+
+                
+            </div>
+        </xpath>
+      </field>
+    </record>
+
+<record id="mgs_payment_base_config_action" model="ir.actions.act_window">
+    <field name="name">Settings</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">res.config.settings</field>
+    <field name="view_mode">form</field>
+    <field name="target">inline</field>
+    <field name="context">{'module' : 'mgs_payment_integration'}</field>
+</record>
+</odoo>

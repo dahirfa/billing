@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="mgs_billing_meter_cubic_sold_wizard_form" model="ir.ui.view">
+        <field name="name">mgs_billing.meter_cubic_sold.wizard.form</field>
+        <field name="model">mgs_billing.meter_cubic_sold.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <label for="month" string="Month"
+                                style="font-weight: bold !important;margin-right:107px;margin-left: 0px;"/>
+                            <div class="o_address_format">
+                                <field name="year" style="width:40px;margin-left: 1px;height: 20px; border-radius: 4px;"/> /
+                                <field name="month" style="width: 45px;"/>
+                                <field name="report_by" widget="radio"/>
+                            </div>
+                            <!-- d -->
+                                
+                        </group>
+                        <group>
+                            <!-- attrs="{'invisible': [('report_by', '!=', 'Zone')]}" -->
+                            <field name="zone_id"   string="Zone" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                            <field name="collector_id" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="action_view_report" type="object" string="VIEW"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="mgs_billing_meter_cubic_sold_zone_action" model="ir.actions.act_window">
+        <field name="name">Usage by Zone</field>
+        <field name="res_model">mgs_billing.meter_cubic_sold.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'default_report_by': 'Zone'}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="mgs_billing_meter_cubic_sold_collector_action" model="ir.actions.act_window">
+        <field name="name">Usage by Collector</field>
+        <field name="res_model">mgs_billing.meter_cubic_sold.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'default_report_by': 'Collector'}</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record model="ir.actions.server" id="generate_users">
+        <field name="name">Generate Portal Users</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.generate_users_portal()
+        </field>
+    </record>
+
+    <record id="res_partner_generate_portal_user" model="ir.ui.view">
+        <field name="name">Partner Generate User Portal</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//list" position="inside">
+                <header>
+                    <button string="Generate Users" confirm="This will generate a user from the selected customers!, if a customer does not have a house number it will be skipped" name="generate_users_portal" type="object" class="btn bg-danger"/>
+                </header>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

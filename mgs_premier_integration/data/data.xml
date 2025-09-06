@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_premier" model="payment.provider">
+        <field name="name">Premier</field>
+        <field name="code">premier</field>
+        <field name="image_128" type="base64" file="mgs_premier_integration/static/description/icon.png"/>
+    </record>
+
+    <record id="payment_method_premier" model="account.payment.method">
+        <field name="name">Premier</field>
+        <field name="code">premier</field>
+        <field name="payment_type">inbound</field>
+    </record>
+</odoo>

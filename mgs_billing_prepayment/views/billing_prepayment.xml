@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+    <!-- Form view for "property" -->
+    <record id="mgs_billing_property_inherit" model="ir.ui.view">
+        <field name="name">MGS Billing Property Inherit</field>
+        <field name="model">mgs_billing.property</field>
+        <field name="inherit_id" ref="mgs_billing.mgs_billing_property_form" />
+        <field name="arch" type="xml">
+            <field name="property_type_id" position="after">
+                <field name="payment_type" />
+            </field>
+        </field>
+    </record>
+
+    <record id="mgs_billing_property_inherit_search" model="ir.ui.view">
+        <field name="name">MGS Billing Property Inherit Search</field>
+        <field name="model">mgs_billing.property</field>
+        <field name="inherit_id" ref="mgs_billing.mgs_billing_property_search"/>
+        <field name="arch" type="xml">
+           
+           <xpath expr="//group" position="inside">
+            <filter name="payment_type" string="Payment Type" context="{'group_by': 'payment_type'}" />
+           </xpath>
+           
+        </field>
+    </record>
+
+
+
+    <!-- Form view for "Account Payment" -->
+    <record id="account_payment_inherit" model="ir.ui.view">
+        <field name="name">MGS Account Payment Inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="arch" type="xml">
+            <field name="partner_bank_id" position="after">
+                <field name="property_payment_type" invisible='1'/>
+                <field name="prepaid_electricity" readonly="state == 'posted'" invisible="property_payment_type != 'pre_paid'"/>
+
+            </field>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+</odoo>

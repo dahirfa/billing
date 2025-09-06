@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record id="view_sub_property_types_form" model="ir.ui.view">
+            <field name="name">sub.property.types</field>
+            <field name="model">mgs_billing.property.type</field>
+            <field name="inherit_id" ref="mgs_billing.mgs_billing_property_type_form"/>
+            <field name="arch" type="xml">
+                <!-- find field description and add the field
+                 new_field after it -->
+                <xpath expr="//sheet" position="inside">
+                    <notebook name = "sub_property_type" string = "Property Sub Category">
+                        <!-- Sub Properties -->
+                        <page name = "sub_property_types" string = "Property Sub Categories">
+                            <field name="property_sub_category_ids">
+                                <list editable="bottom">
+                                    <field name = "name"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sub_property_catge_form" model="ir.ui.view">
+            <field name="name">sub.property.category</field>
+            <field name="model">mgs_billing.property</field>
+            <field name="inherit_id" ref="mgs_billing.mgs_billing_property_form"/>
+            <field name="arch" type="xml">
+                <!-- find field description and add the field
+                 new_field after it  -->
+                <xpath expr="//field[@name='property_type_id']" position="after">
+                    <field name="property_sub_category_id" domain="[('property_type_id', '=',  property_type_id)]"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_sub_property_catge_tree" model="ir.ui.view">
+            <field name="name">Property Sub Category</field>
+            <field name="model">mgs_billing.property</field>
+            <field name="inherit_id" ref="mgs_billing.mgs_billing_property_tree"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='property_type_id']" position="after">
+                    <field name="property_sub_category_id"/>
+                </xpath>
+                
+            </field>
+        </record>
+
+
+
+
+</odoo>

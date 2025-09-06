@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="inherit_waafipay_payment_provider_form" model="ir.ui.view">
+        <field name="name">Waafipay Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'waafipay'">
+                    <field name="merchant_uid" required="code == 'waafipay' and state != 'disabled'" password="1"/>
+                    <field name="api_userid" required="code == 'waafipay' and state != 'disabled'" password="1"/>
+                    <field name="api_key" required="code == 'waafipay' and state != 'disabled'" password="1"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+
+
+</odoo>

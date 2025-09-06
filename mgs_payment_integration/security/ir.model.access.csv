@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mgs.payment.transaction,mgs.payment.transaction,model_mgs_payment_transaction,mgs_payment_integration.group_collection_user,1,1,1,0
+access_mgs.payment.line,mgs.payment.line,model_mgs_payment_line,mgs_payment_integration.group_collection_user,1,1,1,0
+access_mgs.payment.transaction_portal,mgs.payment.transaction,model_mgs_payment_transaction,base.group_portal,0,0,1,0
+access_mgs.payment.transaction.group_erp_manager,mgs.payment.transaction,model_mgs_payment_transaction,base.group_erp_manager,1,1,1,1
+access_mgs.payment.line.group_erp_manager,mgs.payment.line,model_mgs_payment_line,base.group_erp_manager,1,1,1,1

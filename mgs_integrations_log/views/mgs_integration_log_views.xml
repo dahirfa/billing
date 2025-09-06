@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View mgs.integration.log View Tree -->
+    <record id="view_mgs_integration_log_tree" model="ir.ui.view">
+        <field name="name">view.mgs.integration.log.tree</field>
+        <field name="model">mgs.integration.log</field>
+        <field name="arch" type="xml">
+            <list sample='1' default_order="id desc">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="end_point"/>
+                <field name="request_ip"/>
+                <field name="request_type" widget='badge'/>
+            </list>
+        </field>
+    </record>
+
+    <!-- View mgs.integration.log form -->
+    <record id="view_mgs_integration_log_form" model="ir.ui.view">
+        <field name="name">view.mgs.integration.log.form</field>
+        <field name="model">mgs.integration.log</field>
+        <field name="arch" type="xml">
+            <form string="Mgs Payment Integration Log">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Reference..."/>
+                        </h1>
+                    </div>
+
+                    <group name="request_info" string="Request Information">
+
+                        <group>
+                            <field name="date"/>
+                            <field name="end_point"/>
+                        </group>
+                        <group>
+                            <field name="request_type"/>
+                            <field name="request_ip"/>
+                        </group>
+                    </group>
+
+
+                    <separator string="Error Message" colspan="4" />
+
+                    <field name="error_message"/>
+
+
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- View mgs.integration.log search -->
+    <record id="view_mgs_integration_log_search" model="ir.ui.view">
+        <field name="name">view.mgs.integration.log.search</field>
+        <field name="model">mgs.integration.log</field>
+        <field name="arch" type="xml">
+            <search>
+
+                <field name="name"/>
+                <field name="date"/>
+                <field name="end_point"/>
+                <field name="request_type"/>
+                <field name="request_ip"/>
+
+                <group expand="1" string="Group By">
+                    <filter string="Request Type" name="request_type" context="{'group_by':'request_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action mgs.integration.log -->
+    <record id="action_mgs_integration_log" model="ir.actions.act_window">
+        <field name="name">Error Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mgs.integration.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+
+    <menuitem id="mgs_integration_log_root_menu" groups="mgs_integrations_log.group_mgs_intergration_log" name="Error Log" web_icon="mgs_integrations_log,static/description/icon.png" sequence="10"/>
+    <menuitem id="mgs_integration_log_menu" parent="mgs_integration_log_root_menu" groups="mgs_integrations_log.group_mgs_intergration_log" name="Error Log" action="action_mgs_integration_log" sequence="10"/>
+
+</odoo>

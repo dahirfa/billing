@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mgs_integration_log_user,mgs_integrations_log.mgs.integration.log,model_mgs_integration_log,mgs_integrations_log.group_mgs_intergration_log,1,1,1,1

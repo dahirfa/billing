@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="mgs_billing_connect_disconnect_report_tree" model="ir.ui.view">
+        <field name="name">mgs_billing.connect_disconnect.report.tree</field>
+        <field name="model">mgs_billing.connect_disconnect.report</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="property_id"/>
+                <field name="billing_account_id"/>
+                <field name="date" string='Performed At'/>
+                <field name="zone_id" optional='show'/>
+                <field name="collector_id" optional='show'/>
+                <field name="currency_id" invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company" optional='hide'/>
+                <field name="balance" sum='Total' widget="monetary" optional='show'/>
+            </list>
+        </field>
+    </record>
+
+    <record id="mgs_billing_connect_disconnect_report_search" model="ir.ui.view">
+        <field name="name">mgs_billing.connect_disconnect.report.search</field>
+        <field name="model">mgs_billing.connect_disconnect.report</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="property_id"/>
+                <field name="billing_account_id"/>
+                <field name="date" string='Performed At'/>
+                <field name="zone_id"/>
+                <field name="collector_id"/>
+                <filter string="Hide Less Than 0.0" name="has_balance" domain="[('balance','>', 0.0)]"/>
+
+                <group expand="0" string="Group By..." colspan="12" col="10">
+                    <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"></filter>
+                    <filter string="Collector" name="collector_id" context="{'group_by': 'collector_id'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="mgs_billing_connect_disconnect_report_action" model="ir.actions.act_window">
+        <field name="name">Connected/Disconnected Houses</field>
+        <field name="res_model">mgs_billing.connect_disconnect.report</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- portal -->
+    <record id="action_all_customers_report_view" model="ir.actions.report">
+        <field name="name">All Customers Report</field>
+        <field name="model">mgs_billing.all_customers.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.all_customers_report_template</field>
+        <field name="report_file">mgs_billing.all_customers_report_template</field>
+        <!-- <field name="binding_model_id" ref="model_load_line_dispatch"/> -->
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="portal_my_home_menu_all_customers_report" name="Portal layout : all_customers menu" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'all_customers'" t-attf-class="breadcrumb-item #{'active ' if not all_customers else ''}">
+                <a t-if="all_customers" t-attf-href="/report/all_customers?{{ keep_query() }}">All Customers</a>
+                <t t-else="">All Customers</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_all_customers" name="All Customers" customize_show="True" inherit_id="portal.portal_my_home" priority="1">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">All Customers</t>
+                <t t-set="url" t-value="'/report/all_customers'"/>
+                <t t-set="placeholder_count" t-value="'all_customers_count'"/>
+                <!-- dd -->
+            </t>
+        </xpath>
+    </template>
+
+    <template id="all_customers_report_template" name="All Customers Report">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">All Customers</t>
+            </t>
+            <t t-if="not data">
+                <p>No Result.</p>
+            </t>
+            <div class="mgs_table">
+                <t t-if="data" t-call="portal.portal_table">
+
+                    <thead>
+                        <tr class="active">
+                            <th>No.</th>
+                            <th>Meter #</th>
+                            <th>Billing Account</th>
+                            <th style="text-align: right;">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="no" t-value="0"/>
+
+                        <t t-set="page_balance" t-value="0"/>
+
+                        <tr t-foreach="data" t-as="line">
+                            <t t-set="no" t-value="no+1"/>
+                            <td>
+                                <span t-esc="no"/>
+                            </td>
+                            <td>
+                                <span t-esc="line['property_name']"/>
+                            </td>
+                            <td>
+                                <span t-esc="line['display_name']"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <span t-esc="'{0:,.2f}'.format(line['balance'])"/>
+                            </td>
+
+                            <!-- Total variables -->
+                            <t t-set="page_balance" t-value="page_balance+line['balance']"/>
+                        </tr>
+
+                        <tr>
+                            <td class="page_subtotal" colspan="3">
+                                <span style="text-align: right;">Page Total: </span>
+                            </td>
+                            <td style="text-align: right;">
+                                <span t-esc="'{0:,.2f}'.format(page_balance)"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

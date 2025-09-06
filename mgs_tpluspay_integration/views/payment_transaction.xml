@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="mgs_tpluspay_inherit_payment_transaction" model="ir.ui.view">
+        <field name="name">Tpluspay</field>
+        <field name="model">mgs.payment.transaction</field>
+        <field name="inherit_id" ref="mgs_payment_integration.mgs_payment_transaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="method_code" invisible='1'/>
+                <button name="action_tpluspay_confirm" invisible="method_code != 'tpluspay' or state == 'confirm'" type="object" string="Confirm"/>
+                <button name="action_tpluspay_draft" invisible="method_code != 'tpluspay' or state == 'draft'" type="object" string="Reset To draft"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+
+    <record model="ir.actions.act_window" id="action_mgs_payment_transaction_tpluspay">
+        <field name="name">Tpluspay Transactions</field>
+        <field name="res_model">mgs.payment.transaction</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('method_code','=','tpluspay')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Records</p>
+        </field>
+    </record>
+
+    <menuitem name="Tpluspay" id="mgs_tplus_payment_gateway_menu" action="action_mgs_payment_transaction_tpluspay" parent="mgs_payment_integration.mgs_payment_integration_root" sequence="3"/>
+
+
+    <record id="temp_payment_log_form" model="ir.ui.view">
+        <field name="name">temp.payment.log.form</field>
+        <field name="model">temp.payment.data</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                </header>
+                <sheet>
+                    <group name="name" string="string">
+                        <field name="date"/>
+                        <field name="partner_id"/>
+                        <field name="amount"/>
+                        <field name="provider_id"/>
+                        <field name="code"/>
+                        <field name="payment_status"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="temp_payment_log_tree" model="ir.ui.view">
+        <field name="name">temp.payment.log.tree</field>
+        <field name="model">temp.payment.data</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="amount"/>
+                <field name="provider_id"/>
+                <field name="code"/>
+                <field name="payment_status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="temp_payment_log_action" model="ir.actions.act_window">
+        <field name="name">Temporary Payment Log</field>
+        <field name="res_model">temp.payment.data</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="temp_payment_log_menu" name="Temporary payment Log" action="temp_payment_log_action" parent="mgs_integrations_log.mgs_integration_log_root_menu" sequence="20"/>
+
+</odoo>

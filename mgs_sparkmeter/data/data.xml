@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo >
+  <record model="ir.sequence" id="seq_sparkmeter_readings">
+    <field name="name">Spark Meter Readings</field>
+    <field name="code">mgs_sparkmeter.reading.seq</field>
+    <field name="prefix">SPR/%(year)s%(month)s/</field>
+    <field name="padding">3</field>
+    <field name="company_id"></field>
+  </record>
+
+  <record id="spark_cron" model="ir.cron">
+    <field name="name">Spark : Create Sparkmeter Readings</field>
+    <field name="model_id" ref="model_mgs_sparkmeter_reading"/>
+    <field name="state">code</field>
+    <field name="code">model.action_create_spark_readings()</field>
+    <field name='interval_number'>1</field>
+    <field name='interval_type'>months</field>
+    <!-- <field name="numbercall">-1</field>
+    <field name="doall" eval="False"/> -->
+</record>
+
+<record id="spark_validation_cron" model="ir.cron">
+  <field name="name">Spark : Confirm Sparkmeter Readings</field>
+  <field name="model_id" ref="model_mgs_sparkmeter_reading"/>
+  <field name="state">code</field>
+  <field name="code">model.action_confirm_spark_readings()</field>
+  <field name='interval_number'>10</field>
+  <field name='interval_type'>minutes</field>
+  <!-- <field name="numbercall">-1</field>
+  <field name="doall" eval="False"/> -->
+</record>
+
+<record id="spark_unassigned_meter_cron" model="ir.cron">
+  <field name="name">Spark : Create Sparkmeter Meters</field>
+  <field name="model_id" ref="model_mgs_billing_meter_getter"/>
+  <field name="state">code</field>
+  <field name="code">model.action_create_unassigned_meters()</field>
+  <field name='interval_number'>30</field>
+  <field name='interval_type'>days</field>
+  <!-- <field name="numbercall">-1</field>
+  <field name="doall" eval="False"/> -->
+</record>
+
+</odoo>

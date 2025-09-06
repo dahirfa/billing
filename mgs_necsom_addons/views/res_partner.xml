@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="res_partner_inherit_alternative_number" model="ir.ui.view">
+        <field name="name">Necsom Addons (Partner)</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='function']" position="after">
+                <field name="alternative_number" string="Sender's Phone"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <record id="res_partner_inherit_phone_mobile" model="ir.ui.view">
+        <field name="name">Necsom Phone Mobile (Partner)</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='mobile']" position="replace">
+                <field name="mobile" widget="phone" string="Tenant's Phone"/>
+            </xpath>
+
+            <xpath expr="//field[@name='phone']" position="replace">
+                <field name="phone" widget="phone" string="Owner's Phone"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+
+    <record id="res_partner_inherit_phone_mobile_tree" model="ir.ui.view">
+        <field name="name">Necsom Phone Mobile (Partner) Tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='phone']" position="replace">
+                <field name="phone"  string="Owner's Phone"/>
+                <field name="mobile" widget="phone" string="Tenant's Phone"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+
+</odoo>

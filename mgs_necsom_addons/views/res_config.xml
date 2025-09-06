@@ -1,0 +1,108 @@
+<odoo>
+    <data>
+        <record id="view_pos_config_form_inherit" model="ir.ui.view">
+            <field name="name">res.config.settings.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="mgs_billing.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//h2[@name='mgs_billing']" position="after">
+                  <div class="row mt16 o_settings_container">
+                    <!-- Journal-->
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                      <div class="o_setting_left_pane">
+                        <field name="mgs_auto_reconnect_house"/>
+                      </div>
+                      <div class="o_setting_right_pane">
+                          <span class="o_form_label">Property auto reconnect</span>
+                          <div class="text-muted">
+                              Reconnect property after paying certain percentage of his outstanding balance
+                          </div>
+                          <div class="content-group">
+                              <div class="row mt16">
+                                  <label for="mgs_reconnection_percentage" class="col-lg-3 o_light_label"/>
+                                  <field name="mgs_reconnection_percentage"/>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                      <div class="o_setting_left_pane">
+                        <!-- <field name="mgs_auto_reconnect_house"/> -->
+                      </div>
+                      <div class="o_setting_right_pane">
+                          <span class="o_form_label">Tax Report Accounts</span>
+                          <div class="text-muted">
+                              Allowed accounts for tax report
+                          </div>
+                          <div class="content-group">
+                              <div class="row mt16">
+                                  <label for="mgs_tax_account_ids" class="col-lg-3 o_light_label"/>
+                                  <field name="mgs_tax_account_ids" options="{'no_create': True}"/>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <!-- Hlepdes -->
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                      <div class="o_setting_left_pane">
+                        <!-- <field name="mgs_auto_reconnect_house"/> -->
+                      </div>
+                      <div class="o_setting_right_pane">
+                          <span class="o_form_label">Tax Report Accounts</span>
+                          <div class="text-muted">
+                              Allowed accounts for tax report
+                          </div>
+                          <div class="content-group">
+                              <div class="row mt16">
+                                  <label for="mgs_tax_account_ids" class="col-lg-3 o_light_label"/>
+                                  <field name="mgs_tax_account_ids" options="{'no_create': True}"/>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                      <div class="o_setting_left_pane">
+                        <!-- <field name="mgs_auto_reconnect_house"/> -->
+                      </div>
+                      <div class="o_setting_right_pane">
+                          <span class="o_form_label">CRM Next Stage</span>
+                          <div class="text-muted">
+                              Default lead stage after helpdesk ticket is been created
+                          </div>
+                          <div class="content-group">
+                              <div class="row mt16">
+                                  <label for="next_crm_stage_id" class="col-lg-3 o_light_label"/>
+                                  <field name="next_crm_stage_id" options="{'no_create': True}"/>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                      <div class="o_setting_left_pane">
+                        <!-- <field name="mgs_auto_reconnect_house"/> -->
+                      </div>
+                      <div class="o_setting_right_pane">
+                          <span class="o_form_label">CRM Helpdesk Ticket Type</span>
+                          <div class="text-muted">
+                              Default CRM helpdesk ticket type
+                          </div>
+                          <div class="content-group">
+                              <div class="row mt16">
+                                  <!-- <label for="ticket_type_id" class="col-lg-3 o_light_label"/> -->
+                                  <!-- <field name="ticket_type_id" options="{'no_create': True}"/> -->
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

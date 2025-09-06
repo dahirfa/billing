@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sparkmeter sites -->
+    <record id="view_mgs_sparkmeter_site_form" model="ir.ui.view">
+        <field name="name">mgs_sparkmeter.site.form</field>
+        <field name="model">mgs_sparkmeter.site</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="sparkmeter_site_id"/>
+                    </group>
+                    <group>
+                        <field name="site_type"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mgs_sparkmeter_site_tree" model="ir.ui.view">
+        <field name="name">mgs_sparkmeter.site.tree</field>
+        <field name="model">mgs_sparkmeter.site</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="sparkmeter_site_id"/>
+                <field name="site_type"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_mgs_sparkmeter_site" model="ir.actions.act_window">
+        <field name="name">SparkMeter Sites</field>
+        <field name="res_model">mgs_sparkmeter.site</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Sparkmeter sites generage wiz -->
+    <record id="view_mgs_sparkmeter_site_wiz_form" model="ir.ui.view">
+        <field name="name">mgs_sparkmeter.create.site.wizard.wiz</field>
+        <field name="model">mgs_sparkmeter.create.site.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    -->
+                </sheet>
+                <footer>
+                  <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                  <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mgs_sparkmeter_site_wiz_form" model="ir.actions.act_window">
+        <field name="name">Fetch Sparkmeter Sites</field>
+        <field name="res_model">mgs_sparkmeter.create.site.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

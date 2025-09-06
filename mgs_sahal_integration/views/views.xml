@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+    <record id="mgs_sahal_payment_inherit_payment_provider" model="ir.ui.view">
+      <field name="name">Sahal Payment Integration Form</field>
+      <field name="model">payment.provider</field>
+      <field name="inherit_id" ref="payment.payment_provider_form"/>
+      <field name="arch" type="xml">
+        <group name="provider_credentials" position="inside">
+          <group invisible="code != 'sahal_sc'">
+            <field name="sahal_sc_user_id" domain ="[('share','=',True)]" password='1' required="code == 'sahal_sc'"/>
+            <!-- <field name="sahal_api_password" password='1' attrs="{'required':[('code', '=', 'sahal_sc')]}"/> -->
+          </group>
+        </group>
+      </field>
+    </record>
+
+    <record id="mgs_sahal_sc_inherit_payment_transaction" model="ir.ui.view">
+      <field name="name">Sahal SC</field>
+      <field name="model">mgs.payment.transaction</field>
+      <field name="inherit_id" ref="mgs_payment_integration.mgs_payment_transaction_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='ref']" position="after">
+          <field name="paid_by" readonly="1" invisible="method_code != 'sahal_sc'"/>
+          <field name="sender_account" readonly="1" invisible="method_code != 'sahal_sc'"/>
+        </xpath>
+        <xpath expr="//field[@name='amount']" position="before">
+          <field name="meter_no" readonly="1" string="meter #" invisible="method_code != 'sahal_sc'"/>
+        </xpath>
+        <xpath expr="//field[@name='state']" position="after">
+          <field name="method_code" invisible='1'/>
+          <button name="action_sahal_sc_confirm" invisible="method_code != 'sahal_sc' or state == 'confirm'" type="object" string="Confirm"/>
+          <button name="action_sahal_sc_draft" invisible="method_code != 'sahal_sc' or state == 'draft'" type="object" string="Reset To draft"/>
+        </xpath>
+
+      </field>
+    </record>
+
+
+
+
+    <record model="ir.actions.act_window" id="action_mgs_payment_transaction_sahal">
+      <field name="name">Sahal Biller</field>
+      <field name="res_model">mgs.payment.transaction</field>
+      <field name="view_mode">list,form</field>
+      <field name="domain">[('method_code','=','sahal_sc')]</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">No Records</p>
+      </field>
+    </record>
+
+    <menuitem name="Sahal Short-Code" id="mgs_payment_integration_payment_menu_sahal_sc" action="action_mgs_payment_transaction_sahal" parent="mgs_payment_integration.mgs_payment_integration_root" sequence="2"/>
+
+
+  </data>
+</odoo>

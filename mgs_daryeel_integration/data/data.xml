@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_yeel" model="payment.provider">
+        <field name="name">Yeel</field>
+        <field name="code">yeel</field>
+    </record>
+
+    <record id="payment_method_yeel" model="account.payment.method">
+        <field name="name">Yeel</field>
+        <field name="code">yeel</field>
+        <field name="payment_type">inbound</field>
+    </record>
+</odoo>

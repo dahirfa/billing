@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_t_plus" model="payment.provider">
+        <field name="name">T-Plus</field>
+        <field name="code">t_plus</field>
+    </record>
+
+    <record id="payment_method_t_plus" model="account.payment.method">
+        <field name="name">T-Plus</field>
+        <field name="code">t_plus</field>
+        <field name="payment_type">inbound</field>
+    </record>
+</odoo>

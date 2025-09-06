@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mgs_device_info_tree" model="ir.ui.view">
+        <field name="name">mgs.device.info.tree</field>
+        <field name="model">mgs.device.info</field>
+        <field name="arch" type="xml">
+            <list string="Device Info">
+                <field name="username"/>
+                <field name="device_name"/>
+                <field name="device_version"/>
+                <field name="mac_address"/>
+                <field name="ip_address"/>
+                <field name="url_endpoint"/>
+                <field name="android_version"/>
+                <field name="operating_system"/>
+                <field name="app_version"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_mgs_device_info" model="ir.actions.act_window">
+        <field name="name">API ACCESS Info</field>
+        <field name="res_model">mgs.device.info</field>
+        <field name="view_mode">list</field>
+    </record>
+
+<!-- File: my_module/menus/mgs_device_info_menus.xml -->
+    <menuitem id="menu_mgs_device_info_root"
+              name="API ACCESS"
+              parent="base.menu_custom"
+              sequence="10"/>
+
+    <menuitem id="menu_mgs_device_info"
+              name="Device Info"
+              parent="menu_mgs_device_info_root"
+              action="action_mgs_device_info"
+              sequence="10"/>
+
+</odoo>

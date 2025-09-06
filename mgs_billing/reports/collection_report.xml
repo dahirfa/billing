@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_bill_collection_report_view" model="ir.actions.report">
+        <field name="name">Collection Report</field>
+        <field name="model">mgs.collection.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.bill_collection_report_template</field>
+        <field name="report_file">mgs_billing.bill_collection_report_template</field>
+        <!-- <field name="binding_model_id" ref="model_load_line_dispatch"/> -->
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Billed -->
+    <template id="portal_my_home_menu_billed_report" name="Portal layout : billed menu" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'billed'" t-attf-class="breadcrumb-item #{'active ' if not billed else ''}">
+                <a t-if="billed" t-attf-href="/report/billed?{{ keep_query() }}">Billed Report</a>
+                <t t-else="">Billed Report</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_billed" name="Collcetion Report" customize_show="True" inherit_id="portal.portal_my_home" priority="1">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">My Billed Houses</t>
+                    <t t-set="url" t-value="'/report/billed'"/>
+                    <t t-set="placeholder_count" t-value="'billed_count'"/>
+                </t>
+            </xpath>
+    </template>
+
+    <!-- Billed -->
+    <template id="portal_my_home_menu_unbilled_report" name="Portal layout : unbilled menu" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'unbilled'" t-attf-class="breadcrumb-item #{'active ' if not unbilled else ''}">
+                <a t-if="unbilled" t-attf-href="/report/unbilled?{{ keep_query() }}">My UnBilled Report</a>
+                <t t-else="">My Unbilled Report</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_unbilled" name="Collcetion Report" customize_show="True" inherit_id="portal.portal_my_home" priority="1">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">My Unbilled Houses</t>
+                    <t t-set="url" t-value="'/report/unbilled'"/>
+                    <t t-set="placeholder_count" t-value="'unbilled_count'"/>
+                </t>
+            </xpath>
+    </template>
+    
+    <template id="bill_collection_report_template" name="Collection Report">
+    <t t-call="portal.portal_layout">
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+        <t t-call="portal.portal_searchbar">
+            <t t-set="title">Collection</t>
+        </t>
+        <t t-if="not data">
+            <p>No Result.</p>
+        </t>
+        <t t-if="data" t-call="portal.portal_table">
+
+            <!-- <tr class="table-light">
+                <th colspan="1">
+                    Rent Collcetion
+                </th>
+                <th colspan="1" class="text-end text-muted">
+                        Total: <span class="text-muted" t-esc="total_amount" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                </th>
+
+                <th colspan="2" class="text-end text-muted">
+                        Collected: <span class="text-muted" t-esc="paid_amount" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                </th>
+            </tr> -->
+
+            <thead>
+                <tr class="active">
+                    <th>No.</th>
+                    <th>Property</th>
+                    <th>Zone</th>
+                    <th>Billing Account</th>
+                    <th style="text-align: right;">Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-set="no" t-value="0"/>
+
+                <tr style="font-weight: bold">
+                    <td colspan="4"><span style="text-align: right;">Total: </span></td>
+                    <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(total_balance)"/></td>
+                </tr>
+
+                <t t-set="page_balance" t-value="0"/>
+
+                <tr t-foreach="data" t-as="line">
+                    <t t-set="no" t-value="no+1"/>
+                    <td><span t-esc="no"/></td>
+                    <td><span t-esc="line['property_name']"/></td>
+                    <td><span t-esc="line['zone_name']"/></td>
+                    <td><span t-esc="line['display_name']"/></td>
+                    <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['balance'])"/></td>
+
+                    <!-- Total variables -->
+                    <t t-set="page_balance" t-value="page_balance+line['balance']"/>
+                </tr>
+
+                <tr style="font-weight: bold">
+                    <td colspan="4"><span style="text-align: right;">Page Total: </span></td>
+                    <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(page_balance)"/></td>
+                </tr>
+            </tbody>
+        </t>
+    </t>
+</template>
+</odoo>

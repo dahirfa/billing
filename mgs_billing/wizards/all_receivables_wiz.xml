@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="mgs_billing_receivables_wizard_form" model="ir.ui.view">
+        <field name="name">mgs_billing.receivables.wizard.form</field>
+        <field name="model">mgs_billing.receivables.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <!-- <label for="month" string="Month" style="font-weight: bold !important;margin-right:107px;margin-left: 0px;"/>
+                            <div class="o_address_format">
+                                <field name="year" style="width:40px;margin-left: 1px;height: 20px; border-radius: 4px;"/> /
+                                <field name="month" style="width: 45px;"/>
+                            </div> -->
+                            <field name="date_from"/>
+
+                            <label for="greater_less"/>
+                            <div>
+                                <field name="greater_less" class="oe_inline" style="font-weight: bold"/>
+                                <field name="greater_less_amount" class="oe_inline" style="text-align: right"/>
+                            </div>
+                            <!-- d -->
+                        </group>
+                        <group>
+                            <field name="date_to"/>
+                            <field name="zone_id" string="Zone" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                            <field name="collector_id" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                            <field name="states" widget="radio"/>
+                            <field name="include_disconnected"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="action_view_report" type="object" string="VIEW"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mgs_billing_receivables_wizard_line_tree" model="ir.ui.view">
+        <field name="name">MGS Billing receivables Wizard Line List View</field>
+        <field name="model">mgs_billing.receivables.wizard.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="billing_account_id" string="Customer" />
+                <!-- <field name="display_name" string="Name" /> -->
+                <!-- <field name="company_id" string="Company" /> -->
+                <field name="zone_name" string="Zone" />
+                <field name="collector_id" string="Meter Reader" />
+                <!-- <field name="collector_name" string="Collector" /> -->
+                <field name="initial_balance" sum="initial_balance" string="Initial Balance" />
+                <field name="invoiced" sum="invoiced" string="Invoiced" />
+                <field name="paid" sum="paid" string="Paid" />
+                <field name="balance" sum="balance" string="Balance" />
+            </list>
+
+            <!-- <footer>
+                <div class="oe_list_footer" name="list_footer">
+                    <field name="total_balance" readonly="1" string="Total Balance" />
+                </div>
+            </footer> -->
+        </field>
+    </record>
+
+    <record id="view_mgs_recivables_report2_graph" model="ir.ui.view">
+        <field name="name">mgs.recivables.report2.graph</field>
+        <field name="model">mgs_billing.receivables.wizard.line</field>
+        <field name="arch" type="xml">
+            <graph string="Receivables Report" type="bar">
+                <field name="zone_name" string="Zone" type="row"/>
+                <field name="collector_id" string="Meter Reader" type="row"/>
+                <field name="balance" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_mgs_billing_receivables_wizard_line_search" model="ir.ui.view">
+        <field name="name">MGS Billing receivables Wizard Line search View</field>
+        <field name="model">mgs_billing.receivables.wizard.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- <field name="id_no"/> -->
+                <field name="billing_account_id" string="Meter #"/>
+                <field name="zone_name"/>
+                <!-- <field name="billing_account_id"/> -->
+                <!-- <field name="display_name"/> -->
+                <!-- <field name="property_name"/> -->
+                <!-- <field name="zone_name"/> -->
+                <!-- <field name="company_id"/> -->
+                <!-- <field name="user_id"/> -->
+
+                <group expand="0" string="Group By..." colspan="12" col="10">
+                    <filter string="Zone" name="zone_id" context="{'group_by': 'zone_name'}"></filter>
+                    <filter string="Meter Reader" name="collector_id" context="{'group_by': 'collector_id'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="mgs_billing_receivables_wizard_action" model="ir.actions.act_window">
+        <field name="name">Billing Receivables</field>
+        <field name="res_model">mgs_billing.receivables.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mgs_necsom_addons_test_import_tree" model="ir.ui.view">
+        <field name="name">mgs_necsom_addons.test_import.tree</field>
+        <field name="model">mgs_necsom_addons.test_import</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="meter_number"/>
+                <field name="mobile"/>
+                <field name="alternative_mobile"/>
+                <field name="street"/>
+                <field name="area"/>
+                <field name="zone"/>
+                <field name="discount_type"/>
+                <field name="customer_type"/>
+                <field name="total_receivable"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="mgs_necsom_addons_test_import_form" model="ir.ui.view">
+        <field name="name">mgs_necsom_addons.test_import.form</field>
+        <field name="model">mgs_necsom_addons.test_import</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                  <group>
+                    <group>
+                      <field name="name"/>
+                      <field name="mobile"/>
+                      <field name="street"/>
+                      <field name="reference_name"/>
+                      <field name="technician"/>
+                      <field name="poles"/>
+                      <field name="bill_plan"/>
+                      <field name="customer_type"/>
+                      <field name="security_deposit"/>
+                      <field name="total_receivable"/>
+                      <field name="transformer"/>
+                    </group>
+                    <group>
+                      <field name="meter_number"/>
+                      <field name="alternative_mobile"/>
+                      <field name="area"/>
+                      <field name="reference_mobile"/>
+                      <field name="wires"/>
+                      <field name="meter_type"/>
+                      <field name="discount_type"/>
+                      <field name="connection_date"/>
+                      <field name="initital_meter_read"/>
+                      <field name="zone"/>
+                    </group>
+                  </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mgs_necsom_addons_test_import_action" model="ir.actions.act_window">
+        <field name="name">Import List</field>
+        <field name="res_model">mgs_necsom_addons.test_import</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- <menuitem id="test_import_menu_root"
+      name="Import"
+    />
+
+    <menuitem id="test_import_menu"
+      name="Import" parent="test_import_menu_root"
+      action="mgs_necsom_addons_test_import_action"
+    /> -->
+</odoo>

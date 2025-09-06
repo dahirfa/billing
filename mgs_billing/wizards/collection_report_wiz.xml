@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="mgs_billing_collection_wizard_form" model="ir.ui.view">
+        <field name="name">mgs_billing.collection.wizard.form</field>
+        <field name="model">mgs_billing.collection.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <!-- <label for="month" string="Month" style="font-weight: bold !important;margin-right:107px;margin-left: 0px;"/>
+                          <div class="o_address_format">
+                              <field name="year" style="width:40px;margin-left: 1px;height: 20px; border-radius: 4px;"/> /
+                              <field name="month" style="width: 45px;"/>
+                          </div> -->
+                            <field name="date_from"/>
+                            <field name="zone_id" string="Zone" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                            <field name="report_type" widget="radio"/>
+
+                            <!-- d -->
+
+                        </group>
+                        <group>
+                            <field name="date_to"/>
+                            <!-- attrs="{'invisible': [('report_by', '!=', 'Zone')]}" -->
+                            <field name="collector_id" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                            <!-- <a href="/report/billed"><i class="fa fa-pencil mx-1"/>Click me</a> -->
+                        </group>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="action_view_report" type="object" string="VIEW"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mgs_billing_collection_wizard_line_tree" model="ir.ui.view">
+        <field name="name">MGS Billing Collection Wizard Line List View</field>
+        <field name="model">mgs_billing.collection.wizard.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <!-- <field name="id_no"/> -->
+                <field name="property_id"/>
+                <field name="billing_account_id"/>
+                <field name="zone_id"/>
+                <!-- <field name="display_name"/> -->
+
+                <!-- <field name="property_name"/> -->
+                <!-- <field name="zone_name"/> -->
+                <!-- <field name="company_id"/> -->
+                <!-- <field name="user_id"/> -->
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mgs_billing_collection_wizard_line_search" model="ir.ui.view">
+        <field name="name">MGS Billing Collection Wizard Line search View</field>
+        <field name="model">mgs_billing.collection.wizard.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- <field name="id_no"/> -->
+                <field name="property_id" string="Meter #"/>
+                <field name="billing_account_id"/>
+                <!-- <field name="display_name"/> -->
+                <field name="property_id"/>
+                <!-- <field name="property_name"/> -->
+                <field name="zone_id"/>
+                <!-- <field name="zone_name"/> -->
+                <!-- <field name="company_id"/> -->
+                <field name="balance" sum="balance"/>
+                <!-- <field name="user_id"/> -->
+
+                <group expand="0" string="Group By..." colspan="12" col="10">
+                    <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"></filter>
+                    <!-- <filter string="Collector" name="collector_id" context="{'group_by': 'collector_id'}"></filter> -->
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_mgs_collection_report2_graph" model="ir.ui.view">
+        <field name="name">mgs.collection.report2.graph</field>
+        <field name="model">mgs_billing.collection.wizard.line</field>
+        <field name="arch" type="xml">
+            <graph string="Receivables Report" type="bar">
+                <field name="zone_id" string="Zone" type="row"/>
+                <!-- <field name="balance" type="measure"/> -->
+            </graph>
+        </field>
+    </record>
+
+    <record id="mgs_billing_collection_wizard_action" model="ir.actions.act_window">
+        <field name="name">Billing Collection Wizard</field>
+        <field name="res_model">mgs_billing.collection.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Qweb -->
+    <!-- <record id="mgs_billing_collection_wizard_action12" model="ir.actions.report">
+        <field name="name">Report</field>
+        <field name="model">mgs_billing.collection.wizard.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mgs_billing.collection_wizard_action</field>
+        <field name="report_file">mgs_billing.collection_wizard_action</field>
+        <field name="binding_model_id" ref="model_mgs_billing_collection_wizard_line"/>
+        <field name="binding_type">report</field>
+    </record> -->
+
+    <template id="collection_wizard_action">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <center>
+                        <h4>Collection Bills Report</h4>
+                    </center>
+                    <table class="table table-bordered table-sm" name="pdc_table" width="100%">
+                        <tr>
+                            <th>No</th>
+                            <th>Property</th>
+                            <th>Billing Account</th>
+                            <th>Zone</th>
+                            <th>Balance</th>
+                        </tr>
+                        <t t-set="no" t-value="0"/>
+                        <t t-set="Total_balance" t-value="0"/>
+                        <t t-foreach="docs" t-as="doc">
+                            <t t-set="no" t-value="no+1"/>
+                            <tr>
+                                <t t-set="Total_balance" t-value="Total_balance + doc.balance"/>
+
+
+                                <td >
+                                    <span t-esc="no"/>
+                                </td>
+
+                                <td >
+                                    <span t-field="doc.property_id"/>
+                                </td>
+
+
+                                <td>
+                                    <span t-field="doc.billing_account_id"/>
+                                </td>
+
+                                <td>
+                                    <span t-field="doc.zone_id"/>
+                                </td>
+                                <td align="right">
+                                    <span t-field="doc.balance"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td align="right">
+                                    Totals
+                                </td>
+                                <td align="right">
+                                    $                                    <span t-esc="Total_balance"/>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

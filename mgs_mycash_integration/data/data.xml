@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_mycash" model="payment.provider">
+        <field name="name">MyCash</field>
+        <field name="code">mycash</field>
+    </record>
+
+    <record id="payment_method_mycash" model="account.payment.method">
+        <field name="name">MyCash</field>
+        <field name="code">mycash</field>
+        <field name="payment_type">inbound</field>
+    </record>
+</odoo>

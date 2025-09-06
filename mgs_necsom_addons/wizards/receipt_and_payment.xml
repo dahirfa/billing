@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<record id="receipt_and_payment_form" model="ir.ui.view">
+			<field name="name">mgs_necsom_addons.receipt_and_payment.form</field>
+			<field name="model">mgs_necsom_addons.receipt_and_payment</field>
+			<field name="arch" type="xml">
+			   <form>
+					<sheet>
+						<group>
+							<group>
+								<field name="date_from" string = "From"/>
+								<field name="journal_id" string="Account" options="{'no_create': True}" />
+								<field name="user_id" options="{'no_create': True}" />
+								<field name="mgs_sender_phone"/>
+								<field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" />
+							</group>
+
+
+							<group>
+								<field name="date_to" string="To"/>
+								<field name="partner_id" options="{'no_create': True}" />
+								<field name="payment_type" widget="radio"/>
+								<field name="mgs_transaction_ref"/>
+							</group>
+						</group>
+					</sheet>
+
+				<footer>
+					<button name="confirm" string="View" type="object" class="oe_highlight"/>
+					<button name="export_to_excel" string="EXCEL" type="object" class="oe_highlight"/>
+					<button string="Cancel" special="cancel"/>
+				</footer>
+
+			   </form>
+			</field>
+		</record>
+
+
+
+		<record id="action_receipt_and_payment_report" model="ir.actions.act_window">
+			<field name="name">MGS Payment and Receipt</field>
+			<field name="res_model">mgs_necsom_addons.receipt_and_payment</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_id" ref="receipt_and_payment_form"/>
+			<field name="target">new</field>
+		</record>
+
+    <menuitem id="menu_necsom_addons_report" name="Reporting" parent="mgs_payment_integration.mgs_payment_integration_root" sequence="12" />
+    <menuitem id="menu_necsom_addons_payment_report" name="Payment Report" parent="menu_necsom_addons_report" action="action_receipt_and_payment_report" sequence="1" />
+</odoo>

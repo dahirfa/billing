@@ -1,0 +1,85 @@
+<odoo>
+  <record id="mgs_billing_form_inehrit" model="ir.ui.view">
+    <field name="name">mgs_billing.property.form.inehrit</field>
+    <field name="model">mgs_billing.property</field>
+    <field name="inherit_id" ref="mgs_billing.mgs_billing_property_form" />
+    <field name="arch" type="xml">
+
+      <!-- <xpath expr="//field[@name='guarantor_id']" position="replace">
+          <field name="ref_name"/>
+          <field name="ref_mobile"/>
+      </xpath> -->
+
+      <xpath expr="//header" position="inside">
+        <button name="%(mgs_billing.mgs_billing_apply_extra_charge_action)d" string="Apply Extra Charges"
+                                    type="action" data-hotkey="q" />
+      </xpath>
+
+      <xpath expr="//div[@class='oe_button_box']" position="inside">
+        <button class="oe_stat_button" name="action_open_extra_charge_invoices" type="object" icon="fa-list" >
+          <field string="Invoices" name="extra_charge_invoice_ids" invisible="1"/> Extra Charges
+        </button>
+      </xpath>
+
+      <xpath expr="//sheet" position="inside">
+        <group string="Misc.">
+          <group>
+            <field name="wires"/>
+            <field name="company_wires"/>
+            <field name="prop_type"/>
+            <field name="exclude_tax"/>
+          </group>
+
+          <group>
+            <field name="technician"/>
+            <field name="poles"/>
+            <field name="company_poles"/>
+            <field name="customer_type"/>
+          </group>
+        </group>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="mgs_reading_search_inherit" model="ir.ui.view">
+      <field name="name">mgs.reading.search.inherit</field>
+      <field name="model">mgs_billing.reading</field>
+      <field name="inherit_id" ref="mgs_billing.mgs_billing_reading_search" />
+      <field name="arch" type="xml">
+          <!-- Modify or extend the search view as needed -->
+          <xpath expr="//filter[@name='property_id']" position="after">
+              <filter string="Customer Type" name="customer_type" domain="[]" context="{'group_by': 'customer_type'}"/>
+              <filter string="Property Type" name="property_type_id" domain="[]" context="{'group_by': 'property_type_id'}"/>
+          </xpath>
+      </field>
+  </record>
+
+  <record model="ir.ui.menu" id="mgs_billing.mgs_billing_transaction_partner">
+    <field name="active">0</field>
+  </record>
+
+  <record model="ir.ui.menu" id="mgs_billing.mgs_billing_property_menu">
+    <field name="active">0</field>
+  </record>
+
+  <menuitem
+      id="mgs_billing_Property_main"
+      name="Properties"
+      parent="mgs_billing.mgs_billing_root"
+      sequence="5"
+    />
+
+  <menuitem
+      id="mgs_billing_owner2_menu"
+      name="Billing Customers"
+      parent="mgs_billing_Property_main"
+      action="mgs_billing.mgs_billing_owner_action"
+      sequence="1"
+    />
+  <menuitem
+      id="mgs_billing_property_menu"
+      name="Properties"
+      action="mgs_billing.mgs_billing_property_action"
+      parent="mgs_billing_Property_main"
+      sequence="4"/>
+</odoo>

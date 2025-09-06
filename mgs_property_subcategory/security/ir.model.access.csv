@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+admin_access_mgs_sub_property_types_user,mgs.property.sub.categories,model_mgs_property_sub_categories,base.group_erp_manager,1,1,1,1

@@ -1,0 +1,52 @@
+<odoo>
+  <record model="ir.ui.view" id="mgs_billing_document_type_form">
+    <field name="name">mgs_billing.document_type.form</field>
+    <field name="model">mgs_billing.document_type</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" string="Name"/>
+            </h1>
+          </div>
+          <group>
+            <!-- <group>
+                <field name="mobile"/>
+              </group> -->
+
+            <group>
+              <field name="active"/>
+            </group>
+          </group>
+        </sheet>        
+      </form>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="mgs_billing_document_type_tree">
+    <field name="name">mgs_billing.document_type.tree</field>
+    <field name="model">mgs_billing.document_type</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name" string="Name"/>
+      </list>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="mgs_billing_document_type_search">
+    <field name="name">mgs_billing.document_type.search</field>
+    <field name="model">mgs_billing.document_type</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="name" string="Document Type"/>
+      </search>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="mgs_billing_document_type_action">
+    <field name="name">Document Types</field>
+    <field name="res_model">mgs_billing.document_type</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

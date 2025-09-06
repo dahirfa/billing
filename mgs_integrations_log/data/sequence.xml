@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <record id="intergration_log_seq" model="ir.sequence">
+        <field name="name">Integration Log Sequence</field>
+        <field name="code">mgs.integration.log</field>
+        <field name="prefix">LOG</field>
+        <field name="padding">5</field>
+    </record>
+</odoo>

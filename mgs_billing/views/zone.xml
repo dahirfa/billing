@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mgs_billing_zone_tree" model="ir.ui.view">
+        <field name="name">mgs_billing.zone.tree</field>
+        <field name="model">mgs_billing.zone</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="collector_id"/>
+                <field name="counter"/>
+                <field name="company_id" groups="base.group_multi_company" optional='hide'/>
+            </list>
+        </field>
+    </record>
+
+    <record id="mgs_billing_zone_form" model="ir.ui.view">
+        <field name="name">mgs_billing.zone.form</field>
+        <field name="model">mgs_billing.zone</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                </header>
+                <sheet>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_properties" type="object" icon="fa-home">
+                            <field string="Properties" name="counter" widget="statinfo" />
+                        </button>
+                    </div>
+                    <group name="main">
+                        <group>
+                            <field name="name"/>
+                            <field name="collector_id" options="{'no_create': True}"/>
+                            <field name="partner_category_id" />
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                        </group>
+                        <group >
+                            <field name="code"/>
+                            <field name="journal_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="mgs_billing_zone_action" model="ir.actions.act_window">
+        <field name="name">Zones</field>
+        <field name="res_model">mgs_billing.zone</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

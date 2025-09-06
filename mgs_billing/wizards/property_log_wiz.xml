@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!-- Form view for "model" -->
+    <record id="mgs_billing_property_log_report_form" model="ir.ui.view">
+        <field name="name">mgs_billing.property.log.report.form</field>
+        <field name="model">mgs_billing.property.log.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+
+                    <group>
+                        <group>
+                            <field name="property_id" />
+                        </group>
+
+                        <group>
+                            <field name='state'/>
+                        </group>
+                    </group>
+
+                    <separator />
+
+
+                    <group>
+                        <group>
+                            <field name="date_from" />
+                        </group>
+                        <group>
+                            <field name="date_to" />
+                        </group>
+                    </group>
+
+
+                    <footer>
+                        <button name="print_report" type="object" string="VIEW"/>
+                        <button string="Cancel" special="cancel" class="oe_link"/>
+
+                    </footer>
+
+
+                </sheet>
+
+
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+    <!-- Main window action for "model" -->
+    <record id="mgs_billing_property_log_report_action" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Property Log Report</field>
+        <field name="res_model">mgs_billing.property.log.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="mgs_billing_property_log_report_form" />
+    </record>
+
+
+
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="product_inherit_template_form" model="ir.ui.view">
+        <field name="name">product_prodcut.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">                
+                <span class="d-inline-block">
+                    <field name="is_billing_pan"/>
+                    <label for="is_billing_pan"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.server" id="inherit_product_template_action_">
+        <field name="name">Billing Plans</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_billing_products_menu()</field>
+    </record>
+    <!-- <record id="inherit_product_template_action" model="ir.actions.act_window">
+        <field name="name">Billing Plans</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'default_is_billing_pan': True}</field>
+        <field name="domain">[('is_billing_pan', '=', True)]</field>
+    </record> -->
+
+</odoo>

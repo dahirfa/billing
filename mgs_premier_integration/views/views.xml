@@ -1,0 +1,45 @@
+<odoo>
+  <data>
+    <record id="mgs_premier_payment_inherit_payment_provider" model="ir.ui.view">
+      <field name="name">Premier Payment Integration Form</field>
+      <field name="model">payment.provider</field>
+      <field name="inherit_id" ref="payment.payment_provider_form"/>
+      <field name="arch" type="xml">
+        <group name="provider_credentials" position="inside">
+          <group invisible="code != 'premier'">
+            <field name="premier_user_id" password='1' required="code == 'premier'"/>
+          </group>
+        </group>
+      </field>
+    </record>
+
+    <record id="mgs_premier_inherit_payment_transaction" model="ir.ui.view">
+      <field name="name">Yeel</field>
+      <field name="model">mgs.payment.transaction</field>
+      <field name="inherit_id" ref="mgs_payment_integration.mgs_payment_transaction_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='state']" position="after">
+          <field name="method_code" invisible='1'/>
+          <button name="action_premier_confirm" invisible="method_code != 'premier' or state == 'confirm'" type="object" string="Confirm"/>
+          <button name="action_premier_draft" invisible="method_code != 'premier' or state == 'draft'" type="object" string="Reset To draft"/>
+        </xpath>
+
+      </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_mgs_payment_transaction_premier">
+      <field name="name">Premier Transactions</field>
+      <field name="res_model">mgs.payment.transaction</field>
+      <field name="view_mode">list,form</field>
+      <field name="domain">[('method_code','=','premier')]</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">No Records</p>
+      </field>
+    </record>
+
+    <menuitem name="Premier" id="mgs_payment_integration_payment_menu_premier" action="action_mgs_payment_transaction_premier" parent="mgs_payment_integration.mgs_payment_integration_root" sequence="4"/>
+
+
+  </data>
+</odoo>

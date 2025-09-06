@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="mgs_billing_connect_disconnect_wizard_form" model="ir.ui.view">
+        <field name="name">mgs_billing.connect_disconnect.wizard.form</field>
+        <field name="model">mgs_billing.connect_disconnect.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                          <field name="state" widget="radio"/>
+                        </group>
+                        <group>
+                          <!-- attrs="{'invisible': [('report_by', '!=', 'Zone')]}" -->
+                          <field name="zone_id"   string="Zone" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                          <field name="collector_id" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                          <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="action_view_report" type="object" string="VIEW"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="mgs_billing_connect_disconnect_wizard_action" model="ir.actions.act_window">
+        <field name="name">Billing Connect/Disconnect Houses</field>
+        <field name="res_model">mgs_billing.connect_disconnect.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="mgs_billing_property_type_form" model="ir.ui.view">
+        <field name="name">mgs_billing.property.type.form</field>
+        <field name="model">mgs_billing.property.type</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_properties" type="object" icon="fa-home">
+                            <field string="Properties" name="counter" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+
+                        <group>
+                            <field name="pricelist_id"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="custom_average"/>
+                            <!-- <field name="max_above_avg"/>
+                            <field name="max_under_avg"/> -->
+                        </group>
+
+                        <group invisible="not custom_average">
+                            <field name="if_its_less_than"/>
+                            <field name="make_rate"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="mgs_billing_property_type_tree" model="ir.ui.view">
+        <field name="name">mgs_billing.property.type.tree</field>
+        <field name="model">mgs_billing.property.type</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="name"/>
+                <field name="pricelist_id"/>
+                <field name="counter"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="mgs_billing_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">mgs_billing.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="mgs_billing_property_form" model="ir.ui.view">
+        <field name="name">mgs_billing.property.form</field>
+        <field name="model">mgs_billing.property</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <!-- <button name="action_connected" type="object" string="Connect"/> -->
+
+                    <button name="%(mgs_billing.mgs_billing_con_desc_comment_action)d" string="Connect" type="action" data-hotkey="q" invisible="state == 'connected'" context="{'default_state': 'connected'}"/>
+
+                    <!-- <button name="action_disconnected" type="object" string="Disconnect"/> -->
+                    <button name="%(mgs_billing.mgs_billing_con_desc_comment_action)d" string="Disconnect" type="action" data-hotkey="q" invisible="state == 'disconnected'" context="{'default_state': 'disconnected'}"/>
+
+                    <field name="state" widget="statusbar"/>
+
+                </header>
+
+                <sheet>
+                    <!-- <h4></h4> -->
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_reading_history" type="object" icon="fa-clock-o">
+                            <field string="History" name="reading_history_counter" widget="statinfo"/>
+                        </button>
+
+                        <button invisible="state != 'connected'" class="oe_stat_button  text-success" name="action_open_conncection_log" type="object" icon="fa-lock">
+                            <field string="Log" name="connection_log_count" class="text-success" widget="statinfo"/>
+                        </button>
+
+                        <button invisible="state != 'disconnected'" class="oe_stat_button text-danger" name="action_open_conncection_log" type="object" icon="fa-unlock-alt">
+                            <field string="Log" name="connection_log_count" class="text-danger" widget="statinfo"/>
+                        </button>
+
+                    </div>
+
+                    <h1>
+                        <field name="name" readonly="1" placeholder="House #"/>
+                    </h1>
+
+                    <group>
+
+                        <group string="Property Address">
+                            <span class="o_form_label o_td_label" name="address_name">
+                                <b>Address</b>
+                            </span>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}" context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                            </div>
+                        </group>
+
+                        <group string="Property Information">
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                            <field name="owner_id" />
+                            <field name="zone_id"/>
+                            <field name="property_type_id" string="Property Type"/>
+                            <field name="connection_date"/>
+                        </group>
+                    </group>
+
+                    <group name="meter_info">
+                        <group string="Billing">
+                            <!-- <field name="meter_type" widget="radio"/> -->
+                            <field name="initial_meter" groups="base.group_no_one" readonly="1"/>
+                            <field name="product_id" required="1" options="{'no_create': True}"/>
+                            <!-- <field name="pricelist_id"/> -->
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- <page string="Susbend/Disconnect">
+                        <group>
+                            <group>
+                                <button name="%(mgs_billing.mgs_billing_apply_extra_charge_action)d" string="Suspend" type="action" data-hotkey="q" attrs="{'invisible': [('suspended', '=', True)]}"/>
+
+                                <button name="action_unsuspend" string="Unsuspend" type="object" class="btn-primary" data-hotkey="q" attrs="{'invisible': [('suspended', '=', False)]}"/>
+                                <br/>
+                                <field name="suspended" readonly="1"/>
+                                <field name="suspension_date" attrs="{'required': [('suspended', '=', True)],'invisible': [('suspended', '=', False)]}"/>
+                            </group>
+                        </group>
+                    </page> -->
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="mgs_billing_property_tree" model="ir.ui.view">
+        <field name="name">mgs_billing.property.tree</field>
+        <field name="model">mgs_billing.property</field>
+        <field name="arch" type="xml">
+            <list string="" decoration-success="state =='connected'" decoration-danger="state =='disconnected'">
+                <header>
+                    <button name="action_connected" class="btn btn-success" type="object" string="Connect"/>
+                    <button name="action_disconnected" class="btn btn-danger" type="object" string="Disconnect"/>
+                </header>
+                <field name="name"/>
+                <field name="owner_id"/>
+                <field name="zone_id"/>
+                <field name="connection_date"/>
+                <field name="property_type_id"/>
+                <field name="street"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="state" widget="badge" decoration-danger="state =='disconnected'" decoration-success="state =='connected'"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="mgs_billing_property_search" model="ir.ui.view">
+        <field name="name">mgs_billing.property.search</field>
+        <field name="model">mgs_billing.property</field>
+        <field name="arch" type="xml">
+            <search string="MGS Billing Property Search">
+                <field name="name" filter_domain="[('name', '=', self)]"/>
+                <field name="owner_id"/>
+                <field name="zone_id"/>
+                <field name="connection_date"/>
+                <field name="property_type_id"/>
+                <field name="state"/>
+
+
+                <filter name="connected" string="Connected " domain="[('state', '=', 'connected')]"/>
+                <separator colspan="4"/>
+                <filter name="disconnected" string="Disconnected " domain="[('state', '=', 'disconnected')]"/>
+                <separator colspan="4"/>
+                <filter name="suspended" string="Suspended " domain="[('state', '=', 'suspend')]"/>
+
+                <separator colspan="4"/>
+                <filter name="normal Meter" string="Normal Meters" domain="[('meter_type', '=', 'normal')]"/>
+                <filter name="smart Meter" string="Smart Meters" domain="[('meter_type', '=', 'smart')]"/>
+
+
+                <group expand="0" string="Group By..." colspan="12" col="10">
+                    <filter string="Connection Date" name="date" context="{'group_by': 'connection_date'}"/>
+                    <filter name="property_type" string="Property Type" context="{'group_by': 'property_type_id'}"/>
+                    <filter name="meter_type" string="Meter Type" context="{'group_by': 'meter_type'}"/>
+                </group>
+
+
+            </search>
+        </field>
+    </record>
+
+
+
+
+    <record id="mgs_billing_property_log_tree" model="ir.ui.view">
+        <field name="name">mgs_billing.property.connection.log.tree</field>
+        <field name="model">mgs_billing.property.connection.log</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="property_id"/>
+                <field name="time"/>
+                <field name="memo"/>
+                <field name="create_uid" string="By"/>
+                <field name="state" widget="badge" decoration-danger="state =='disconnected'" decoration-success="state =='connected'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="mgs_billing_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">mgs_billing.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="mgs_billing_connection_log_action" model="ir.actions.act_window">
+        <field name="name">Connection Logs</field>
+        <field name="res_model">mgs_billing.property.connection.log</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

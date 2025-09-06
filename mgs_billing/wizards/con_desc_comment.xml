@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="mgs_billing_con_desc_comment_wizard_form" model="ir.ui.view">
+        <field name="name">mgs_billing.con_desc_comment.wizard.form</field>
+        <field name="model">mgs_billing.con_desc_comment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="property_id" readonly="1" string="Meter#" options="{'no_create': True}" />
+                        </group>
+                        <group>
+                            <field name="memo" />
+                        </group>
+                    </group>
+                </sheet>
+
+                <footer>
+					<button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+					<button string="Cancel" special="cancel"/>
+				</footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="mgs_billing_con_desc_comment_action" model="ir.actions.act_window">
+        <field name="name">Property Suspension Wizard</field>
+        <field name="res_model">mgs_billing.con_desc_comment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,199 @@
+<odoo>
+  <menuitem id="mgs_billing_root"
+      name="Utility"
+      groups="mgs_billing.group_billing_user"
+      web_icon="mgs_billing,static/description/icon.png"
+    />
+
+    <menuitem
+      id="mgs_billing_reading_menu"
+      name="Readings"
+      action="mgs_billing_reading_action"
+      parent="mgs_billing_root"
+      sequence="2"/>
+
+    <menuitem
+      id="mgs_billing_transaction_partner"
+      name="Partners"
+      parent="mgs_billing_root"
+      sequence="5"
+    />
+    <menuitem
+      id="mgs_billing_property_menu"
+      name="Properties"
+      action="mgs_billing_property_action"
+      parent="mgs_billing_root"
+      sequence="4"/>
+
+    <menuitem
+      id="mgs_billing_tenancy_menu"
+      name="Billing Accounts"
+      action="mgs_billing_tenancy_acc_action"
+      parent="mgs_billing_root"
+      sequence="3"/>
+
+    <menuitem
+      id="mgs_billing_customer_menu"
+      name="Tenants"
+      parent="mgs_billing_transaction_partner"
+      action="mgs_billing_customer_action"
+      sequence="1"
+    />
+
+    <menuitem
+      id="mgs_billing_owner_menu"
+      name="Owners"
+      parent="mgs_billing_transaction_partner"
+      action="mgs_billing_owner_action"
+      sequence="2"
+    />
+
+    <menuitem
+      id="mgs_billing_guarantor_menu"
+      name="Guarantors"
+      parent="mgs_billing_transaction_partner"
+      action="mgs_billing_guarantor_action"
+      sequence="5"
+    />
+<!-- configuration -->
+    <menuitem
+      id="mgs_billing_transaction_config"
+      name="Configuration"
+      parent="mgs_billing_root"
+      sequence="100"
+    />
+
+    <menuitem
+      id="mgs_billing_settings_menu"
+      name="Settings"
+      parent="mgs_billing_transaction_config"
+      action="mgs_billing_config_action"
+      sequence="1"/>
+
+    <menuitem
+      id="mgs_billing_reset_meter_menu"
+      name="Reset Meter"
+      parent="mgs_billing_transaction_config"
+      action="mgs_billing_reset_meter_action"
+      sequence="4"/>
+
+    <menuitem
+      id="mgs_billing_document_type_menu"
+      name="Document Types"
+      parent="mgs_billing_transaction_config"
+      action="mgs_billing_document_type_action"
+      sequence="6"/>
+
+    <menuitem
+      id="mgs_billing_plans_menu"
+      name="Plans"
+      action="inherit_product_template_action_"
+      parent="mgs_billing_transaction_config"
+      sequence="2"/>
+    <menuitem
+      id="mgs_billing_property_type_menu"
+      name="Property Types"
+      action="mgs_billing_property_type_action"
+      parent="mgs_billing_transaction_config"
+      sequence="9"/>
+
+    <menuitem
+      id="mgs_billing_meter_menu"
+      name="Meters"
+      action="mgs_billing_meter_action"
+      parent="mgs_billing_transaction_config"
+      sequence="10"/>
+    
+    
+    <menuitem
+      id="mgs_billing_zone_menu"
+      name="Zones"
+      action="mgs_billing_zone_action"
+      parent="mgs_billing_transaction_config"
+      sequence="9"/>
+
+    <menuitem
+      id="mgs_billing_collector_menu"
+      name="Collectors"
+      action="mgs_billing_collector_action"
+      parent="mgs_billing_transaction_config"
+      sequence="11"/>
+<!-- configuration -->
+
+
+
+    <!-- Reports -->
+    <menuitem
+      id="mgs_billing_reports_root"
+      name="Reporting"
+      parent="mgs_billing_root"
+      sequence="99"
+    />
+
+    <menuitem id="mgs_billing_collection_report"
+      name="Billed/Unbilled Houses"
+      parent="mgs_billing_reports_root"
+      action="mgs_billing_collection_wizard_action" 
+      sequence="1"
+    />
+
+    <!-- <menuitem id="mgs_billing_receipt_report"
+      name="All Receipts"
+      parent="mgs_billing_reports_root"
+      action="mgs_billing_payment_report_action"
+      sequence="2"
+    /> -->
+
+    <menuitem id="mgs_billing_receivables_report_menu"
+      name="All Receivables"
+      parent="mgs_billing_reports_root"
+      action="mgs_billing_receivables_wizard_action"
+      sequence="3"
+    />
+
+    <menuitem id="mgs_billing_sale_report_menu"
+      name="Reading Analysis"
+      parent="mgs_billing_reports_root"
+      action="mgs_billing_sale_report_action"
+      sequence="4"
+    />
+
+    <!-- <menuitem id="mgs_billing_receipt_perecentage_report_menu"
+      name="HH %% Receipt"
+      parent="mgs_billing_reports_root"
+      action="mgs_billing_receipt_percentage_wizard_action"
+      sequence="5"
+    /> -->
+
+    <menuitem id="mgs_billing_billed_perecentage_report_menu" 
+      name="HH %% Billed" 
+      parent="mgs_billing_reports_root" 
+      action="mgs_billing_billed_percentage_wizard_action" 
+      sequence="6" />
+
+    <menuitem id="mgs_billing_connect_disconnect_report_menu" 
+      name="Connected/Disconnected Houses" 
+      parent="mgs_billing_reports_root" 
+      action="mgs_billing_connect_disconnect_wizard_action" 
+      sequence="6" />
+
+    <menuitem id="mgs_billing_meter_cubic_sold_zone_menu" 
+      name="Usage by Zone" 
+      parent="mgs_billing_reports_root" 
+      action="mgs_billing_meter_cubic_sold_zone_action" 
+      sequence="7" />
+
+    <menuitem id="mgs_billing_meter_cubic_sold_collector_menu" 
+      name="Usage by Collector" 
+      parent="mgs_billing_reports_root" 
+      action="mgs_billing_meter_cubic_sold_collector_action" 
+      sequence="8" />
+
+
+
+      <menuitem id="menu_get_monthes_due" name="# Due Monthes" parent="mgs_billing_reports_root"
+      action="action_get_monthes_due" />
+
+      <menuitem id="menu_property_log_report" name="Property Log" parent="mgs_billing_reports_root"
+      action="mgs_billing_property_log_report_action" />
+</odoo>

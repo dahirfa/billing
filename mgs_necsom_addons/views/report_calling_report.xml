@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mgs_custom_paperformat2" model="report.paperformat">
+        <field name="name">Custom Paper Format</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="action_calling_report"
+        name="mgs_necsom_addons.calling_report_report"
+        model="mgs_necsom_addons.calling_report_report"
+        string="Calling Report"
+        report_type="qweb-html"
+        paperformat="mgs_custom_paperformat2"
+        />
+
+        <template id="calling_report_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.internal_layout" t-lang="en_US">
+                        <div class="page">
+                            <style>
+                                th, td {
+                                    padding: 0.30rem !important;
+                                    border-top: 1px solid #212529 !important;
+                                    border-bottom: 1px solid #212529 !important;
+                                }
+                            </style>
+
+                            <div class="container" style="font-size:12px;font-family:Arial;margin-top:1px;">
+                                <h2>Calling Report</h2>
+
+                                <div class="row" style="margin-top: 32px !important;font-size: 1.2em; font-family: 'Lato-Reg'">
+
+                                    <div class="col-3" t-if="date_from or date_to">
+                                        <strong>Date:</strong>
+                                        <p t-esc="date_from" style="margin-bottom: 0"/>
+                                        <p t-esc="date_to"/>
+                                    </div>
+
+                                    <div class="col-3" t-if="zone_id[0]">
+                                        <strong>Zone:</strong>
+                                        <p class="m-0" t-esc="zone_id[1]"/>
+                                    </div>
+
+                                    <div class="col-3" t-if="collector_id[0]">
+                                        <strong>Collector:</strong>
+                                        <p class="m-0" t-esc="collector_id[1]"/>
+                                    </div>
+
+
+                                    <div class="col-4" t-if="company_id" groups="base.group_multi_company">
+                                        <strong>Company:</strong>
+                                        <span style="border: 1px solid black; padding: 1px; border-radius: 4px; background: #eeebeb; margin-right: 2px " t-esc="company_id.name"/>
+                                    </div>
+                                </div>
+                                
+                                <table class="table table-condensed table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap">No</th>
+                                            <th nowrap="nowrap">Property ID</th>
+                                            <th nowrap="nowrap">Billing Account</th>
+                                            <th nowrap="nowrap">Sender</th>
+                                            <!-- <th nowrap="nowrap" style="text-align: right">Latest Payment</th> -->
+                                            <th nowrap="nowrap" style="text-align: right">Prev Bal</th>
+                                            <th nowrap="nowrap" style="text-align: right">Curr Bill</th>
+                                            <th nowrap="nowrap" style="text-align: right">Curr Balance</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <t t-set="no" t-value="0"/>
+                                        <t t-set="total_balance" t-value="0"/>
+                                        <tr t-foreach="lines(date_from, date_to, zone_id[0], collector_id[0], states, company_id.id, greater_less, greater_less_amount)" t-as="line">
+                                            <t t-set="no" t-value="no+1"/>
+                                            <td nowrap="nowrap"><span t-esc="no"/></td>
+                                            <td><span t-esc="line['property_name']"/></td>
+                                            <td><span t-esc="line['display_name']"/></td>
+                                            <td><span t-esc="get_partner_sender_no(payments, line['billing_account_id'])"/></td>
+                                            <!-- <td style="text-align: right"><span t-esc="'{0:,.2f}'.format(line['paid'])"/></td> -->
+                                            <td style="text-align: right"><span t-esc="'{0:,.2f}'.format(line['initial_balance'])"/></td>
+                                            <td style="text-align: right"><span t-esc="'{0:,.2f}'.format(line['invoiced'])"/></td>
+                                            <td style="text-align: right"><span t-esc="'{0:,.2f}'.format(line['balance'])"/></td>
+
+                                            <t t-set="total_balance" t-value="total_balance+line['balance']"/>
+
+                                            <!-- <td nowrap="nowrap"><span t-esc="line.date"/></td>
+                                            <td><span t-esc="line.name"/></td>
+                                            <td><span t-esc="line.partner_id.name"/></td>
+                                            <td t-if="not journal_id[0]"><span t-esc="line.journal_id.name"/></td>
+                                            <td><span t-esc="line.ref"/></td>
+                                            <td style="text-align: right"><span t-esc="'{0:,.2f}'.format(line.amount)"/></td> -->
+
+                                            <!-- <t t-set="total_amount" t-value="total_amount+line['amount_paid']"/> -->
+                                        </tr>
+
+                                        <tr style="font-weight: bold;font-size: 13px">
+                                            <td colspan="6"></td>
+                                            <td style="text-align: right"><span style="color: red; font-weight: bold;" t-esc="'{0:,.2f}'.format(total_balance)"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div> <!--container-->
+                    </div> <!--page-->
+                </t> <!--web.external_layout-->
+            </t>
+        </t> <!--web.html_container-->
+    </template>
+</odoo>

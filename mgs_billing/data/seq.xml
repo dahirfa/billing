@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record model="ir.sequence" id="seq_billing_readings">
+        <field name="name">Meter Readings</field>
+        <field name="code">mgs_billing.reading</field>
+        <field name="prefix">RB/%(year)s%(month)s/</field>
+        <field name="padding">3</field>
+    </record>
+
+    <record model="ir.sequence" id="seq_billing_acc">
+        <field name="name">Billing Accounts</field>
+        <field name="code">mgs_billing.account</field>
+        <field name="prefix">ACC/</field>
+        <field name="padding">3</field>
+    </record>
+
+    <record model="ir.sequence" id="global_property_seq">
+        <field name="name">Global Billing Sequence</field>
+        <field name="code">mgs_billing.property.global</field>
+        <field name="padding">2</field>
+    </record>
+
+    <record model="ir.sequence" id="seq_billing_reset_meter">
+        <field name="name">Meter Reset Sequence</field>
+        <field name="code">mgs_billing.reset_reading</field>
+        <field name="prefix">MRESET/%(year)s%(month)s/</field>
+        <field name="padding">3</field>
+    </record>
+    <!-- <record model="ir.sequence" id="seq_billing_properties">
+        <field name="name">Zones</field>
+        <field name="code">mgs_billing.zone</field>
+        <field name="prefix">RB/%(year)s%(month)s/</field>
+        <field name="padding">6</field>
+    </record> -->
+
+
+</odoo>

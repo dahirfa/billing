@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_bill_receivables_report_view" model="ir.actions.report">
+        <field name="name">Bill Receivables Report</field>
+        <field name="model">mgs_billing.receivables.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.bill_receivables_report_template</field>
+        <field name="report_file">mgs_billing.bill_receivables_report_template</field>
+        <!-- <field name="binding_model_id" ref="model_load_line_dispatch"/> -->
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="portal_my_home_menu_receivables_report" name="Portal layout : receivables menu" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'receivables'" t-attf-class="breadcrumb-item #{'active ' if not receivables else ''}">
+                <a t-if="receivables" t-attf-href="/report/receivables?{{ keep_query() }}">My Receivables Report</a>
+                <t t-else="">My Receivables Report</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_receivables" name="My Receivalbes" customize_show="True" inherit_id="portal.portal_my_home" priority="1">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">My Receivables</t>
+                    <t t-set="url" t-value="'/report/receivables'"/>
+                    <t t-set="placeholder_count" t-value="'receivables_count'"/>
+                    <!-- dd -->
+                </t>
+            </xpath>
+    </template>
+
+    <template id="bill_receivables_report_template" name="Collection Report">
+    <t t-call="portal.portal_layout">
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+        <t t-call="portal.portal_searchbar">
+            <t t-set="title">My Receivalbes</t>
+        </t>
+        <t t-if="not data">
+            <p>No Result.</p>
+        </t>
+        <div class="mgs_table">
+            <t t-if="data" t-call="portal.portal_table">
+
+                <thead>
+                    <tr class="active">
+                        <th>No.</th>
+                        <th>Meter #</th>
+                        <th>Billing Account</th>
+                        <th  class="partner_mobile">Mobile</th>
+                        <th>Zone</th>
+                        <th style="text-align: right;">Initial Balance</th>
+                        <th style="text-align: right;">Invoiced</th>
+                        <th style="text-align: right;">Paid</th>
+                        <th style="text-align: right;">Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="no" t-value="0"/>
+
+                    <t t-set="page_balance" t-value="0"/>
+
+                    <tr t-foreach="data" t-as="line">
+                        <t t-set="no" t-value="no+1"/>
+                        <td><span t-esc="no"/></td>
+                        <td><span t-esc="line['property_name']"/></td>
+                        <td><span t-esc="line['display_name']"/></td>
+                        <td class="partner_mobile"><span t-esc="line['partner_mobile']"/></td>
+                        <td><span t-esc="line['zone_name']"/></td>
+                        <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['initial_balance'])"/></td>
+                        <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['invoiced'])"/></td>
+                        <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['paid'])"/></td>
+                        <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['balance'])"/></td>
+
+                        <!-- Total variables -->
+                        <t t-set="page_balance" t-value="page_balance+line['balance']"/>
+                    </tr>
+
+                    <tr>
+                        <td class="page_subtotal" colspan="8"><span style="text-align: right;">Page Total: </span></td>
+                        <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(page_balance)"/></td>
+                    </tr>
+                    <tr style="font-weight: bold;color: red">
+                        <td class="page_total" colspan="8"><span style="text-align: right;">Overall Total: </span></td>
+                        <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(total_balance)"/></td>
+                    </tr>
+                </tbody>
+            </t>
+        </div>
+    </t>
+</template>
+
+    <!-- <template id="bill_receivables_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout" t-lang="en_US">
+                <div class="page">
+                    <div class="container">
+                        <h1>Total Receivables</h1>
+                        
+                        <style>
+                            #customers {
+                                font-family: Arial, Helvetica, sans-serif;
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+
+                            #customers td, #customers th {
+                                border: 1px solid #ddd;
+                                padding: 8px;
+                            }
+
+                            #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+                            #customers tr:hover {background-color: #ddd;}
+
+                            #customers th {
+                                padding-top: 12px;
+                                padding-bottom: 12px;
+                                text-align: left;
+                                background-color: #04AA6D;
+                                color: white;
+                            }
+                        </style>
+
+                        <div class="row">
+                            <div class="col-3" t-if="date_from or date_to">
+                                <strong>Date:</strong><br/>
+                                <span t-esc="date_from"/>
+                            </div>
+
+                            <div>
+                                <p class="m-0" t-esc="form['zone_id'][1]"/>
+                            </div>
+
+                            <div class="col-3" t-if="form['collector_id'][0]">
+                                <strong>Collector:</strong>
+                                <p class="m-0" t-esc="form['collector_id'][1]"/>
+                            </div>
+
+                            <div class="col-3" t-if="form['company_id'][0]" groups="base.group_multi_company">
+                                <strong>Company:</strong>
+                                <p class="m-0" t-esc="form['company_id'][1]"/>
+                            </div>
+                        </div>
+
+                        <table id="customers">
+                            <tr>
+                                <th>No.</th>
+                                <th>Billing Account</th>
+                                <th>Zone</th>
+                                <th>Collector</th>
+                                <th style="text-align: right;">Initial Balance</th>
+                                <th style="text-align: right;">Invoiced</th>
+                                <th style="text-align: right;">Paid</th>
+                                <th style="text-align: right;">Balance</th>
+                            </tr>
+                            <t t-set="no" t-value="0"/>
+                            <t t-set="total_invoiced" t-value="0"/>
+                            <t t-set="total_paid" t-value="0"/>
+                            <t t-set="total_balance" t-value="0"/>
+
+                            <tr t-foreach="lines" t-as="line">
+                                <t t-set="no" t-value="no+1"/>
+                                <td><span t-esc="no"/></td>
+                                <td><span t-esc="line['display_name']"/></td>
+                                <td><span t-esc="line['zone_name']"/></td>
+                                <td><span t-esc="line['collector_name']"/></td>
+                                <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['initial_balance'])"/></td>
+                                <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['invoiced'])"/></td>
+                                <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['paid'])"/></td>
+                                <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(line['balance'])"/></td>
+
+                                <t t-set="total_invoiced" t-value="total_invoiced+line['invoiced']"/>
+                                <t t-set="total_paid" t-value="total_paid+line['paid']"/>
+                                <t t-set="total_balance" t-value="total_balance+line['balance']"/>
+                            </tr>
+
+                            <tr style="font-weight: bold">
+                                <td colspan="5"/>
+                                <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(total_invoiced)"/></td>
+                                <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(total_paid)"/></td>
+                                <td style="text-align: right;"><span t-esc="'{0:,.2f}'.format(total_balance)"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template> -->
+</odoo>

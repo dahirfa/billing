@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+  <record id="mgs_billing_meter_reset_tree" model="ir.ui.view">
+    <field name="name">mgs_billing.reset.meter.tree</field>
+    <field name="model">mgs_billing.reset.meter</field>
+    <field name="arch" type="xml">
+      <list decoration-info="state=='draft'" decoration-success="state=='confirm'" decoration-bf="1">
+        <field name="name"/>
+        <field name="date"/>
+        <field name="property_id"/>
+        <field name="billing_account_id"/>
+        <field name="reading"/>
+        <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+        <field name="state" widget="badge" decoration-info="state=='draft'" decoration-success="state=='confirm' "/>
+      </list>
+    </field>
+  </record>
+
+  <record id="mgs_billing_meter_reset_form" model="ir.ui.view">
+    <field name="name">mgs_billing.reset.meter.form</field>
+    <field name="model">mgs_billing.reset.meter</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <!--TODO: Result from converting "states='draft'" attribute into an 'invisible' attribute
+                     Manually combine states condition into any 'invisible' overrides in inheriting views as well-->
+          <button string="Confirm" name="action_confirm" confirm="Are you Sure You Want To Reset The Meter?" type="object" class="oe_highlight" invisible="state not in ['draft']"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button type="action" class="oe_stat_button" name="%(account.action_move_out_refund_type)d" context="{'search_default_partner_id': billing_account_id, 'search_default_ref': name,                       'default_partner_id': billing_account_id, 'default_ref': name}" icon="fa-list">
+                      Credit Note
+              <field name="move_id" invisible="1"/>
+            </button>
+          </div>
+          <group>
+            <group>
+              <field name="name" string="Meter Reset#" readonly="1"/>
+              <field name="property_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+              <field name="billing_account_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+            </group>
+            <group>
+              <field name="date" readonly="state != 'draft'"/>
+              <field name="reading" readonly="state != 'draft'"/>
+              <field name="company_id" groups="base.group_multi_company"/>
+            </group>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+
+  <record id="mgs_billing_reset_meter_action" model="ir.actions.act_window">
+    <field name="name">Reset Meter</field>
+    <field name="res_model">mgs_billing.reset.meter</field>
+    <field name="view_mode">list,form</field>
+  </record>
+</odoo>

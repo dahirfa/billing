@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_get_monthes_due_form" model="ir.ui.view">
+        <field name="name">get.monthes.due.form</field>
+        <field name="model">get.monthes.due</field>
+        <field name="arch" type="xml">
+            <form string="Get Monthes Due">
+                <group>
+                    <group>
+                        <field name="collector_id" />
+                        <field name="zone_id" />
+
+                    </group>
+
+                    <group>
+                        <field name="monthes_due" />
+                        <field name="meter_type" />
+                        <field name="state" />
+                    </group>
+
+                    <footer>
+                        <button name="get_monthes_due" type="object" string="VIEW"/>
+                        <button string="Cancel" special="cancel" class="oe_link"/>
+                        
+                    </footer>
+
+
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_get_monthes_due" model="ir.actions.act_window">
+        <field name="name">Get Monthes Due</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">get.monthes.due</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_get_monthes_due_form" />
+    </record>
+
+   
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.tailor</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="40"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <div class="app_settings_block" data-string="Prepayment" string="Prepayment" data-key="mgs_billing_prepayment">
+                    <h2 name="mgs_billing_prepayment">Prepayment Configurations</h2>
+                    
+                    <div class="row mt16 o_settings_container">
+
+
+                        <div class="col-12 col-lg-6 o_setting_box" id="config_mgs_vat_tax_partner_id">
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="mgs_vat_tax_partner_id" string="VAT Partner"/>
+                                <span class="fa fa-lg fa-building-o" title="Set the VAT Partner"/>
+                                <field name="mgs_vat_tax_partner_id" options="{'no_create': True}"/>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mgs_billing_prepayment_config_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'mgs_billing_prepayment'}</field>
+    </record>
+</odoo>
