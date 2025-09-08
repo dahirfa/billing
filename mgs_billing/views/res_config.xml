@@ -8,25 +8,9 @@
       <xpath expr="//form" position="inside">
         <!-- <div class="app_settings_block" data-string="Billing" string="Billing" data-key="mgs_billing"> -->
         <app data-string="mgs_billing" string="Billing" name="mgs_billing" >
-            <h2 name="mgs_billing">Fixed Price</h2>
+            <h2 name="mgs_billing">Billing</h2>
             <div class="row mt16 o_settings_container">
               <!-- Journal-->
-
-              <div class="col-12 col-lg-6 o_setting_box">
-                <div class="o_setting_left_pane"/>
-                <div class="o_setting_right_pane">
-                    <span class="o_form_label">Use Global Average</span>
-                    <div class="text-muted">
-                        Default average for all properties
-                    </div>
-                    <div class="content-group">
-                        <div class="row mt16">
-                            <label for="mgs_billing_global_average" class="col-lg-3 o_light_label"/>
-                            <field name="mgs_billing_global_average"/>
-                        </div>
-                    </div>
-                </div>
-              </div>
 
                <div class="col-12 col-lg-6 o_setting_box" id="sale_config_online_confirmation_sign">
                   <div class="o_setting_left_pane">

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Mgs Billing",
+    "name": "Billing",
     "summary": """
+        Meisour Custome Billing Module
         """,
     "description": """
         
@@ -9,13 +10,12 @@
     "author": "Meisour GS",
     "website": "https://www.meisour.com",
     "category": "Billing",
-    "version": "0.1",
+    "version": "18.0",
     "depends": ["base", "product", "account", "mail", "mgs_partner_balance"],
     "data": [
         "security/security_groups.xml",
         "security/ir.model.access.csv",
         "views/partner.xml",
-        # 'views/owner.xml',
         "reports/collection_report.xml",
         "reports/billing_sale.xml",
         "reports/all_reveivables.xml",

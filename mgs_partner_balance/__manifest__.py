@@ -7,7 +7,7 @@
     'website': "https://www.meisour.com",
     'category': 'Uncategorized',
     'version': '0.1',
-    'depends': ['account', 'account_followup'],
+    'depends': ['account'],
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',

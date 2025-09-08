@@ -9,7 +9,7 @@ class ResPartner(models.Model):
     @api.model
     def _mgs_credit_search(self, operator, operand):
         return self._asset_difference_search('asset_receivable', operator, operand)
-
+    
     @api.model
     def _mgs_debit_search(self, operator, operand):
         return self._asset_difference_search('liability_payable', operator, operand)

@@ -90,8 +90,8 @@ class ResPartner(models.Model):
         result = []
         for record in self:
             name = record.name
-            if record.property_id:
-                name = record.property_id.name
+            # if record.property_id:
+                # name = record.property_id.name
             if record.property_id:
                 name = " | ".join((name, record.property_id.name))
             result.append((record.id, name))

@@ -39,6 +39,7 @@
                         <group >
                             <field name="code"/>
                             <field name="journal_id"/>
+                            <field name="sequence_id" readonly="1"/>
                         </group>
                     </group>
                 </sheet>

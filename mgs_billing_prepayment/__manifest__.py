@@ -11,7 +11,7 @@
         "mgs_billing",
         "account",
         "mgs_sparkmeter",
-        "mgs_necsom_addons",
+        "mgs_billing_addons",
     ],
     "data": [
         'security/ir.model.access.csv',

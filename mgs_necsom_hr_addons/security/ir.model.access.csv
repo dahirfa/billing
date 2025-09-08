@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_mgs.hr.payslip.run,mgs.hr.payslip.run,model_mgs_hr_payslip_run,hr_payroll.group_hr_payroll_user,1,1,1,1
