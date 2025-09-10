@@ -15,7 +15,7 @@
       </xpath>
 
       <xpath expr="//div[@class='oe_button_box']" position="inside">
-        <button class="oe_stat_button" name="action_open_extra_charge_invoices" type="object" icon="fa-list">
+        <button class="oe_stat_button" name="action_open_extra_charge_invoices" string="Extra Charges" type="object" icon="fa-list">
           <field string="Extra Charges" name="extra_charge_count" invisible="1"/>
         </button>
       </xpath>

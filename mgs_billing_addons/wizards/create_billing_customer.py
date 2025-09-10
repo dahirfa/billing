@@ -20,43 +20,39 @@ class CreateCustomerWizard(models.TransientModel):
     zone_id = fields.Many2one('mgs_billing.zone', string='Zone', required=True)
     partner_zip = fields.Char()
 
-    partner_type = fields.Selection(
-        [('individual', 'Individual'), ('company', 'Company')], default='individual')
-    product_id = fields.Many2one('product.product', string="BillPlan", domain=[
-                                 ('is_billing_pan', '=', True)], required=True)
+    partner_type = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default='individual')
+    
+    product_id = fields.Many2one('product.product', string="Billing Plan", domain=[ ('is_billing_pan', '=', True)], required=True)
     mobile = fields.Char(string="Mobile", required=True)
+    
     phone = fields.Char(string="Alternative Mobile")
+    
     email = fields.Char(string="Email")
 
-    existing_customer = fields.Boolean(
-        default=False, string='Ma Customer Horay u Jiray baa?')
+    existing_customer = fields.Boolean(default=False, string='Ma Customer Horay u Jiray baa?')
+    
     customer_id = fields.Many2one('mgs_billing.partner', string="Merge with")
 
-    document_type_id = fields.Many2one(
-        'mgs_billing.document_type', string="Document Type")
+    document_type_id = fields.Many2one('mgs_billing.document_type', string="Document Type")
+    
+    
     document_no = fields.Char(string="Document#")
 
     ref_name = fields.Char('Reference Name')
     ref_mobile = fields.Char('Reference Mobile')
 
-    company_id = fields.Many2one(
-        'res.company', string='Company', default=lambda self: self.env.company.id)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company.id)
 
     # Propery form
     initial_meter = fields.Float(string='Initial Meter Read')
-    property_type_id = fields.Many2one(
-        'mgs_billing.property.type', string='Type', required=True)
+    property_type_id = fields.Many2one('mgs_billing.property.type', string='Type', required=True)
 
     technician = fields.Char(string='Technician')
-    wires = fields.Char(string='Wires')
-    poles = fields.Char(string='Boles')
     company_wires = fields.Char(string='Company Wires')
     company_poles = fields.Char(string='Company Boles')
-    prop_type = fields.Selection(
-        [('single', 'Single Phase'), ('three', 'Three Phase')], string='MeterType')
-    customer_type = fields.Selection(
-        [('normal', 'Normal Customer'), ('free', 'Free Customer'),], default='normal', string='Customer Type')
-    security_deposit = fields.Float(string='Security Deposit')
+   
+    customer_type = fields.Selection([('normal', 'Normal Customer'), ('free', 'Free Customer'),], default='normal', string='Customer Type')
+
     connection_date = fields.Datetime(string='Connection Date')
 
     @api.model
@@ -114,21 +110,7 @@ class CreateCustomerWizard(models.TransientModel):
         owner_obj = self.env['mgs_billing.partner']
         property_obj = self.env['mgs_billing.property']
         owner_id = self.customer_id
-        # partner_obj = self.env['res.partner']
-        # if not owner_id:
-        #     owner_id = owner_obj.search(
-        #         [('mobile', 'ilike', self.mobile[-7:])], limit=1)
-
-        # if not self._check_phone_number(self.phone):
-        #     raise ValidationError(
-        #         "The phone number must have exactly 9 digits after the country code (+252907707070). Please Fix Alternative Mobile you have entered."
-        #     )
-            
-        # if not self._check_mobile_number(self.mobile):
-        #     raise ValidationError(
-        #         "The mobile number must have exactly 9 digits after the country code (+252907707070). Please Fix Mobile you entered."
-        #     )
-
+       
         if not owner_id:
             owner_id = owner_obj.create({
                 'name': self.name,
@@ -169,11 +151,6 @@ class CreateCustomerWizard(models.TransientModel):
             'ref_mobile': self.ref_mobile,
             'customer_type': self.customer_type,
             'technician': self.technician,
-            # 'wires': self.wires,
-            # 'poles': self.poles,
-            # 'company_wires': self.company_wires,
-            # 'company_poles': self.company_poles,
-            # 'prop_type': self.prop_type,
             'initial_meter': self.initial_meter,
             'owner_id': owner_id.id,
             'product_id': self.product_id.id,
@@ -182,14 +159,6 @@ class CreateCustomerWizard(models.TransientModel):
             'connection_date': self.connection_date
         })
 
-        # partner_id = partner_obj.create({
-        #     'name': self.name,
-        #     'is_tenancy': True,
-        #     'product_id': 4,
-        #     'mobile': self.mobile,
-        #     'customer_id': owner_id.id,
-        #     'property_id': property_id.id
-        # })
 
         self.lead_id.write({
             'partner_id': self.env['res.partner'].search([('is_tenancy', '=', True), ('property_id', '=', property_id.id)], limit=1).id,

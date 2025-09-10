@@ -6,7 +6,7 @@
       <field name="inherit_id" ref="base.res_config_settings_view_form"/>
       <field name="arch" type="xml">
         <xpath expr="//form" position="inside">
-            <div class="app_settings_block" data-string="mgs_payment_integration" string="Bank Suspanse account" data-key="mgs_payment_integration">
+            <app  data-string="mgs_payment_integration" string="Payment" name="mgs_payment_integration">
                 <h2>Default Unknown Partner</h2>
 
                 <div class="row mt16 o_settings_container" id="mgs_unknown_partner_id">
@@ -20,9 +20,7 @@
                     </div>
                 </div>
                 <!-- Journal-->
-
-                
-            </div>
+            </app>
         </xpath>
       </field>
     </record>

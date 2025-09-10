@@ -13,7 +13,7 @@
         <!-- <field name="customer_id"/> -->
         <field name="mobile"/>
         <field name="phone"/>
-        <field name="product_id"/>
+        <field name="product_id" readonly="1"/>
         <field name="activity_ids" optional="show" widget="list_activity"/>
         <field name="company_id" groups="base.group_multi_company" optional="hide"/>
         <field name="mgs_credit" sum="credit"/>
@@ -65,7 +65,7 @@
 
       <xpath expr="//span[@name='address_name']" position="before">
         <field name="customer_id" readonly="1" options="{'no_create': True}" invisible="not is_tenancy" required="is_tenancy"/>
-        <field name="product_id" options="{'no_create': True}" invisible="not is_tenancy" required="is_tenancy"/>
+        <field name="product_id" readonly="1" options="{'no_create': True}" invisible="not is_tenancy" required="is_tenancy"/>
         <field name="property_id" readonly="1" options="{'no_create': True}" invisible="not is_tenancy" required="is_tenancy"/>
         <field name="mgs_credit"/>
 

@@ -201,7 +201,7 @@ class ReceiptAndPaymentReport(models.AbstractModel):
         left join res_partner as rp on aml.partner_id=rp.id
         left join account_journal as aj on aml.journal_id=aj.id
         left join account_move as am on aml.move_id=am.id
-        left join account_payment as ap on am.payment_id=ap.id
+        left join account_payment as ap on am.origin_payment_id=ap.id
         left join account_account as aa on aml.account_id=aa.id
         where aml.parent_state = 'posted' and aa.account_type = %s
         and aj.type in ('bank', 'cash')"""

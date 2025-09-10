@@ -227,7 +227,7 @@ class BulkPaymentLine(models.Model):
             'date':                 self.bulk_payment_id.date,
             'journal_id':           journal_id,
             'payment_type':         'inbound',
-            'ref':                  self.bulk_payment_id.name,
+            'memo':                  self.bulk_payment_id.name,
             'mgs_sender_phone':     self.bulk_payment_id.mgs_sender_phone,
             'company_id':           self.company_id.id
         }
