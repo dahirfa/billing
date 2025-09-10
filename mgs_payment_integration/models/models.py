@@ -90,6 +90,7 @@ class PaymentInherit(models.Model):
         res = super(PaymentInherit, self).action_post()
         for r in self:
             if self.env.user.has_group('base.group_system'):
+                r.mgs_action_reconcile()
                 return res
             if r.mgs_p_transaction_id and 'allow_action' not in self.env.context:
                 raise UserError("Action not allowed!")
@@ -104,7 +105,7 @@ class PaymentInherit(models.Model):
 
     def mgs_get_receivables(self, partner_id, move_line_obj):
         move_lines = move_line_obj.search([('move_id.state', '=', 'posted'), ('partner_id.id', '=', partner_id), (
-            'account_id.account_type', '=', 'asset_receivable'), ('move_id.payment_id', '=', False), ('reconciled', '=', False)], order='date DESC').mapped('id')
+            'account_id.account_type', '=', 'asset_receivable'), ('reconciled', '=', False)], order='date DESC').mapped('id')
         return move_lines
 
     def mgs_action_reconcile(self):

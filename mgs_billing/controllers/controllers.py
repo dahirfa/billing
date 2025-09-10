@@ -272,23 +272,23 @@ class PropertyInfoApi(http.Controller):
                 })
                 return result
 
-            # tax_line_ids = move_id.line_ids.filtered(
-            #     lambda l: 'tax_repartition_line_id' in l.tax_key)
-            # tax_ids = []
+            tax_line_ids = move_id.line_ids.filtered(
+                lambda l: l.tax_repartition_line_id )
+            tax_ids = []
             extra_service_ids = request.env.company.sudo().mgs_extra_service_ids
             service_ids = []
             amount_untaxed = move_id.amount_untaxed
             # --------------------------------
-            # if len(tax_line_ids) > 0:
-            #     for tax in tax_line_ids:
-            #         tax_ids.append({
-            #             'tax_id': tax.tax_line_id.name,
-            #             'amount': tax.credit
-            #         })
+            if len(tax_line_ids) > 0:
+                for tax in tax_line_ids:
+                    tax_ids.append({
+                        'tax_id': tax.tax_line_id.name,
+                        'amount': tax.credit
+                    })
 
-            #     result[0].update({
-            #         'tax_ids': tax_ids
-            #     })
+                result[0].update({
+                    'tax_ids': tax_ids
+                })
 
             if len(extra_service_ids) > 0:
                 for service in extra_service_ids:
@@ -335,24 +335,24 @@ class PropertyInfoApi(http.Controller):
                     'collector_number': prop_id.zone_id.collector_id.phone,                    
                     'collector_name': prop_id.zone_id.collector_id.name,                    
                 })
-                # tax_line_ids = move_id.line_ids.filtered(
-                #     lambda l: 'tax_repartition_line_id' in l.tax_key)
-                # tax_ids = []
+                tax_line_ids = move_id.line_ids.filtered(
+                    lambda l: l.tax_repartition_line_id)
+                tax_ids = []
                 extra_service_ids = request.env.company.sudo().mgs_extra_service_ids
                 service_ids = []
                 amount_untaxed = move_id.amount_untaxed
 
                 # --------------------------------
-                # if len(tax_line_ids) > 0:
-                #     for tax in tax_line_ids:
-                #         tax_ids.append({
-                #             'tax_id': tax.tax_line_id.name,
-                #             'amount': tax.credit
-                #         })
+                if len(tax_line_ids) > 0:
+                    for tax in tax_line_ids:
+                        tax_ids.append({
+                            'tax_id': tax.tax_line_id.name,
+                            'amount': tax.credit
+                        })
 
-                #     result[0].update({
-                #         'tax_ids': tax_ids
-                #     })
+                    result[0].update({
+                        'tax_ids': tax_ids
+                    })
 
                 if len(extra_service_ids) > 0:
                     for service in extra_service_ids:
