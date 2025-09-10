@@ -191,8 +191,8 @@
 
 
 
-      <menuitem id="menu_get_monthes_due" name="# Due Monthes" parent="mgs_billing_reports_root"
-      action="action_get_monthes_due" />
+      <!-- <menuitem id="menu_get_monthes_due" name="# Due Monthes" parent="mgs_billing_reports_root"
+      action="action_get_monthes_due" /> -->
 
       <menuitem id="menu_property_log_report" name="Property Log" parent="mgs_billing_reports_root"
       action="mgs_billing_property_log_report_action" />

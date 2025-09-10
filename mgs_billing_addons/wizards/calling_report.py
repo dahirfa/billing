@@ -208,7 +208,7 @@ class CallingReportReport(models.AbstractModel):
         SELECT
             row_number() over (order by rp.id DESC) as id,
             rp.id AS billing_account_id,
-            SPLIT_PART(rp.display_name, '-', 1) AS display_name,
+            SPLIT_PART(rp.name, '-', 1) AS display_name,
             rp.name AS partner_name,
             rp.company_id AS company_id,
             mbz.name AS zone_name,

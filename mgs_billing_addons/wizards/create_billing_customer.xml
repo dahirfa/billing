@@ -36,10 +36,10 @@
                             <field name="country_id" required="1" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                         </div>
                       
-                        <field name="wires" required="1"/>
+                        <!-- <field name="wires" required="1"/>
                         <field name="poles" required="1"/>
                         <field name="company_wires" required="1"/>
-                        <field name="company_poles" required="1"/>
+                        <field name="company_poles" required="1"/> -->
                       </group>
 
                       <group>
