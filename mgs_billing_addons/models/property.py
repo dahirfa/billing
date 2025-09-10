@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class AccountMove(models.Model):
@@ -24,26 +24,30 @@ class AccountMove(models.Model):
 class MgsProperty(models.Model):
     _inherit = 'mgs_billing.property'
 
-    # reference_name = fields.Char(string='Reference Name')
-    # reference_mobile = fields.Char(string='Reference Mobile')
+
     technician = fields.Char(string='Technician')
-    wires = fields.Char(string='Wires')
-    poles = fields.Char(string='Poles')
-    company_wires = fields.Char(string='Company Wires')
-    company_poles = fields.Char(string='Company Poles')
     ref_name = fields.Char('Reference Name')
     ref_mobile = fields.Char('Reference Mobile')
-    prop_type = fields.Selection(
-        [('single', 'Single Phase'), ('three', 'Three Phase')], default="single", string='Type')
+    
     customer_type = fields.Selection(
-        [('normal', 'Normal Customer'), ('free', 'Free Customer'), ('shareholder', 'Shareholder')], string='Customer Type')
-    security_deposit = fields.Float(string='Security Deposit')
-    extra_charge_invoice_ids = fields.Many2many(
-        'account.move', string='Invoices', ondelete='restrict', copy=False, readonly=True)
+        [('normal', 'Normal Customer'), ('free', 'Free Customer')], string='Customer Type')
+    
+    
+    extra_charge_invoice_ids = fields.Many2many('account.move', string='Invoices', copy=False, readonly=True)
+    
+    
+    extra_charge_count = fields.Integer(string='Extra Charge Count', compute="_compute_extra_charge_count")
+    
 
     note = fields.Char('Note')
     exclude_tax = fields.Boolean(string='Exclude Tax')
 
+    @api.depends('extra_charge_invoice_ids')
+    def _compute_extra_charge_count(self):
+        for record in self:
+            record.extra_charge_count = self.env['account.move'].search_count([('id', 'in', self.extra_charge_invoice_ids.ids)])
+    
+    
     def action_open_extra_charge_invoices(self):
         self.ensure_one()
         return {
@@ -63,12 +67,6 @@ class MGSBillingReading(models.Model):
     customer_type = fields.Selection(
         [('normal', 'Normal Customer'), ('free', 'Free Customer'), ('shareholder', 'Shareholder')], related="property_id.customer_type", store=True)
 
-    # def _prepare_invoice_line(self, service_ids):
-    #     res = super(MGSBillingReading, self)._prepare_invoice_line(service_ids)
-    #     if self.property_id.exclude_tax == True:
-    #         for line in res:
-    #             line['tax_ids'] = False
-    #     return res
 
     def _prepare_invoice_line(self, service_ids):
         use_def = self.use_default_amount

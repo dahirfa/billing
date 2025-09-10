@@ -12,35 +12,35 @@ _logger = logging.getLogger(__name__)
 
 class CusomerPortalApi(http.Controller):
 
-    @http.route('/mgs/spark/usage/', type='http', methods=["GET"], auth='user', csrf=False)
-    def spark_usage_request(self):
-        data = http.request.httprequest.data
-        kw = json.loads(data) if data else {}
-        partner_id = kw.get('partner_id')
-        user_partner = request.env['res.users'].search([('id', '=', request.session.uid)], limit=1).commercial_partner_id.id
-        if partner_id != user_partner and self.check_reading_access(user_partner, partner_id) == False:
-            return werkzeug.wrappers.Response(
-                status=400,
-                content_type="application/json; charset=utf-8",
-                response=json.dumps({"error": "You are not authorized to create this document."}))
-        partner = request.env['res.partner'].sudo().browse(partner_id)
-        try:    
-            property    = partner.property_id
-            result      = property.sudo()._get_last_spark_reading()
-            # result      = {"code": 200,"data": "45.89"}
-            result['data'] = "{:.2f}".format(result['data'])
-            return werkzeug.wrappers.Response(
-                status=200,
-                content_type="application/json; charset=utf-8",
-                response=json.dumps(result))
-        except Exception as e:
-            _logger.error("-=-=-=-=-=-=-=-")
-            _logger.error(e)
-            _logger.error("-=-=-=-=-=-=-=-")
-            return werkzeug.wrappers.Response(
-                status=400,
-                content_type="application/json; charset=utf-8",
-                response=json.dumps({"error": "Something went wrong"}))
+    # @http.route('/mgs/spark/usage/', type='http', methods=["GET"], auth='user', csrf=False)
+    # def spark_usage_request(self):
+    #     data = http.request.httprequest.data
+    #     kw = json.loads(data) if data else {}
+    #     partner_id = kw.get('partner_id')
+    #     user_partner = request.env['res.users'].search([('id', '=', request.session.uid)], limit=1).commercial_partner_id.id
+    #     if partner_id != user_partner and self.check_reading_access(user_partner, partner_id) == False:
+    #         return werkzeug.wrappers.Response(
+    #             status=400,
+    #             content_type="application/json; charset=utf-8",
+    #             response=json.dumps({"error": "You are not authorized to create this document."}))
+    #     partner = request.env['res.partner'].sudo().browse(partner_id)
+    #     try:    
+    #         property    = partner.property_id
+    #         result      = property.sudo()._get_last_spark_reading()
+    #         # result      = {"code": 200,"data": "45.89"}
+    #         result['data'] = "{:.2f}".format(result['data'])
+    #         return werkzeug.wrappers.Response(
+    #             status=200,
+    #             content_type="application/json; charset=utf-8",
+    #             response=json.dumps(result))
+    #     except Exception as e:
+    #         _logger.error("-=-=-=-=-=-=-=-")
+    #         _logger.error(e)
+    #         _logger.error("-=-=-=-=-=-=-=-")
+    #         return werkzeug.wrappers.Response(
+    #             status=400,
+    #             content_type="application/json; charset=utf-8",
+    #             response=json.dumps({"error": "Something went wrong"}))
     
     
     @http.route('/mgs/helpdesk/create/', type='http', methods=["POST"], auth='user', csrf=False)

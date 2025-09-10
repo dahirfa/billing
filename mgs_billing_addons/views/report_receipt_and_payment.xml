@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <report
-        id="action_receipt_and_payment"
-        name="mgs_billing_addons.receipt_and_payment_report"
-        model="mgs_billing_addons.receipt_and_payment_report"
-        string="Payment Report"
-        report_type="qweb-html"
-        />
+        <record id="action_receipt_and_payment" model="ir.actions.report">
+            <field name="name">Name</field>
+            <field name="model">mgs_billing_addons.receipt_and_payment</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">mgs_billing_addons.receipt_and_payment_report</field>
+            <field name="report_file">mgs_billing_addons.receipt_and_payment_report</field>
+            <field name="print_report_name">Payment Report</field>
+            <field name="binding_model_id" ref="model_mgs_billing_addons_receipt_and_payment"/>
+            <field name="binding_type">report</field>
+        </record>
 
         <template id="receipt_and_payment_report">
             <t t-call="web.html_container">

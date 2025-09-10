@@ -55,7 +55,7 @@ class CreateCustomerWizard(models.TransientModel):
     prop_type = fields.Selection(
         [('single', 'Single Phase'), ('three', 'Three Phase')], string='MeterType')
     customer_type = fields.Selection(
-        [('normal', 'Normal Customer'), ('free', 'Free Customer'), ('shareholder', 'Shareholder')], default='normal', string='Customer Type')
+        [('normal', 'Normal Customer'), ('free', 'Free Customer'),], default='normal', string='Customer Type')
     security_deposit = fields.Float(string='Security Deposit')
     connection_date = fields.Datetime(string='Connection Date')
 

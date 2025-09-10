@@ -15,14 +15,18 @@
         <field name="dpi">90</field>
     </record>
 
-    <report
-        id="action_calling_report"
-        name="mgs_billing_addons.calling_report_report"
-        model="mgs_billing_addons.calling_report_report"
-        string="Calling Report"
-        report_type="qweb-html"
-        paperformat="mgs_custom_paperformat2"
-        />
+
+    <record id="action_calling_report" model="ir.actions.report">
+        <field name="name">mgs_billing_addons.calling_report_report</field>
+        <field name="model">mgs_billing_addons.calling_report_wiz</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing_addons.calling_report_report</field>
+        <field name="report_file">mgs_billing_addons.calling_report_report</field>
+        <field name="print_report_name">'Calling Report'</field>
+        <field name="paperformat_id" ref="mgs_custom_paperformat2" />
+        <field name="binding_model_id" ref="model_mgs_billing_addons_calling_report_wiz"/>
+        <field name="binding_type">report</field>
+    </record>
 
         <template id="calling_report_report">
             <t t-call="web.html_container">

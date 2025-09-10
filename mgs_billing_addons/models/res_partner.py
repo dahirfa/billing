@@ -12,11 +12,6 @@ class ResPartner(models.Model):
         help="Alternative Number used for mobile app payment. This will be updated with the latest number the client use for payment",
     )
 
-    # @api.constrains('phone', 'mobile', 'alternative_number')
-    # def _check_customer_numbers(self):
-    #     for rec in self:
-    #         if (rec.phone and len(rec.phone) != 9) or (rec.mobile and len(rec.mobile) != 9):
-    #             raise ValidationError("Phone Numbers Lenght Should 9 Digits")
     
     @api.constrains("mobile", "country_id")
     def _check_mobile_number(self):
@@ -35,10 +30,10 @@ class ResPartner(models.Model):
                         mobile_number = mobile_number[len(phone_code) :]
 
                 # Step 4: Validate the length of the remaining number
-                # if len(mobile_number) != 9:
-                #     raise ValidationError(
-                #         "The mobile number must have exactly 9 digits after the country code."
-                #     )
+                if len(mobile_number) != 9:
+                    raise ValidationError(
+                        "The mobile number must have exactly 9 digits after the country code."
+                    )
 
     @api.constrains("phone", "country_id")
     def _check_phone_number(self):
@@ -57,36 +52,12 @@ class ResPartner(models.Model):
                         phone_number = phone_number[len(phone_code) :]
 
                 # Step 4: Validate the length of the remaining number
-                # if len(phone_number) != 9:
-                #     raise ValidationError(
-                #         "The phone number must have exactly 9 digits after the country code."
-                #     )
+                if len(phone_number) != 9:
+                    raise ValidationError(
+                        "The phone number must have exactly 9 digits after the country code."
+                    )
 
-    # @api.constrains("alternative_number", "country_id")
-    # def _check_alternative_number_number(self):
-    #     for record in self:
-    #         if record.alternative_number:
-    #             # Step 1: Remove '+' if present
-    #             alternative_number_number = record.alternative_number.replace(
-    #                 "+", ""
-    #             ).replace(" ", "")
-
-    #             # Step 2: Determine the country_id
-    #             country = record.country_id or self.env.company.country_id
-
-    #             if country and country.phone_code:
-    #                 # Step 3: Remove the country calling code if present
-    #                 phone_code = str(country.phone_code)
-    #                 if alternative_number_number.startswith(phone_code):
-    #                     alternative_number_number = alternative_number_number[
-    #                         len(phone_code) :
-    #                     ]
-
-    #             # Step 4: Validate the length of the remaining number
-    #             if len(alternative_number_number) != 9:
-    #                 raise ValidationError(
-    #                     "The phone number must have exactly 9 digits after the country code."
-    #                 )
+    
 
 
 class PaymentTransaction(models.Model):

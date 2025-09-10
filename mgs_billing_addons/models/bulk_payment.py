@@ -37,11 +37,15 @@ class AccountPayment(models.Model):
         for r in self:
             if self.env.user.has_group('base.group_system'):
                 return super(AccountPayment, self).action_post()
+            
             if r.bulk_payment_id and 'allow_action' not in self.env.context:
                 raise UserError("Action not allowed!")
+            
+            
         res = super(AccountPayment, self).action_post()
         property_id = self.partner_id.property_id
         mgs_auto_reconnect_house = self.env.company.mgs_auto_reconnect_house
+        
         if self.partner_id.is_tenancy == True and property_id and property_id.state == 'disconnected' and mgs_auto_reconnect_house:
             prev_bal = self.partner_id.mgs_credit
             if self.amount >= self.calculate_percentage(prev_bal, self.env.company.mgs_reconnection_percentage):

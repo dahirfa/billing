@@ -11,7 +11,8 @@ class InheritHelpDeskTicket(models.Model):
     stage_name = fields.Char(related='stage_id.name')
     priority_name = fields.Char(
         string='Priority Name', compute='_compute_priority_name')
-    zone_id = fields.Char(string='Zone')
+    zone_id = fields.Many2one(
+        'mgs_billing.zone', string='Zone', tracking=True)
     street = fields.Char(tracking=True)
     street2 = fields.Char(tracking=True)
 

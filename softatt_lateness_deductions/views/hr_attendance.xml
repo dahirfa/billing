@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="softatt_deductions_inheirt_hr_attendance_tree" model="ir.ui.view">
+        <field name="name">hr_attendance.tree</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree" />
+        <field name="arch" type="xml">
+            <field name="check_out" position="after">
+                <field name="penalty_amount"      force_save="1"  readonly="1" groups="hr_attendance.group_hr_attendance_user"/>
+                <field name="currency_id" invisible="1" groups="hr_attendance.group_hr_attendance_user"/>
+                <field name="waved" invisible="1"  groups="hr_attendance.group_hr_attendance_user"/>
+                <!-- attrs="{'invisible': ['|', ('waved', '=', True),('penalty_amount', '=', 0)]}" -->
+                <button name="action_wave_penalty"  invisible="waved == True or penalty_amount == 0"  class="btn btn-success" type="object" string="Waive"  groups="hr_attendance.group_hr_attendance_user"/>
+                <!-- attrs="{'invisible': ['|', ('waved', '=', False), ('penalty_amount', '=', 0)]}" -->
+                <button name="action_unwave_penalty" invisible="waved == False or penalty_amount == 0" class="btn btn-danger" type="object" string="Apply"  groups="hr_attendance.group_hr_attendance_user"/>
+            </field>
+        </field>
+    </record>    
+</odoo>
