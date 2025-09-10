@@ -33,7 +33,7 @@ class saAttendanceDashboard(models.Model):
         now             = fields.Datetime.now() if not _time else _time
         att_domain      = [('check_in', '>=', datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.min.time())), 
                            ('check_in', '<=',datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.max.time()))]
-        emp_domain      = [('code_ids', '!=', False)]
+        emp_domain      = []
         
         if locations:
             emp_domain.append(('work_location_id.id','in',locations))
@@ -50,8 +50,6 @@ class saAttendanceDashboard(models.Model):
             
         att_records     = self.env['hr.attendance'].search(att_domain)
         total           = self.env['hr.employee'].search_count(emp_domain)
-        employees_with_code = self.env['hr.employee'].search_count([('active', '=', True), ('code_ids', '!=', False)])
-        total = employees_with_code
         attended        = len(set(att_records.mapped('employee_id.id')))
         late            = len(set(att_records.filtered(lambda x: x.late_minutes > 0).mapped('employee_id.id')))
         return [total, attended, late]
@@ -63,9 +61,7 @@ class saAttendanceDashboard(models.Model):
         if not user_tz:
             raise ValidationError("Please Set up Your Timezone")
         now             = fields.Datetime.now() if not _time else _time
-        total           =  self.env['hr.employee'].search_count([('code_ids', '!=', False)])
-        employees_with_code = self.env['hr.employee'].search_count([('active', '=', True), ('code_ids', '!=', False)])
-        total = employees_with_code
+        total           =  self.env['hr.employee'].search_count([])
         employees       = set(self.env['hr.attendance'].search([
             ('check_in', '>=', datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.min.time())), 
             ('check_in', '<=',datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.max.time()))]).mapped('employee_id.id'))
@@ -83,12 +79,12 @@ class saAttendanceDashboard(models.Model):
         shift_ids       = tuple(set(self.env['resource.calendar.attendance'].search(domain).mapped('calendar_id.id')))
         
         employees       = set(self.env['hr.attendance'].search([
-            ('employee_id', '!=',   False), 
+            ('employee_id', '!=',   False),
             ('check_in',    '>=',   datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.min.time())), 
             ('check_in',    '<=',   datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.max.time()))]).mapped('employee_id.id'))
         attendance_count        = len(employees)
-        total_employees         = self.env['hr.employee'].search_count([('resource_calendar_id.id', 'in', shift_ids), ('code_ids', '!=', False)])
-        absent_emps             = self.env['hr.employee'].search([('id','not in', tuple(employees)), ('code_ids', '!=', False), ('resource_calendar_id.id', 'in', shift_ids)]).ids
+        total_employees         = self.env['hr.employee'].search_count([('resource_calendar_id.id', 'in', shift_ids)])
+        absent_emps             = self.env['hr.employee'].search([('id','not in', tuple(employees)), ('resource_calendar_id.id', 'in', shift_ids)]).ids
         return (len(absent_emps), absent_emps)
 
     def absent_employee_per_location(self):
@@ -103,7 +99,9 @@ class saAttendanceDashboard(models.Model):
             ('employee_id','!=',False),
             ('check_in', '>=', datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.min.time())), 
             ('check_in', '<=',datetime.combine(date_utils._softatt_localize(now, user_tz).date(), datetime.max.time()))]).mapped('employee_id.id'))
-        absent_emps             = self.env['hr.employee'].read_group(domain=[('id','not in', tuple(employees)), ('code_ids', '!=', False), ('resource_calendar_id.id', 'in', shift_ids)], fields=['department_id'], groupby=['department_id'])
+        absent_emps             = self.env['hr.employee'].read_group(domain=[('id','not in', tuple(employees)), ('resource_calendar_id.id', 'in', shift_ids)],
+                                                                                 fields=['department_id'], 
+                                                                                 groupby=['department_id'])
         return absent_emps
 
         

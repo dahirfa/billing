@@ -120,7 +120,7 @@ class SaAbsenceReport(models.AbstractModel):
             ('check_in'   , '>=', date), 
             ('check_in'   , '<=', date + timedelta(hours=24))]).mapped('employee_id.id'))
         
-        emp_domain              = [('id','not in', tuple(log)), ('resource_calendar_id.id', 'in', shift_ids), ('code_ids', '!=', False)]
+        emp_domain              = [('id','not in', tuple(log)), ('resource_calendar_id.id', 'in', shift_ids)]
         
         if locations:
             emp_domain.append(('work_location_id.id','in',locations))

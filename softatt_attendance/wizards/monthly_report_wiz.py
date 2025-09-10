@@ -66,7 +66,7 @@ class SaDailyReport(models.AbstractModel):
         departments     =   [department_id['id'] for department_id in department_ids]
         shifts          =   [shift_id['id'] for shift_id in shift_ids]
         employees       =   [employee_id['id'] for employee_id in employee_ids]
-        domain          = [('code_ids', '!=', False)]
+        domain          = []
         if locations:
             domain.append(('location_id.id','in',locations))
         if departments:

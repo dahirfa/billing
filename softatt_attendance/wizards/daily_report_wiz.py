@@ -45,8 +45,6 @@ class SaDailyReportWiz(models.TransientModel):
         #!!
         absent_domain                   = self.env['report.softatt_attendance.absence_report'].with_user(self.env.user)._prepare_domain(str(date_time), location_ids, department_ids, shift_ids, employee_ids)
         total_emps, attended, late      = dashboard._get_dashboard_summary(date_time, location_ids, department_ids, shift_ids, employee_ids)
-        employees = self.env['hr.employee'].search_count([('active', '=', True), ('code_ids', '!=', False)])
-        total_emps = employees
         #!!
         absent_emps                     = self.env['hr.employee'].with_user(self.env.user).search_count(absent_domain)
         return [total_emps, attended, absent_emps, late]
@@ -55,7 +53,7 @@ class SaDailyReportWiz(models.TransientModel):
     def action_confirm(self):
         s, e = date_utils._softatt_get_span_dates(self.date, self.date, self.env.user.tz)
         dashboard   = self._dashboard()
-        _logger.error(dashboard)        
+        _logger.error(dashboard)
         data = {
             'ids': self.ids,
             'model': self._name,

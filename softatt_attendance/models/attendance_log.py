@@ -14,7 +14,7 @@ class ConfPunchState(models.Model):
     _description = 'Punch State'
     
     code        = fields.Integer()
-    punch_type  = fields.Selection([('in', 'Check In'), ('out', 'Check Out'), ('break-in', 'Break In'), ('break-out', 'Break Out')])
+    punch_type  = fields.Selection([('in', 'Check In'), ('out', 'Check Out')])
     company_id = fields.Many2one(comodel_name='res.company', required=True, index=True, default=lambda self: self.env.company)
     #!!
 
@@ -75,31 +75,22 @@ class saAttendanceLog(models.Model):
             oatt_domain=[('employee_id.id','=',employee_id),('check_in','!=',False),('check_out', '=', False)]
             open_att=attendance_obj.search(oatt_domain, limit=1)
             if punch_state == "in":
-                default_checkout_time = (datetime.today() - timedelta(days=1)).replace(hour=9, minute=0, second=0, microsecond=0)
                 self.check_in_check_out = "Check In"
                 if not open_att:
-                    attendance_obj.create({'employee_id':employee_id,'check_in':punch_time})                    
-                if open_att and punch_time >= open_att.check_in + timedelta(hours=20):                    
-                    open_att.write({'check_out': default_checkout_time})
+                    attendance_obj.create({'employee_id':employee_id,'check_in':punch_time})
+                    
+                if open_att and punch_time >= open_att.check_in + timedelta(hours=20):
+                    open_att.check_out = open_att.check_in
                     attendance_obj.create({'employee_id':employee_id,'check_in':punch_time})
                 else:
                     return
-            
-            #! Punch States Update
-            if punch_state == "break-in":
-                self.check_in_check_out = "Break In"
-                
-            if punch_state == "break-out":
-                self.check_in_check_out = "Break Out"
                 
             if punch_state == "out":
                 self.check_in_check_out = "Check Out"
                 if open_att:
                     open_att.write({'check_out': punch_time})
-                    
         except Exception as e:
-            error = _logger.info("Attendance Record Failed: ", e)
-            return error
+            return
         
     # for smart attendance calculation
     def _process_hr_attendance(self, obj, target_timezone):

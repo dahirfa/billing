@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="view_account_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <button name="button_draft" position="attributes">
+                <attribute name="groups">mgs_hide_btndarft.show_rest_draft_manager_access</attribute>
+            </button>
+            <button name="action_register_payment" position="attributes">
+                <attribute name="groups">mgs_hide_btndarft.show_register_payments_manager_access</attribute>
+            </button>
+            <button name="action_reverse" position="attributes">
+                <attribute name="groups">mgs_hide_btndarft.show_credit_not_manager_access</attribute>
+            </button>            
+
+        </field>
+    </record>
+
+    <record id="view_order_form_product_cost_readonly" model="ir.ui.view">
+        <field name="name">Product cost</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='general_information']/group/group[@name='group_standard_price']/div[@name='list_price_uom']/field[@name='list_price']" position="replace">
+                <field name="list_price" readonly='0' groups="mgs_hide_btndarft.group_product_sales_price_readonly"/>
+                <field name="list_price" invisible='0' readonly='1' groups="!mgs_hide_btndarft.group_product_sales_price_readonly"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+    <record id="btn_drt_payments" model="ir.ui.view">
+        <field name="name">account.payment.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name='groups'>mgs_hide_btndarft.show_rest_draft_manager_access</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

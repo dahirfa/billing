@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cash_transfer_user,mgs_cash_transfer.transfer_user,model_mgs_cash_transfer_transfer,group_mgs_cash_transfer_user,1,1,1,1
+access_cash_transfer_admin,mgs_cash_transfer.transfer_admin,model_mgs_cash_transfer_transfer,group_mgs_cash_transfer_admin,1,1,1,1

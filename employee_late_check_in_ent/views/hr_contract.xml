@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="contract_inherit_id_late_punishment">
+            <field name="name">view.contract.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <!--                <group>-->
+                <xpath expr="//group[@name='salary']" position="after">
+                    <group>
+                        <field name="late_penalty_id"/>
+                    </group>
+                </xpath>
+                <!--                </group>-->
+            </field>
+        </record>
+
+
+        <!-- <record model="ir.ui.view" id="payslip_inherit_id_late_punishment">
+            <field name="name">view.payslip.form</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="payroll.hr_payslip_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='compute_sheet']" position="after">
+                        <button name="send_report" string="Send Latency Report" type="object" class="oe_highlight"/>
+                </xpath>
+             
+            </field>
+        </record> -->
+    </data>
+</odoo>

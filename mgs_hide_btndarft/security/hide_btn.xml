@@ -1,0 +1,20 @@
+<odoo>
+
+    <record id="show_rest_draft_manager_access" model="res.groups">
+        <field name="name">Show Reset Darft </field>
+    </record>
+
+    <record id="show_register_payments_manager_access" model="res.groups">
+        <field name="name">Show Register payments</field>
+    </record>
+
+    <record id="show_credit_not_manager_access" model="res.groups">
+        <field name="name">Show Credit Add note </field>
+    </record>
+
+    <record id="group_product_sales_price_readonly" model="res.groups">
+        <field name="name">Show Sales Price</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+</odoo>

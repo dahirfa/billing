@@ -35,14 +35,12 @@
         action="action_conf_punch_state_tree"
         sequence="2" />
 
-
     <menuitem
-        id="sa_attendance_emp_codes_menu"
-        name="Employee Codes"
+        id="sa_attendance_employee_code_menu"
+        name="Employee Code"
         parent="sa_attendance_settings_menu"
         action="action_sa_attendance_employee_code"
         sequence="3" />
-
 
     <menuitem
         id="menu_sa_biometric"

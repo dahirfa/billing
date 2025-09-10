@@ -11,7 +11,7 @@ class AttendanceEmployeeCodes(models.Model):
     code                = fields.Char(string="Code", required=True, nocopy=True)
     device_id           = fields.Many2one("sa.biometric.device", string="Device", tracking=True, 
     ondelete='cascade')
-    
+    company_id              = fields.Many2one('res.company', related='employee_id.company_id', store=True)
     _sql_constraints = [
         ('unique_device_id_code', 'unique(device_id, code)', 'Device and Code must be unique together!')
     ]

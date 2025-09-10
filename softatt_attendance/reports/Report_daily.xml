@@ -3,11 +3,11 @@
 
     <record id="action_daily_report" model="ir.actions.report">
         <field name="name">Daily Report</field>
-        <field name="model">sa.daily.report</field>
+        <field name="model">softatt_attendance.sa_daily_report</field>
         <field name="report_type">qweb-html</field>
         <field name="report_name">softatt_attendance.sa_daily_report</field>
         <field name="report_file">softatt_attendance.sa_daily_report</field>
-        <field name="print_report_name">'Daily Report'</field>
+        <field name="print_report_name">Daily Report</field>
     </record>
 
     <template id="att_report_content" name="att_report_content">

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_porduct_form_view_inherit_hide_cost" model="ir.ui.view">
+        <field name="name">product.template.view.form.inherit.mgs</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="list_price" position="after">
+                <field name="hide_cost_group_condition_invisible" invisible="1" />
+            </field>
+            <field name="standard_price" position="attributes">
+                <attribute name="invisible">hide_cost_group_condition_invisible</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

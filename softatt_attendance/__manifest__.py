@@ -28,7 +28,7 @@
         "views/dashboard.xml",
         "views/db_link.xml",
         "views/config.xml",
-        "views/employee_codes.xml",
+        "views/employee_code.xml",
         
         # Report Views
         "reports/Report_absence.xml",

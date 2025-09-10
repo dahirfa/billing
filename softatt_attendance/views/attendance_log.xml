@@ -101,8 +101,6 @@
 
                 <field name="check_in_check_out" widget="badge"
                     decoration-danger=" check_in_check_out == 'Check Out'"
-                    decoration-primary=" check_in_check_out == 'Break In'"
-                    decoration-info=" check_in_check_out == 'Break Out'"
                     decoration-success=" check_in_check_out == 'Check In'" />
             </list>
         </field>

@@ -3,11 +3,11 @@
 
     <record id="action_employee_report" model="ir.actions.report">
         <field name="name">Employee Report</field>
-        <field name="model">sa.employee.report.wizard</field>
+        <field name="model">softatt_attendance.employee_report</field>
         <field name="report_type">qweb-html</field>
         <field name="report_name">softatt_attendance.employee_report</field>
         <field name="report_file">softatt_attendance.employee_report</field>
-        <field name="print_report_name">'Employee Report'</field>
+        <field name="print_report_name">Employee Report</field>
     </record>
 
     <template id="employee_report" name="employee_report">

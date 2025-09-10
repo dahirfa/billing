@@ -3,7 +3,7 @@
 
     <record id="action_absence_report" model="ir.actions.report">
         <field name="name">Absence Report</field>
-        <field name="model">sa.absence</field>
+        <field name="model">softatt_attendance.absence_report</field>
         <field name="report_type">qweb-html</field>
         <field name="report_name">softatt_attendance.absence_report</field>
         <field name="report_file">softatt_attendance.absence_report</field>
