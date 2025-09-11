@@ -20,7 +20,7 @@ class MgsHelpdeskApi(http.Controller):
             step=limit
         )
         tickets = ticket_obj.sudo().search(domain, limit=limit, order='priority DESC,id DESC', offset=pager['offset']).read(
-            ['id', 'name', 'create_date', 'description', 'priority', 'priority_name', 'stage_name', 'partner_name', 'partner_phone', 'zone_id', 'ticket_type_id'])
+            ['id', 'name', 'create_date', 'description', 'priority', 'priority_name', 'stage_name', 'partner_name', 'partner_phone', 'zone_id'])
         return tickets
 
     @http.route('/helpdeskapi/search_ticket', auth='user', type='json')
