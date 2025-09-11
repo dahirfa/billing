@@ -8,4 +8,3 @@ from . import balance_transfer
 from . import res_config
 from . import asset_location
 from . import res_partner
-from . import event_blocking

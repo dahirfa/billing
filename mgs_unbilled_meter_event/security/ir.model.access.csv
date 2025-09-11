@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mgs_meter_event_blocking_manager,mgs_meter_event_blocking_manager,model_mgs_meter_event_blocking,base.group_user,1,1,1,1
+access_mgs_meter_event_blocking_reason_manager,mgs_meter_event_blocking_reason_manager,model_mgs_meter_event_blocking_reason,base.group_user,1,1,1,1
