@@ -57,6 +57,17 @@ class MgsProperty(models.Model):
             'res_model': 'account.move',
             'domain': [('id', 'in', self.extra_charge_invoice_ids.ids)],
             'context': "{'create': False}"}
+        
+        
+    def action_open_meter_event_blocks(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Meter Event Blocks',
+            'view_mode': 'list',
+            'res_model': 'mgs.meter.event.blocking',
+            'domain': [('property_id', '=', self.id)],
+            'context': "{'create': False}"
+        }
 
 
 class MGSBillingReading(models.Model):

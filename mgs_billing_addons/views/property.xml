@@ -15,9 +15,13 @@
       </xpath>
 
       <xpath expr="//div[@class='oe_button_box']" position="inside">
+        <!-- Extra Charges -->
         <button class="oe_stat_button" name="action_open_extra_charge_invoices" string="Extra Charges" type="object" icon="fa-list">
           <field string="Extra Charges" name="extra_charge_count" invisible="1"/>
         </button>
+
+        <!-- Meter Event Blocks -->
+        <button class="oe_stat_button" name="action_open_meter_event_blocks" string="Meter Event Blocks" type="object" icon="fa-exclamation-circle" />
       </xpath>
 
       <xpath expr="//sheet" position="inside">
@@ -54,6 +58,42 @@
 
   <record model="ir.ui.menu" id="mgs_billing.mgs_billing_property_menu">
     <field name="active">0</field>
+  </record>
+
+
+  <record id="view_mgs_meter_event_blocking_list" model="ir.ui.view">
+    <field name="name">Meter Event Blocks List</field>
+    <field name="model">mgs.meter.event.blocking</field>
+    <field name="arch" type="xml">
+      <list string="Meter Event Blocks">
+        <field name="property_id"/>
+        <field name="date"/>
+        <field name="reason" optional="hidden"/>
+        <field name="user_id" optional="hidden"/>
+      </list>
+    </field>
+  </record>
+
+
+  <record id="view_mgs_meter_event_blocking_form" model="ir.ui.view">
+    <field name="name">Meter Event Blocks Form</field>
+    <field name="model">mgs.meter.event.blocking</field>
+    <field name="arch" type="xml">
+      <form string="Meter Event Block">
+        <sheet>
+          <group>
+            <group>
+              <field name="property_id"/>
+              <field name="reason"/>
+            </group>
+            <group>
+              <field name="date"/>
+              <field name="user_id"/>              
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
   </record>
 
   <menuitem id="mgs_billing_Property_main" name="Properties" parent="mgs_billing.mgs_billing_root" sequence="5" />
