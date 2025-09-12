@@ -14,7 +14,7 @@
 
                     <group>
                         <field name="monthes_due" />
-                        <field name="meter_type" />
+                        <!-- <field name="meter_type" /> -->
                         <field name="state" />
                     </group>
 

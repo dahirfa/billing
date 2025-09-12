@@ -358,7 +358,7 @@ class MGSBillingReading(models.Model):
         meter_reading_obj = self.env['mgs_billing.meter.reading']
         for r in self:
             last_reading = meter_reading_obj.search(
-                [('property_id.id', '=', r.property_id.id), ('state', '=', 'posted')], limit=1, order='date DESC, id DESC')
+                [('property_id.id', '=', r.property_id.id), ('state', '=', 'posted')], limit=1, order='id DESC, date DESC')
             if last_reading:
                 r.last_reading = last_reading.reading_on_date
             else:

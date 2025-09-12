@@ -53,16 +53,17 @@ class GetMonthesDue(models.AbstractModel):
                 LEFT JOIN res_partner srp ON am.partner_id = srp.id
                 WHERE am.state = 'posted' 
                 AND am.reading_id IS NOT NULL 
-                AND am.invoice_date >= '%s'
+                --AND am.invoice_date >= '%s'
+                AND am.payment_state = 'not_paid'
                 AND srp.is_tenancy = TRUE
                 GROUP BY am.partner_id
                 ) lams ON lams.partner_id = aml.partner_id
                 
                 
                 WHERE aa.account_type = 'asset_receivable' %s
-                AND aml.parent_state = 'posted' AND rp.is_tenancy = TRUE AND lams.am_count = %s
+                AND aml.parent_state = 'posted' AND rp.is_tenancy = TRUE AND lams.am_count >= %s
                 GROUP BY aml.partner_id, lams.amount, rp.complete_name, rp.mobile, mbp.name, mbz.name, lams.am_count
-                HAVING lams.amount < COALESCE(SUM(aml.debit - aml.credit), 0) ;
+                -- HAVING lams.amount < COALESCE(SUM(aml.debit - aml.credit), 0) ;
                 
         """ % tuple(
             [months_ago, where, monthes_due]
