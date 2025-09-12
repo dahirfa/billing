@@ -84,12 +84,13 @@
       <list decoration-info="state=='draft'" decoration-danger=" state=='cancel' " decoration-success="state=='posted'">
         <field name="name" string="Number#"/>
         <field name="date"/>
-        <field name="property_id"/>
+        <field name="property_id" optional="hide"/>
         <field name="billing_account_id"/>
         <field name="last_reading"/>
         <field name="current_reading"/>
         <field name="difference" sum="Total Diff"/>
-        <field name="currency_id" invisible="1"/>
+        <field name="unusual_usage" string="Unusual Usage"/>
+        <field name="currency_id" optional="hide"/>
         <field name="rate" sum="Total Rates"/>
         <field name="move_id" optional="hide"/>
         <field name="company_id" groups="base.group_multi_company" optional="hide"/>
@@ -110,12 +111,26 @@
         <field name="property_id"/>
         <field name="billing_account_id"/>
 
-        <filter name="posted" string="Posted" domain="[('state', '=', 'posted')]"/>
 
-        <group expand="0" string="Group By..." colspan="12" col="10">
+        <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+        <filter name="posted" string="Posted" domain="[('state', '=', 'posted')]"/>
+        <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancel')]"/>
+        <separator/>
+            
+        <filter name="paid" string="Paid" domain="[('payment_state', '=', 'paid')]"/>
+        <filter name="not_paid" string="Not Paid" domain="[('payment_state', '=', 'not_paid')]"/>
+        <filter name="partial" string="Partially Paid" domain="[('payment_state', '=', 'partial')]"/>
+        <separator/>
+
+        <filter name="unusual_usage" string="Unusual Usage" domain="[('unusual_usage', '=', True)]"/>
+
+
+        <group expand="0" string="Group By" colspan="12" col="10">
           <filter string="Date" name="date" context="{'group_by': 'date'}"/>
           <filter string="Invoice Date" name="inv_date" context="{'group_by': 'inv_date'}"/>
           <filter string="Property" name="property_id" context="{'group_by': 'property_id'}"/>
+          <filter string="Reading State" name="reading_state" context="{'group_by': 'state'}"/>
+          <filter string="Payment Status" name="payment_state" context="{'group_by': 'payment_state'}"/>
           <filter string="Billing Account" name="billing_account_id" context="{'group_by': 'billing_account_id'}"/>
           <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"/>
           <filter string="Collector" name="collector_id" context="{'group_by': 'collector_id'}"/>

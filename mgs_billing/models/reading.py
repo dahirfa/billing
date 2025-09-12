@@ -111,7 +111,7 @@ class MGSBillingReading(models.Model):
     collector_id = fields.Many2one(
         'res.partner', domain=[('is_collector', '=', True)], related='zone_id.collector_id', store=True)
     state = fields.Selection(
-        [('draft', 'New'), ('pending', 'Pending'), ('posted', 'Posted'), ('cancel', 'Cancelled')], default='draft', tracking=True, index=True)
+        [('draft', 'draft'), ('pending', 'Pending'), ('posted', 'Posted'), ('cancel', 'Cancelled')], default='draft', tracking=True, index=True)
     payment_state = fields.Selection(
         related='move_id.payment_state', store=True, tracking=True)
     warning_message = fields.Char(

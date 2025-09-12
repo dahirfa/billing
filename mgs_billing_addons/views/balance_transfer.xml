@@ -28,14 +28,11 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <!--TODO: Result from converting "states='draft'" attribute into an 'invisible' attribute
-                             Manually combine states condition into any 'invisible' overrides in inheriting views as well-->
+                       
                         <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state not in ['draft']"/>
-                        <!--TODO: Result from converting "states='confirm'" attribute into an 'invisible' attribute
-                             Manually combine states condition into any 'invisible' overrides in inheriting views as well-->
+                       
                         <button string="Cancel" name="action_cancel" type="object" invisible="state not in ['confirm']"/>
-                        <!--TODO: Result from converting "states='cancel'" attribute into an 'invisible' attribute
-                             Manually combine states condition into any 'invisible' overrides in inheriting views as well-->
+
                         <button string="Reset To Draft" name="action_draft" invisible="state not in ['cancel']" type="object"/>
 
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
@@ -50,7 +47,7 @@
                         <h1><field name="name" readonly="1"/></h1>
                         <group>
                             <group>
-                                <field name="billing_account_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                                <field name="billing_account_id" string="Transfer From" options="{'no_create': True}" readonly="state != 'draft'"/>
                                 <field name="cust_balance"/>
                                 <field name="move_id" invisible="1"/>
                             </group>
@@ -61,7 +58,7 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Transfer Lines">
+                            <page string="Transfer To">
                                 <field name="transfer_lines" context="{'default_transfer_id': id}" mode="list,kanban" nolabel="1" readonly="state != 'draft'">
                                     <list editable="bottom">
                                         <field name="partner_id" options="{'no_create': True}"/>
