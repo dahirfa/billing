@@ -69,7 +69,7 @@ class MGSBillingZones(models.Model):
         for vals in vals_list:
             if vals.get('name') and vals.get('code'):
                 cat_id = category_obj.create({'name': vals.get('name')})
-                seq_id = seq_obj.create({
+                seq_id = seq_obj.sudo().create({
                     'name': vals.get('name'),
                     'code': vals.get('code'),
                     'prefix': vals.get('code'),
