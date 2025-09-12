@@ -22,7 +22,9 @@ class CreateCustomerWizard(models.TransientModel):
 
     partner_type = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default='individual')
     
-    product_id = fields.Many2one('product.product', string="Billing Plan", domain=[ ('is_billing_pan', '=', True)], required=True)
+    product_id = fields.Many2one('product.product', string="Billing Plan", domain=[('is_billing_pan', '=', True)], required=True)
+    
+    
     mobile = fields.Char(string="Mobile", required=True)
     
     phone = fields.Char(string="Alternative Mobile")
@@ -53,7 +55,8 @@ class CreateCustomerWizard(models.TransientModel):
    
     customer_type = fields.Selection([('normal', 'Normal Customer'), ('free', 'Free Customer'),], default='normal', string='Customer Type')
 
-    connection_date = fields.Datetime(string='Connection Date')
+    connection_date = fields.Datetime(string='Connection Date', default=fields.Datetime.now)
+    
 
     @api.model
     def default_get(self, fields):
@@ -62,6 +65,7 @@ class CreateCustomerWizard(models.TransientModel):
         active_model = context.get('active_model')
         active_ids = context.get('active_ids')
         lead_id = self.env[active_model].browse(active_ids)
+
         memo = ''
 
         rec.update({
@@ -71,10 +75,23 @@ class CreateCustomerWizard(models.TransientModel):
             'zone_id': lead_id.zone_id.id,
             'street': lead_id.street,
             'email': lead_id.email_from,
-            'company_id': lead_id.company_id.id
+            'company_id': lead_id.company_id.id,
+            'country_id': self.env.company.country_id.id,
+            'state_id': self.env.company.state_id.id,
         })
 
         return rec
+    
+    
+    
+    @api.onchange('property_type_id')
+    def _onchange_property_type_id(self):
+        if self.property_type_id.product_id.id:
+            self.product_id = self.property_type_id.product_id.id
+        else:
+            self.product_id = False
+    
+    
     
     def _check_phone_number(self, phone):
         owner_id = self.customer_id

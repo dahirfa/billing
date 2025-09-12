@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-
+from odoo.addons.phone_validation.tools import phone_validation
 
 class MGSBillingPartner(models.Model):
     _name = 'mgs_billing.partner'
@@ -60,26 +60,8 @@ class MGSBillingPartner(models.Model):
             partner_obj.search(domain, limit=1).name = name
         return res
 
-    # @api.onchange('name')
-    # def onchange_name(self):
-    #     partner_obj = self.env['res.partner']
-    #     domain = [('is_tenancy', '=', True),
-    #               ('customer_id', '=', self.id),
-    #               ('active', '=', True)]
-    #     partner_id = partner_obj.search(domain, limit=1)
-    #     if partner_id:
-    #         name = None
-    #         if self.id:
-    #             name = self.name
-    #         if partner_id.property_id:
-    #             name += ' - ' + partner_id.property_id.name
-    #         if not name:
-    #             partner_id.billing_name = None
-    #         else:
-    #             partner_id.billing_name = name
-    #         partner_obj.search(domain, limit=1).update({
-    #             'name': name
-    #         })
+
+
     def unlink(self):
         reading_ids = self.env['mgs_billing.reading'].search(
             [('billing_account_id.customer_id', 'in', self.ids)])
@@ -89,3 +71,27 @@ class MGSBillingPartner(models.Model):
             raise UserError(
                 "You cannot delete partner which has reading history.")
         return super(MGSBillingPartner, self).unlink()
+
+
+        
+    @api.onchange('phone', 'country_id', 'company_id')
+    def _onchange_phone_validation(self):
+        if self.phone:
+            self.phone = self._phone_format(self.phone, force_format='INTERNATIONAL')
+
+    @api.onchange('mobile', 'country_id', 'company_id')
+    def _onchange_mobile_validation(self):
+        if self.mobile:
+            self.mobile = self._phone_format(self.mobile, force_format='INTERNATIONAL')
+
+    def _phone_format(self, number, country=None, company=None, force_format='E164'):
+        country = country or self.country_id or self.env.company.country_id
+        if not country or not number:
+            return number
+        return phone_validation.phone_format(
+            number,
+            country.code if country else None,
+            country.phone_code if country else None,
+            force_format=force_format,
+            raise_exception=False
+        )

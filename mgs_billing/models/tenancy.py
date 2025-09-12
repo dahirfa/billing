@@ -25,6 +25,58 @@ class ResPartner(models.Model):
     mgs_state = fields.Selection(
         [('active', 'Active'), ('close', 'Closed')], default='active')
     billing_name = fields.Char(string='Billing Name', compute='_compute_billing_name', store=True)
+    
+    alternative_number = fields.Char(
+        "Sender's Number",
+        tracking=True,
+        help="Alternative Number used for mobile app payment. This will be updated with the latest number the client use for payment",
+    )
+
+    
+    @api.constrains("mobile", "country_id")
+    def _check_mobile_number(self):
+        for record in self:
+            if record.mobile:
+                # Step 1: Remove '+' if present
+                mobile_number = record.mobile.replace("+", "").replace(" ", "")
+
+                # Step 2: Determine the country_id
+                country = record.country_id or self.env.company.country_id
+
+                if country and country.phone_code:
+                    # Step 3: Remove the country calling code if present
+                    phone_code = str(country.phone_code)
+                    if mobile_number.startswith(phone_code):
+                        mobile_number = mobile_number[len(phone_code) :]
+
+                # Step 4: Validate the length of the remaining number
+                if len(mobile_number) != 9:
+                    raise ValidationError(
+                        "The mobile number must have exactly 9 digits after the country code."
+                    )
+
+    @api.constrains("phone", "country_id")
+    def _check_phone_number(self):
+        for record in self:
+            if record.phone:
+                # Step 1: Remove '+' if present
+                phone_number = record.phone.replace("+", "").replace(" ", "")
+
+                # Step 2: Determine the country_id
+                country = record.country_id or self.env.company.country_id
+
+                if country and country.phone_code:
+                    # Step 3: Remove the country calling code if present
+                    phone_code = str(country.phone_code)
+                    if phone_number.startswith(phone_code):
+                        phone_number = phone_number[len(phone_code) :]
+
+                # Step 4: Validate the length of the remaining number
+                if len(phone_number) != 9:
+                    raise ValidationError(
+                        "The phone number must have exactly 9 digits after the country code."
+                    )
+
 
     @api.constrains('property_id')
     def _check_property_id(self):

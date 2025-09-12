@@ -27,25 +27,16 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="base.view_partner_form"/>
     <field name="arch" type="xml">
-      <!-- Statusbar -->
-      <!-- <xpath expr="//form" position="inside">
-          <header>
-            <field name="state" widget="statusbar" statusbar_visible="draft,confirm" attrs="{'invisible': [('is_tenancy', '=', False)]}"/>
-          </header>
-        </xpath> -->
+   
 
       <xpath expr="//field[@id='company']" position="attributes">
         <attribute name="force_save">1</attribute>
 
         <attribute name="readonly">is_tenancy</attribute>
         <attribute name="required">type == 'contact'</attribute>
-        <!--TODO: Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute
-               Check if this field tag contained a states attribute in any of the parent views, in which case it should be combined into this 'invisible' attribute
-               (If any states attributes existed in parent views, they'll also be marked with a TODO)-->
+      
         <attribute name="invisible">not is_company</attribute>
-        <!--TODO: Result from converting 'attrs' attribute override without options for ['column_invisible'] to separate attributes
-               Remove redundant empty tags below for any of those attributes that are not present in the field tag in any of the parent views
-               If someone later adds one of these attributes in the parent views, they would likely be unaware it's still overridden in this view, resulting in unexpected behaviour, which should be avoided-->
+       
         <attribute name="column_invisible"/>
       </xpath>
 
@@ -53,14 +44,9 @@
         <attribute name="force_save">1</attribute>
         <attribute name="readonly">is_tenancy</attribute>
         <attribute name="required">type == 'contact'</attribute>
-        <!--TODO: Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute
-               Check if this field tag contained a states attribute in any of the parent views, in which case it should be combined into this 'invisible' attribute
-               (If any states attributes existed in parent views, they'll also be marked with a TODO)-->
+       
         <attribute name="invisible">is_company</attribute>
-        <!--TODO: Result from converting 'attrs' attribute override without options for ['column_invisible'] to separate attributes
-               Remove redundant empty tags below for any of those attributes that are not present in the field tag in any of the parent views
-               If someone later adds one of these attributes in the parent views, they would likely be unaware it's still overridden in this view, resulting in unexpected behaviour, which should be avoided-->
-        <attribute name="column_invisible"/>
+       <attribute name="column_invisible"/>
       </xpath>
 
       <xpath expr="//span[@name='address_name']" position="before">
@@ -73,22 +59,17 @@
 
       <!-- Address Inherit -->
       <xpath expr="//span[@name='address_name']" position="attributes">
-        <!--TODO: Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute
-                 Check if this span tag contained a states attribute in any of the parent views, in which case it should be combined into this 'invisible' attribute
-                 (If any states attributes existed in parent views, they'll also be marked with a TODO)-->
+       
         <attribute name="invisible">is_tenancy</attribute>
       </xpath>
 
       <xpath expr="//div[@class='o_address_format']" position="attributes">
-        <!--TODO: Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute
-                 Check if this div tag contained a states attribute in any of the parent views, in which case it should be combined into this 'invisible' attribute
-                 (If any states attributes existed in parent views, they'll also be marked with a TODO)-->
+       
         <attribute name="invisible">is_tenancy</attribute>
       </xpath>
 
       <xpath expr="//field[@name='vat']" position="before">
-        <!-- <field name="owner_id" force_save='1'/> -->
-        <!-- <field name="ref" attrs="{'invisible': [('is_tenancy','=', False)], 'required': [('is_tenancy','=', True)]}"/> -->
+        
         <field name="average_usage" invisible="not is_tenancy" required="is_tenancy"/>
         <field name="billing_name" invisible="1"/>
       </xpath>
@@ -99,6 +80,54 @@
 
     </field>
   </record>
+
+
+
+   <record id="res_partner_inherit_alternative_number" model="ir.ui.view">
+        <field name="name">billing Addons (Partner)</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='function']" position="after">
+                <field name="alternative_number" string="Sender's Phone"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <record id="res_partner_inherit_phone_mobile" model="ir.ui.view">
+        <field name="name">billing Phone Mobile (Partner)</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+           
+            <xpath expr="//field[@name='phone']" position="replace">
+                <field name="phone" widget="phone" string="Owner's Phone"/>
+            </xpath>
+
+             
+            <xpath expr="//field[@name='mobile']" position="replace">
+                <field name="mobile" widget="phone" string="Tenant's Mobile"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+
+    <record id="res_partner_inherit_phone_mobile_tree" model="ir.ui.view">
+        <field name="name">billing Phone Mobile (Partner) Tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='phone']" position="replace">
+                <field name="phone"  string="Owner's Phone"/>
+                <field name="mobile" widget="phone" string="Tenant's Phone"/>
+            </xpath>
+            
+        </field>
+    </record>
 
   <record model="ir.actions.act_window" id="mgs_billing_tenancy_acc_action">
     <field name="name">Billing Accounts</field>
@@ -116,7 +145,6 @@
     <field name="name">Collectors</field>
     <field name="res_model">res.partner</field>
     <field name="view_mode">list,form</field>
-    <!-- <field name="view_ids" eval="[(5, 0, 0),(0, 0, {'view_mode': 'list', 'view_id': ref('mgs_billing_account_tree')}),(0, 0, {'view_mode': 'form', 'view_id': ref('mgs_billing_account_form')})]"/> -->
     <field name="domain">[('is_collector','=', True)]</field>
     <field name="context">{'default_is_collector': 1}</field>
     <field name="help" type="html">

@@ -34,7 +34,6 @@
         "views/report_receipt_and_payment.xml",
         "views/report_calling_report.xml",
         "views/mgs_asset_location_views.xml",
-        "views/res_partner.xml",
         "wizards/receipt_and_payment.xml",
         "views/old_sys_sender.xml",
         "wizards/calling_report.xml",

@@ -46,6 +46,8 @@ class MGSBillingPropertyType(models.Model):
         default=False, string='Use Custom Average')
     if_its_less_than = fields.Float(string="If it's less than")
     make_rate = fields.Float(string='Make Amount')
+    
+    product_id = fields.Many2one('product.product', string="Billing Plan", domain=[('is_billing_pan', '=', True)])
 
     @api.depends('property_ids')
     def _count_properties(self):
@@ -98,7 +100,7 @@ class MGSBillingProperty(models.Model):
     owner_id = fields.Many2one('mgs_billing.partner', domain=[
                                ('type', '=', 'owner')], tracking=True, required=True)
     product_id = fields.Many2one('product.product', string="Plan", domain=[
-                                 ('is_billing_pan', '=', True)], required=True)
+                                 ('is_billing_pan', '=', True)], required=True, tracking=True)
     reading_history_counter = fields.Integer(
         string='Reading History', compute='get_reading_history')
     meter_reading_ids = fields.One2many(
@@ -116,10 +118,10 @@ class MGSBillingProperty(models.Model):
     
     state = fields.Selection(
         [('connected', 'Connected'), ('disconnected', 'Disconnected'),
-         ('suspend', 'Suspended')], default='connected')
+         ('suspend', 'Suspended')], default='connected', tracking=True)
     suspended = fields.Boolean(default=False, tracking=True)
     suspension_date = fields.Date(tracking=True)
-    connection_date = fields.Datetime(string='Connection Date')
+    connection_date = fields.Datetime(string='Connection Date', tracking=True)
     
     def action_unsuspend(self):
         for r in self:
@@ -206,67 +208,11 @@ class MGSBillingProperty(models.Model):
                 "You cannot delete property which has reading history.")
         return super(MGSBillingProperty, self).unlink()
 
-    # @api.model_create_multi
-    # def create(self, vals_list):
-    #     for vals in vals_list:
-    #         if not self.env.company.mgs_billing_global_seq:
-    #             vals['name'] = self.env['ir.sequence'].next_by_code(
-    #                 self.env['mgs_billing.zone'].search([('id', '=', vals.get('zone_id'))]).code) or '/'
-    #         else:
-    #             mgs_billing_global_seq_id = self.env.company.mgs_billing_global_seq_id
-    #             if not mgs_billing_global_seq_id:
-    #                 raise UserError(
-    #                     "Please select default global sequence in the billing settings")
-    #             vals['name'] = self.env['ir.sequence'].next_by_code(
-    #                 mgs_billing_global_seq_id.code) or '/'
-
-    #     recs = super(MGSBillingProperty, self).create(vals_list)
-    #     for res in recs:
-    #         # create billing account
-    #         owner_id = res.owner_id
-    #         if not owner_id:
-    #             raise ValidationError("Please Set an owner")
-    #         property_id = res
-    #         created_billing_account = self.env["res.partner"].create({
-    #             "name": " - ".join((owner_id.name, res.name)),
-    #             "is_tenancy": True,
-    #             "property_id": property_id.id,
-    #             "product_id": res.product_id.id,
-    #             "customer_id": owner_id.id,
-    #             "property_product_pricelist": res.pricelist_id.id,
-    #             "mobile": owner_id.mobile,
-    #             "phone": owner_id.phone,
-    #             "email": owner_id.email,
-    #             "image_1920": owner_id.image,
-    #             "street": property_id.street,
-    #             "street2": property_id.street2,
-    #             "city": property_id.city,
-    #             "country_id": property_id.country_id.id if property_id.country_id else None,
-    #             "state_id": property_id.state_id.id if property_id.state_id else None,
-    #             "zip": property_id.zip,
-    #             "category_id": [(4, res.zone_id.partner_category_id.id)],
-    #         })
-
-    #         if res.zone_id.partner_category_id and res.zone_id.partner_category_id.id:
-    #             created_billing_account.update({
-    #                 "category_id": [(4, res.zone_id.partner_category_id.id)],
-    #             })
-    #     return recs
+    
 
     @api.model_create_multi
     def create(self, vals_list):
-        # for vals in vals_list:
-        #     if not self.env.company.mgs_billing_global_seq:
-        #         vals['name'] = self.env['ir.sequence'].next_by_code(
-        #             self.env['mgs_billing.zone'].search([('id', '=', vals.get('zone_id'))]).code) or '/'
-        #     else:
-        #         mgs_billing_global_seq_id = self.env.company.mgs_billing_global_seq_id
-        #         if not mgs_billing_global_seq_id:
-        #             raise UserError(
-        #                 "Please select default global sequence in the billing settings")
-        #         vals['name'] = self.env['ir.sequence'].next_by_code(
-        #             mgs_billing_global_seq_id.code) or '/'
-
+       
         recs = super(MGSBillingProperty, self).create(vals_list)
         
         
@@ -276,7 +222,6 @@ class MGSBillingProperty(models.Model):
                 if res['name'] and res['name'] != "/":
                     continue
                 res['name'] = self.env['ir.sequence'].next_by_code(
-                    # self.env['mgs_billing.zone'].search([('id', '=', res.get('zone_id'))]).code) or '/'
                     self.env['mgs_billing.zone'].search([('id', '=', res.zone_id.id)]).code) or '/'
             else:
                 mgs_billing_global_seq_id = self.env.company.mgs_billing_global_seq_id
@@ -315,8 +260,7 @@ class MGSBillingProperty(models.Model):
                 })
         return recs
 
-    # def (self):
-
+   
     def get_reading_history(self):
         for r in self:
             r.reading_history_counter = len(r.meter_reading_ids)
