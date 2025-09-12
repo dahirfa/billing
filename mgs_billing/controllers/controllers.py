@@ -309,7 +309,6 @@ class PropertyInfoApi(http.Controller):
                 result[0].update({
                     'service_ids': service_ids
                 })
-
             result[0].update({
                 'subtotal': round(amount_untaxed, 3),
                 'total': move_id.amount_total_signed,
@@ -386,51 +385,22 @@ class PropertyInfoApi(http.Controller):
                 return "ERROR: "+str(e)
         else:
             None
-    # OLD CODE
-    # def reprint_reading(self, **kw):
-    #     property_id = kw.get("property_name")
-    #     reading = http.request.env['mgs_billing.reading'].sudo().search(
-    #         [('state', '=', 'posted'), ("property_id.name", "ilike", property_id)], limit=1, order="date DESC, id DESC")
-    #     if reading:
-    #         try:
-    #             # data = reading.read(['name', 'rate', 'date', 'billing_account_id', 'property_id',
-    #             #                     'difference', 'current_reading', 'last_reading', 'amount_total'])
-    #             data = {
-    #                 'name': reading.name,
-    #                 'date': reading.date,
-    #                 'billing_account_id': [reading.billing_account_id.id, reading.billing_account_id.display_name],
-    #                 'property_id': [reading.property_id.id, reading.property_id.name],
-    #                 'difference': reading.difference,
-    #                 'current_reading': reading.current_reading,
-    #                 'last_reading': reading.last_reading,
-    #                 'amount_total': reading.amount_total,
-    #             }
-    #             result = data
-    #             result.update({
-    #                 'perv_bal': self.get_partner_previous_balance(data['billing_account_id'][0]) or 0,
-    #                 'last_reading': self.get_last_reading(data['property_id'][0]) or 0,
-    #             })
-    #             return result
-    #         except Exception as e:
-    #             return "ERROR: "+str(e)get
-    #     else:
-    #         None
-
+  
     # Prev bal fund
     def get_partner_previous_balance(self, partner_id=None, sub_query=""):
-        params = [str(partner_id), 'asset_receivable', date.today()]
-        _logger.info(date.today())
-        query = """
-                SELECT COALESCE (sum(debit - credit), 0)
-                FROM account_move_line aml
-                LEFT JOIN account_account as aa ON aml.account_id=aa.id
-                WHERE aml.partner_id = %s
-                AND aa.account_type = %s
-                AND parent_state = 'posted' 
-                AND aml.date <= %s
-                """
-        http.request.cr.execute(query, tuple(params))
-        data = http.request.cr.fetchone()
-        return data[0]
+        date_to =  fields.Date.today()
+        domain = [
+            ('partner_id', '=', partner_id),
+            ('parent_state', '=', 'posted'),
+            ('date', '<=', date_to),
+            ('account_id.account_type', 'in', ['asset_receivable']),
+        ]
+        aml = request.env['account.move.line'].sudo()
+        grouped = aml.read_group(domain, ['debit', 'credit'], [])
+        if not grouped:
+            return 0.0
+        debit = grouped[0].get('debit') or 0.0
+        credit = grouped[0].get('credit') or 0.0
+        return debit - credit
 
 
