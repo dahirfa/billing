@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "mgs_helpdesk_api",
+    "name": "Helpdesk API",
     "summary": """
+        extends Helpdesk Module with Functionalites relating to billing Module
        """,
     "description": """
     """,
-    "author": "My Company",
-    "website": "http://www.yourcompany.com",
-    "license": "LGPL-3",    
+    "author": "Meisour GS",
+    "website": "http://www.meisour.com",
+    "license": "LGPL-3",
     "category": "Uncategorized",
     "version": "18.0",
     "depends": ["base", "helpdesk", "mgs_billing"],

@@ -14,11 +14,14 @@ class ResPartner(models.Model):
     is_collector = fields.Boolean(default=False)
     date = fields.Date('Date', default=lambda self: fields.Date.today())
     product_id = fields.Many2one('product.product', string="Plan", domain=[('is_billing_pan', '=', True)])
+    
+    
     # owner_id = fields.Many2one('mgs_billing.partner', string="Owner", store=True, readonly=True, compute='_get_owner')
     customer_id = fields.Many2one(
         'mgs_billing.partner', string="Billing Customer", ondelete='restrict')
-    property_id = fields.Many2one(
-        'mgs_billing.property', string="Property", ondelete='restrict')
+    property_id = fields.Many2one('mgs_billing.property', string="Property", ondelete='restrict')
+    zone_id = fields.Many2one('mgs_billing.zone', related='property_id.zone_id', store=True)
+    
     mgs_ref = fields.Char(string='Ref')
     average_usage = fields.Float(
         'Average Usage', compute='_compute_average_usage')

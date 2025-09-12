@@ -24,6 +24,13 @@ class MgsHelpdeskApi(http.Controller):
         )
         tickets = ticket_obj.sudo().search(domain, limit=limit, order='priority DESC,id DESC', offset=pager['offset']).read(
             ['id', 'name', 'create_date', 'description', 'priority', 'priority_name', 'stage_name', 'partner_name', 'partner_phone', 'zone_id'])
+        
+        for x in tickets:
+            if x['zone_id']:
+                x['zone_id'] = x['zone_id'][1]
+            
+        
+            
         return tickets
 
     @http.route('/helpdeskapi/search_ticket', auth='user', type='json')
@@ -31,8 +38,8 @@ class MgsHelpdeskApi(http.Controller):
         ticket_obj = http.request.env['helpdesk.ticket'].sudo().search([('id', '=', kw.get('ticket_id'))], limit=1).read(
             ['id', 'name', 'description', 'priority', 'priority_name', 'stage_name', 'partner_name', 'partner_phone', 'zone_id', 'street', 'street2'])
         
-        ticket_obj[0]['zone_id'] = ticket_obj[0]['zone_id'][1]
-        _logger.info(ticket_obj)
+        if ticket_obj[0]['zone_id']:
+            ticket_obj[0]['zone_id'] = ticket_obj[0]['zone_id'][1]
         return ticket_obj
 
     @http.route('/helpdeskapi/dashboard', auth='user', type='json')

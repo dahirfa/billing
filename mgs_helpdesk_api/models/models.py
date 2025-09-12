@@ -9,10 +9,11 @@ class InheritHelpDeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     stage_name = fields.Char(related='stage_id.name')
-    priority_name = fields.Char(
-        string='Priority Name', compute='_compute_priority_name')
-    zone_id = fields.Many2one(
-        'mgs_billing.zone', string='Zone', tracking=True)
+    
+    priority_name = fields.Char(string='Priority Name', compute='_compute_priority_name')
+    
+    zone_id = fields.Many2one('mgs_billing.zone', related='partner_id.zone_id', store=True)
+    
     street = fields.Char(tracking=True)
     street2 = fields.Char(tracking=True)
 
