@@ -99,17 +99,20 @@ class PropertyInfoApiOverride(PropertyInfoApi):
             return {
                 "response": "Error: Period Time Over"
             }
-        allowed_reg_date = dates[0].replace(
-            day=int(request.env.company.allowed_reg_date))
+        allowed_reg_date = dates[0].replace(day=int(request.env.company.allowed_reg_date))
+        is_allow_reg_date = request.env.company.is_allow_reg_date
         partner_obj = request.env['res.partner']
+        
         domain = [
             ('property_id.name', '=', kw.get("id")),
-            ('property_id.connection_date', '<=', allowed_reg_date),
             ('property_id.zone_id.collector_id.id', '=', collector_id),
             ('property_id.state', '=', 'connected'),
             '|', ('property_id.meter_type', '!=', 'smart'),
             '&', ('property_id.meter_type', '=', 'smart'),
             ('property_id.auto_reset', '=', True)]
+        
+        if is_allow_reg_date:
+                domain.append(('property_id.connection_date', '<=', allowed_reg_date))
         
         partner_id = partner_obj.sudo().search(domain, limit=1)
         property_id = partner_id.property_id
@@ -160,15 +163,18 @@ class PropertyInfoApiOverride(PropertyInfoApi):
         end = request.env.company.billing_period_end
         dates = date_utils.get_billing_start_and_end_dates(date.today(), start, end)
         allowed_reg_date = dates[0].replace(day=int(request.env.company.allowed_reg_date))
+        is_allow_reg_date = request.env.company.is_allow_reg_date
         collector_id = self.get_user_partner_id(request.session.uid)
         
         domain = [('name', '=', kw.get("property_id")),
-                  ('connection_date', '<=', allowed_reg_date),
                   ('zone_id.collector_id.id', '=', collector_id),
                   ('state', '=', 'connected'),
                   '|', ('meter_type', '!=', 'smart'),
                   '&', ('meter_type', '=', 'smart'),
                         ('auto_reset', '=', True)]
+        
+        if is_allow_reg_date:
+                domain.append(('property_id.connection_date', '<=', allowed_reg_date))
         
         
         property_id = http.request.env['mgs_billing.property'].sudo().search(domain, limit=1)

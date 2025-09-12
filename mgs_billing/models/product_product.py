@@ -17,4 +17,4 @@ class MGSBillingPlan(models.Model):
             'view_mode': 'kanban,list,form',
             'res_model': 'product.template',
             'domain': [('is_billing_pan','=',True),('type','=','service')],
-            'context': "{'default_is_billing_pan': True,'default_categ_id': %s,'default_detailed_type': 'service'}"%billing_product_category.id}
+            'context': "{'default_is_billing_pan': True,'default_categ_id': %s,'default_type': 'service', 'default_purchase_ok': False}"%billing_product_category.id}

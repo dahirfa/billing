@@ -67,12 +67,10 @@
         <field name="arch" type="xml">
             <form string="">
                 <header>
-                    <!-- <button name="action_connected" type="object" string="Connect"/> -->
 
-                    <button name="%(mgs_billing.mgs_billing_con_desc_comment_action)d" string="Connect" type="action" data-hotkey="q" invisible="state == 'connected'" context="{'default_state': 'connected'}"/>
+                    <button name="%(mgs_billing.mgs_billing_con_desc_comment_action)d" string="Connect" class="btn btn-success" type="action" data-hotkey="q" invisible="state == 'connected'" context="{'default_state': 'connected'}"/>
 
-                    <!-- <button name="action_disconnected" type="object" string="Disconnect"/> -->
-                    <button name="%(mgs_billing.mgs_billing_con_desc_comment_action)d" string="Disconnect" type="action" data-hotkey="q" invisible="state == 'disconnected'" context="{'default_state': 'disconnected'}"/>
+                    <button name="%(mgs_billing.mgs_billing_con_desc_comment_action)d" string="Disconnect" class="btn btn-danger" type="action" data-hotkey="q" invisible="state == 'disconnected'" context="{'default_state': 'disconnected'}"/>
 
                     <field name="state" widget="statusbar"/>
 

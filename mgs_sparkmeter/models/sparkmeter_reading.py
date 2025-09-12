@@ -93,11 +93,11 @@ class MgsSparkReadingFailLog(models.Model):
         spark_reading_id = self.env['mgs_sparkmeter.reading'].browse(active) if not reading else reading
         
         allowed_reg_date = spark_reading_id.start_date.replace(day=int(self.env.company.allowed_reg_date))
-        
+        is_allow_reg_date = self.env.company.is_allow_reg_date
         # Recently Registered
         logs.filtered(lambda x: x.property_id != False
                       and x.property_id.connection_date
-                      and x.property_id.connection_date.date() >= allowed_reg_date).write({'eligible':False, 'comment': "Recently Registered Property"})
+                      and x.property_id.connection_date.date() >= allowed_reg_date if is_allow_reg_date else None).write({'eligible':False, 'comment': "Recently Registered Property"})
                 
         # Old Last Reading
         days=self.env.company.mgs_sparkmeter_prb

@@ -2,7 +2,7 @@
 {
     "name": "Unbilled Meter Event",
     "summary": """
-    
+        Flag Properties that are accessable for reading
     """,
     "description": """
         
@@ -15,6 +15,6 @@
     # always loaded
     "data": [
         "security/ir.model.access.csv",
-        "views/property.xml",        
+        "views/property.xml",
     ],
 }

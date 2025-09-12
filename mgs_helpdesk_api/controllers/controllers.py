@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.addons.portal.controllers.portal import pager as portal_pager
+import logging
+_logger = logging.getLogger(__name__)
+
 
 
 class MgsHelpdeskApi(http.Controller):
@@ -27,6 +30,9 @@ class MgsHelpdeskApi(http.Controller):
     def get_ticket(self, **kw):
         ticket_obj = http.request.env['helpdesk.ticket'].sudo().search([('id', '=', kw.get('ticket_id'))], limit=1).read(
             ['id', 'name', 'description', 'priority', 'priority_name', 'stage_name', 'partner_name', 'partner_phone', 'zone_id', 'street', 'street2'])
+        
+        ticket_obj[0]['zone_id'] = ticket_obj[0]['zone_id'][1]
+        _logger.info(ticket_obj)
         return ticket_obj
 
     @http.route('/helpdeskapi/dashboard', auth='user', type='json')
@@ -75,10 +81,10 @@ class MgsHelpdeskApi(http.Controller):
     def finish_task(self, **kw):
         ticket_obj = http.request.env['helpdesk.ticket'].sudo().search(
             [('id', '=', int(kw.get('ticket_id')))])
-        to_review_stage_id = int(http.request.env['ir.config_parameter'].sudo(
-        ).get_param('mgs_helpdesk_api.to_review_stage_id'))
+        done_stage_id = int(http.request.env['ir.config_parameter'].sudo(
+        ).get_param('mgs_helpdesk_api.done_stage_id'))
         try:
-            ticket_obj.stage_id = to_review_stage_id
+            ticket_obj.stage_id = done_stage_id
             ticket_obj.message_post(body=" ".join(
                 ("Comment :", str(kw.get('comments')))))
         except Exception as e:

@@ -9,7 +9,7 @@ from . import guarantor
 from . import document_type
 from . import meters
 from . import tenancy
+from . import res_config
 from . import reading
 from . import product_product
-from . import res_config
 from . import reset_meter

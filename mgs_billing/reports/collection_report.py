@@ -196,7 +196,11 @@ class CollectionReport(models.Model):
 
     @api.model
     def _where(self, zone_id=None, collector_id=None, company_id=None, allowed_reg_date=fields.date.today().replace(day=15)):
-        result = "where mbr.id is null and mbp.state = 'connected' and connection_date <= '%s'" % allowed_reg_date
+        
+        if self.env.company.is_allow_reg_date:        
+            result = "where mbr.id is null and mbp.state = 'connected' and connection_date <= '%s'" % allowed_reg_date
+        else:
+            result = "where mbr.id is null and mbp.state = 'connected'"
 
         if zone_id:
             result += " AND mbp.zone_id = %s" % zone_id

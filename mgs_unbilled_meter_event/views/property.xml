@@ -8,7 +8,10 @@
 
       <xpath expr="//div[@class='oe_button_box']" position="inside">
         <!-- Unbilled Meter Event -->
-        <button class="oe_stat_button" name="action_open_meter_event_blocks" string="Unbilled Meter Event" type="object" icon="fa-exclamation-circle" />
+
+        <button class="oe_stat_button" name="action_open_meter_event_blocks"  type="object" icon="fa-exclamation-circle">
+             <field name="unbilled_event_count" string="Unbilled Meter Event" widget="statinfo"/>
+        </button>
       </xpath>
 
     </field>
@@ -24,7 +27,7 @@
         <field name="property_id"/>
         <field name="date"/>
         <field name="reason_id" optional="show"/>
-        <field name="user_id" optional="hidden"/>
+        <field name="user_id"/>
       </list>
     </field>
   </record>
@@ -70,6 +73,6 @@
   </record>
 
 
-  <menuitem id="view_mgs_meter_event_blocking_reason_reason" name="Unbilled Meter Event Reason" parent="mgs_billing.mgs_billing_transaction_config" sequence="1" action="view_mgs_meter_event_blocking_reason_action"/>
+  <menuitem id="view_mgs_meter_event_blocking_reason_reason" name="Unbilled Meter Event Reason" parent="mgs_billing.mgs_billing_transaction_config"  action="view_mgs_meter_event_blocking_reason_action"/>
 
 </odoo>

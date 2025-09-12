@@ -102,8 +102,7 @@ class MgsRecivablesReport(models.TransientModel):
         # date_to = dates[1]
         date_from = self.date_from
         date_to = self.date_to
-        allowed_reg_date = self.date_from.replace(
-            day=self.env.company.allowed_reg_date)
+        allowed_reg_date = self.date_from.replace(day=self.env.company.allowed_reg_date)
         user_id = self.env.user.id
         select = collection_report_obj._select() + ", %s as user_id" % user_id
         group = collection_report_obj._group_by() + ", user_id"

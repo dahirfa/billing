@@ -101,6 +101,7 @@
 
             <div class="col-12 col-lg-6 o_setting_box" id="config_allow_reg_date">
                 <div class="o_setting_left_pane">
+                  <field name="is_allow_reg_date" />
                 </div>
                 <div class="o_setting_right_pane">
                   <label for="allowed_reg_date" string="Property Registeration Date"/>
@@ -108,7 +109,7 @@
                   <div class="text-muted">
                       Allowed Registeration Date
                   </div>
-                      <field name="allowed_reg_date"/>
+                      <field name="allowed_reg_date" invisible="is_allow_reg_date!=True"/>
                 </div>
             </div>
 

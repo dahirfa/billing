@@ -23,6 +23,10 @@ class ResCompany(models.Model):
     billing_period_start = fields.Integer(string="Billing Period (Start)")
     billing_period_end = fields.Integer(string="Billing Period (End)")
 
+    
+    
+    is_allow_reg_date = fields.Boolean(string="Enable Allowed Registeration Date", default=False)
+    
     allowed_reg_date = fields.Integer(string="Allowed Registeration Date")
 
 
@@ -80,6 +84,10 @@ class ResConfigSettings(models.TransientModel):
         related="company_id.allowed_reg_date",
         readonly=False,
     )
+
+    
+    is_allow_reg_date = fields.Boolean(string="Enable Allowed Registeration Date", default=False, related="company_id.is_allow_reg_date", readonly=False)
+
 
     mgs_plan_categ_id = fields.Many2one(
         "product.category",
