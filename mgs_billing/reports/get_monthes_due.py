@@ -1,6 +1,10 @@
 from odoo import _, api, fields, models
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
+import logging
+_logger = logging.getLogger(__name__)
+
+
 
 
 class GetMonthesDue(models.AbstractModel):
@@ -72,5 +76,8 @@ class GetMonthesDue(models.AbstractModel):
         self.env.cr.execute(query)
 
         records = self._cr.fetchall()
+        
+        _logger.info("================== CHECK ====================")
+        _logger.info(records)
 
         return {"data": data, "records": records, "months": months_between_dates}

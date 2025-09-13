@@ -81,8 +81,8 @@
                                         <t t-esc="line[5]"  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
                                     </td>
 
-                                    <td t-if='months'>
-                                        <t t-esc="len(months)" /> <span>Months</span>
+                                    <td>
+                                        <t t-esc="line[7]" /> <span>Months</span>
                                     </td>
 
 
