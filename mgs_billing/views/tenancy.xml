@@ -27,16 +27,32 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="base.view_partner_form"/>
     <field name="arch" type="xml">
-   
+
+      <xpath expr="//div[@name='button_box']/button[1]" position="before">
+
+        <button class="oe_stat_button" name="action_open_reading_history" type="object" icon="fa-clock-o">
+          <field string="History" name="reading_history_counter" widget="statinfo"/>
+        </button>
+
+        <button class="oe_stat_button" type="object" string="Readings" name="view_readings" icon="fa-tachometer" context="{'partner_id': id}">
+          <!-- <field string="Meetings" name="meeting_count" widget="statinfo"/> -->
+        </button>
+
+
+        <button class="oe_stat_button" name="action_open_customer_payment" type="object" icon="fa-money">
+          <field string="Payments" name="payment_counter" widget="statinfo"/>
+        </button>
+      </xpath>
+
 
       <xpath expr="//field[@id='company']" position="attributes">
         <attribute name="force_save">1</attribute>
 
         <attribute name="readonly">is_tenancy</attribute>
         <attribute name="required">type == 'contact'</attribute>
-      
+
         <attribute name="invisible">not is_company</attribute>
-       
+
         <attribute name="column_invisible"/>
       </xpath>
 
@@ -44,9 +60,9 @@
         <attribute name="force_save">1</attribute>
         <attribute name="readonly">is_tenancy</attribute>
         <attribute name="required">type == 'contact'</attribute>
-       
+
         <attribute name="invisible">is_company</attribute>
-       <attribute name="column_invisible"/>
+        <attribute name="column_invisible"/>
       </xpath>
 
       <xpath expr="//span[@name='address_name']" position="before">
@@ -60,17 +76,17 @@
 
       <!-- Address Inherit -->
       <xpath expr="//span[@name='address_name']" position="attributes">
-       
+
         <attribute name="invisible">is_tenancy</attribute>
       </xpath>
 
       <xpath expr="//div[@class='o_address_format']" position="attributes">
-       
+
         <attribute name="invisible">is_tenancy</attribute>
       </xpath>
 
       <xpath expr="//field[@name='vat']" position="before">
-        
+
         <field name="average_usage" invisible="not is_tenancy" required="is_tenancy"/>
         <field name="billing_name" invisible="1"/>
       </xpath>
@@ -84,51 +100,51 @@
 
 
 
-   <record id="res_partner_inherit_alternative_number" model="ir.ui.view">
-        <field name="name">billing Addons (Partner)</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="arch" type="xml">
-            
-            <xpath expr="//field[@name='function']" position="after">
-                <field name="alternative_number" string="Sender's Phone"/>
-            </xpath>
-            
-        </field>
-    </record>
+  <record id="res_partner_inherit_alternative_number" model="ir.ui.view">
+    <field name="name">billing Addons (Partner)</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
 
-    <record id="res_partner_inherit_phone_mobile" model="ir.ui.view">
-        <field name="name">billing Phone Mobile (Partner)</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="arch" type="xml">
-           
-            <xpath expr="//field[@name='phone']" position="replace">
-                <field name="phone" widget="phone" string="Owner's Phone"/>
-            </xpath>
+      <xpath expr="//field[@name='function']" position="after">
+        <field name="alternative_number" string="Sender's Phone"/>
+      </xpath>
 
-             
-            <xpath expr="//field[@name='mobile']" position="replace">
-                <field name="mobile" widget="phone" string="Tenant's Mobile"/>
-            </xpath>
-            
-        </field>
-    </record>
+    </field>
+  </record>
+
+  <record id="res_partner_inherit_phone_mobile" model="ir.ui.view">
+    <field name="name">billing Phone Mobile (Partner)</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//field[@name='phone']" position="replace">
+        <field name="phone" widget="phone" string="Owner's Phone"/>
+      </xpath>
 
 
-    <record id="res_partner_inherit_phone_mobile_tree" model="ir.ui.view">
-        <field name="name">billing Phone Mobile (Partner) Tree</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_tree"/>
-        <field name="arch" type="xml">
+      <xpath expr="//field[@name='mobile']" position="replace">
+        <field name="mobile" widget="phone" string="Tenant's Mobile"/>
+      </xpath>
 
-            <xpath expr="//field[@name='phone']" position="replace">
-                <field name="phone"  string="Owner's Phone"/>
-                <field name="mobile" widget="phone" string="Tenant's Phone"/>
-            </xpath>
-            
-        </field>
-    </record>
+    </field>
+  </record>
+
+
+  <record id="res_partner_inherit_phone_mobile_tree" model="ir.ui.view">
+    <field name="name">billing Phone Mobile (Partner) Tree</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_tree"/>
+    <field name="arch" type="xml">
+
+      <xpath expr="//field[@name='phone']" position="replace">
+        <field name="phone" string="Owner's Phone"/>
+        <field name="mobile" widget="phone" string="Tenant's Phone"/>
+      </xpath>
+
+    </field>
+  </record>
 
   <record model="ir.actions.act_window" id="mgs_billing_tenancy_acc_action">
     <field name="name">Billing Accounts</field>

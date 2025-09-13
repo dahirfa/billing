@@ -60,6 +60,7 @@
       id="mgs_billing_transaction_config"
       name="Configuration"
       parent="mgs_billing_root"
+      groups="mgs_billing.group_billing_manager"
       sequence="100"
     />
 

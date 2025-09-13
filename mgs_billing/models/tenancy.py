@@ -35,6 +35,9 @@ class ResPartner(models.Model):
         help="Alternative Number used for mobile app payment. This will be updated with the latest number the client use for payment",
     )
 
+    reading_history_counter = fields.Integer(string='Reading History', compute='compute_counter')
+    
+    payment_counter = fields.Integer(string='Customer Payments', compute='compute_counter')
     
     @api.constrains("mobile", "country_id")
     def _check_mobile_number(self):
@@ -101,13 +104,6 @@ class ResPartner(models.Model):
         if self.billing_name:
             self.name = self.billing_name
 
-    # @api.depends('property_id')
-    # def _get_owner(self):
-    #     for record in self:
-    #         if record.property_id and record.property_id.owner_id:
-    #             record.customer_id = record.property_id.owner_id.id
-    #         else:
-    #             record.owner_id = None
 
     @api.depends('property_id', 'customer_id')
     def _compute_billing_name(self):
@@ -167,35 +163,37 @@ class ResPartner(models.Model):
         return recs.name_get()
 
 
+    def compute_counter(self):
+        for r in self:
+            r.reading_history_counter = len(r.property_id.meter_reading_ids)
+            r.payment_counter = self.env['account.payment'].search_count([('partner_id.id','=',r.id)])
 
+    
+    def view_readings(self):
+        return {
+            'name': 'Readings',
+            'type': 'ir.actions.act_window',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'res_model': 'mgs_billing.reading',
+            'domain': [('property_id', 'in', self.property_id.ids)],
+            'context': {"create":False, 'search_default_posted': 1}
+        }
 
-    def generate_owners(self, batch_size=80):
-        billing_customer_obj= self.env['mgs_billing.partner']
-        accounts= self.filtered(lambda x: x.is_tenancy== True and not x.customer_id)
-        try:
-            for r in accounts:
-                string = r.name
-                mobile = r.mobile.replace(' ', '').replace('+', '') if r.mobile else None
-                index = string.find(' - ')
-                name = string[:index].strip()
-                property_id= r.property_id
-                billing_customer = billing_customer_obj.search([('name','=',name),('mobile','=',mobile)],limit=1)
-                if billing_customer:
-                    r.customer_id = billing_customer.id
-                    property_id.write({'owner_id':billing_customer.id})
-                    continue
-                else:
-                    phone  = r.phone.replace(' ', '').replace('+', '') if r.phone else None
-                    new_customer = billing_customer_obj.create({'name':name, 'mobile':mobile,'phone':phone, 'street':r.street,'type':'owner'})
-                    r.customer_id = new_customer.id
-                    property_id.write({'owner_id':new_customer.id})
-            # accounts.action_cancel()
-            # accounts.action_draft()
-            # accounts.action_confirm()
-        except Exception as error:
-            self.env.cr.rollback()
-            raise error
-        else:
-            self.env.cr.commit()
-        # if accounts:
-        #     self.env['mgs_billing.reading'].fix_invoices(batch_size)
+    def action_open_reading_history(self):
+        self.ensure_one()
+        action = self.env.ref('mgs_billing.mgs_billing_meter_reading_action').sudo().read()[0]
+        action['domain'] = "[('property_id.id','=',%s)]" % str(self.property_id.id)
+        action['context'] = {}
+        action['context']['create'] = False
+        return action
+    
+    
+    def action_open_customer_payment(self):
+        self.ensure_one()
+        action = self.env.ref('account.action_account_payments').sudo().read()[0]
+        action['domain'] = "[('partner_id.id','=',%s)]" % str(self.id)
+        action['context'] = {"default_partner_id": self.id}
+        # action['context']['create'] = False
+        return action
+    

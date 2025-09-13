@@ -14,8 +14,6 @@
                 <field name="previous_reading"/>
                 <field name="reading_difference"/>
                 <field name="rate"/>
-
-                <field name="currency_id" invisible='1'/>
                 <field name="invoice_amount"/>
                 <field name="state" widget='badge' decoration-info="state=='draft'" decoration-danger=" state=='cancel' " decoration-success="state=='posted' " />
             </list>

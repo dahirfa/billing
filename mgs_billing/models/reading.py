@@ -20,7 +20,7 @@ class MGSBillingMeterReadings(models.Model):
     billing_account_id = fields.Many2one(
         'res.partner', string='Billing Account', compute='_get_reading_info', store=True)
     product_id = fields.Many2one(
-        'product.product', string='plan', compute='_get_reading_info', store=True)
+        'product.product', string='Plan', compute='_get_reading_info', store=True)
     move_id = fields.Many2one(
         'account.move', string='Invoice', compute='_get_reading_info', store=True)
     uom_id = fields.Many2one('uom.uom', string='Uom',
