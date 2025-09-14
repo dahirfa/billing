@@ -89,6 +89,7 @@ class PaymentInherit(models.Model):
     def action_post(self):
         res = super(PaymentInherit, self).action_post()
         for r in self:
+            r.partner_id.alternative_number = r.mgs_sender_phone
             if self.env.user.has_group('base.group_system'):
                 r.mgs_action_reconcile()
                 return res
@@ -122,13 +123,7 @@ class PaymentInherit(models.Model):
                 moves = lines.browse(m_list)
                 if moves:
                     moves.reconcile()
-    # def action_draft(self):
-    #     for r in self:
-    #         if r.mgs_p_transaction_id:
-    #             raise ValidationError("This Record is related to %s You can preform this action only on the E-payment Mocule"%r.mgs_p_transaction_id.name)
-    #     res = super(PaymentInherit, self).action_draft()
-    #     return res
-    
+
     
     
     
