@@ -11,7 +11,6 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 class PropertyInfoApi(http.Controller):
     def _query_collection(self, collector_id):
         billing_period_start = request.env.company.billing_period_start
@@ -32,8 +31,11 @@ class PropertyInfoApi(http.Controller):
         # date_from = date.today().replace(day=request.env.company.billing_period_start)
         # date_to = date.today().replace(
         #     month=next_month, day=request.env.company.billing_period_end)
-        allowed_reg_date = dates[0].replace(
-            day=request.env.company.allowed_reg_date)
+        allowed_reg_date = False
+        if request.env.company.is_allow_reg_date:
+            allowed_reg_date = dates[0].replace(day=request.env.company.allowed_reg_date)
+            
+        
         _from = report_obj._from(date_from, date_to)
         _where = report_obj._where(None, collector_id, None, allowed_reg_date)
         _where += " AND mbp.meter_type != 'smart' "
@@ -129,13 +131,16 @@ class PropertyInfoApi(http.Controller):
                 "response": "Error: Period Time Over"
             }
 
-        allowed_reg_date = dates[0].replace(
-            day=int(request.env.company.allowed_reg_date))
+        
+        allowed_reg_date = False
+        if request.env.company.is_allow_reg_date:        
+            allowed_reg_date = dates[0].replace(
+                day=int(request.env.company.allowed_reg_date))
 
         partner_obj = request.env['res.partner']
         domain = [('property_id.name', '=', kw.get("id").upper()),
                   ('property_id.zone_id.collector_id.id', '=', collector_id), 
-                  ('property_id.state', '=', 'connected'),
+                #!  ('property_id.state', '=', 'connected'),
                   ('property_id.meter_type', '!=', 'smart')]
         
         if request.env.company.is_allow_reg_date:
@@ -182,8 +187,10 @@ class PropertyInfoApi(http.Controller):
     def get_properties_by_number(self, **kw):     
         data = []   
         owner_number = kw.get("phone_number")        
-        partner_obj = request.env['res.partner']       
-        domain = [('property_id.state', '=', 'connected'),('property_id.meter_type', '!=', 'smart'), '|', ('mobile', '=', owner_number),('phone', '=', owner_number)]
+        partner_obj = request.env['res.partner']  
+        #! Removed the property state check from the below condition
+        #! ('property_id.state', '=', 'connected'),   
+        domain = [('property_id.meter_type', '!=', 'smart'), '|', ('mobile', '=', owner_number),('phone', '=', owner_number)]
         billing_accounts = partner_obj.sudo().search(domain)
         for account in billing_accounts:
             data.append({
@@ -236,13 +243,16 @@ class PropertyInfoApi(http.Controller):
         start = request.env.company.billing_period_start
         end = request.env.company.billing_period_end
         dates = date_utils.get_billing_start_and_end_dates(date.today(), start, end)
-        allowed_reg_date = dates[0].replace(day=int(request.env.company.allowed_reg_date))
+        
+        allowed_reg_date = False
+        if request.env.company.is_allow_reg_date:        
+            allowed_reg_date = dates[0].replace(day=int(request.env.company.allowed_reg_date))
         is_allow_reg_date = request.env.company.is_allow_reg_date
         collector_id = self.get_user_partner_id(request.session.uid)
         
         domain = [('name', '=', kw.get("property_id").upper()),
                   ('zone_id.collector_id.id', '=', collector_id),
-                  ('state', '=', 'connected'),
+                #!  ('state', '=', 'connected'),
                   ('meter_type', '!=', 'smart')]
         
         if is_allow_reg_date:
@@ -327,8 +337,10 @@ class PropertyInfoApi(http.Controller):
     @http.route('/billingApi/reprint/', type='json', auth='user', csrf=False)
     def reprint_reading(self, **kw):
         property_id = kw.get("id").upper()
+        #! Removed the property state check from the below condition
+        #! ('property_id.state', '=', 'connected'),  
         prop_id = http.request.env['mgs_billing.property'].sudo().search(
-            [('state', '=', 'connected'), ("name", "=", property_id)], limit=1)
+            [("name", "=", property_id)], limit=1)
         reading = http.request.env['mgs_billing.reading'].sudo().search(
             [('state', '=', 'posted'), ("property_id.name", "=", property_id)], limit=1, order="date DESC, id DESC")
         move_id = reading.move_id

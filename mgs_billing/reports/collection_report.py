@@ -198,9 +198,13 @@ class CollectionReport(models.Model):
     def _where(self, zone_id=None, collector_id=None, company_id=None, allowed_reg_date=fields.date.today().replace(day=15)):
         
         if self.env.company.is_allow_reg_date:        
-            result = "where mbr.id is null and mbp.state = 'connected' and connection_date <= '%s'" % allowed_reg_date
+            #! Removed the property state check from the below condition
+            #! and mbp.state = 'connected'
+            result = "where mbr.id is null and connection_date <= '%s'" % allowed_reg_date
         else:
-            result = "where mbr.id is null and mbp.state = 'connected'"
+            #! Removed the property state check from the below condition
+            #! and mbp.state = 'connected'
+            result = "where mbr.id is null"
 
         if zone_id:
             result += " AND mbp.zone_id = %s" % zone_id
