@@ -9,6 +9,7 @@
 						<group>
 							<group>
 								<field name="date_from" string = "From"/>
+								<field name="group_by_option" string="Group By"/>
 								<field name="journal_id" string="Account" options="{'no_create': True}" />
 								<field name="user_id" options="{'no_create': True}" />
 								<field name="mgs_sender_phone"/>
@@ -26,8 +27,8 @@
 					</sheet>
 
 				<footer>
-					<button name="confirm" string="View" type="object" class="oe_highlight"/>
-					<button name="export_to_excel" string="EXCEL" type="object" class="oe_highlight"/>
+					<button name="confirm" string="View" type="object" class="btn btn-primary"/>
+					<!-- <button name="export_to_excel" string="EXCEL" type="object" class="btn btn-success"/> -->
 					<button string="Cancel" special="cancel"/>
 				</footer>
 
