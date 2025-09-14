@@ -110,7 +110,7 @@ class PropertyInfoApi(http.Controller):
         select = """SELECT rp.id partner_id, rp.name partner_name, mbp.name property_id, mbp.state state, rp.street address, rp.mobile,
         COALESCE(sum(CASE WHEN aa.account_type = 'asset_receivable' THEN aml.debit-aml.credit else 0.0 END), 0) as balance"""
         query = select + from_where + \
-            "group by rp.id, rp.name, mbp.name, mbp.state, rp.street, rp.mobile"
+            "group by rp.id, rp.name, mbp.name, mbp.state, rp.street, rp.mobile, mbr.name order by mbr.name desc"
         request.env.cr.execute(query)
         data = request.env.cr.dictfetchall()
         return {'data': data}
