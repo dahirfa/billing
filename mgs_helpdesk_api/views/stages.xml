@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_project_stages_view_listorm" model="ir.ui.view">
+        <field name="name">mgs.project.project_stage_view_list.form</field>
+        <field name="model">helpdesk.stage</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_stage_view_tree" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="does_appear_in_mobile" />
+            </field>          
+        </field>
+    </record>
+</odoo>

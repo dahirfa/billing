@@ -12,18 +12,30 @@
             <xpath expr="//header" position="inside">
                 <button name="action_send_sms" string="Send SMS" type="object" class="btn-primary" data-hotkey="q" />
             </xpath>
-            <!-- 
-<xpath expr="//field[@name='partner_id']" position="after">
-    <field name="zone_id" options="{'no_create': True}"/>
-    <field name="street"/>
-    <field name="street2"/>
-</xpath> -->
 
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="zone_id" options="{'no_create': True}"/>
                 <field name="street"/>
-                <!-- <field name="street2"/> -->
             </xpath>
+
+            <field name="tag_ids" position="after">
+                <field name="qr_code" widget="qr" readonly="1" />
+                <field name="qr_image" invisible="qr_code == False or qr_code == ''" widget='image' class="oe_avatar"/>
+            </field>
+
+            <xpath expr="//notebook/page[@name='description']" position="after">
+                <page name="work_images" string="Work Images">
+                    <group>                        
+                        <group name="before_work_starts_image" string="Before Work Image">
+                            <field name="before_work_start_image"></field>                        
+                        </group>
+                        <group name="after_work_ends_image" string="After Work Image">
+                            <field name="after_work_end_image"></field>                        
+                        </group>
+                    </group>
+                </page>                
+            </xpath>
+
         </field>
     </record>
 
@@ -34,7 +46,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <div class="app_settings_block" data-key="helpdesk" data-string="HelpDesk" string="HelpDesk">
+                <app data-string="helpdesk" string="Helpdesk" name="helpdesk">
                     <h2>HelpDesk Settings</h2>
 
                     <div class="row mt16 o_settings_container" name="sms_config_container">
@@ -77,7 +89,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </app>
             </xpath>
         </field>
     </record>
