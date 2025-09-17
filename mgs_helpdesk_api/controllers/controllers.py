@@ -102,9 +102,9 @@ class MgsHelpdeskApi(http.Controller):
                         "partner_id": record.partner_id.id if record.partner_id else None,
                         "partner_latitude": record.partner_id.partner_latitude if record.partner_id else None,
                         "partner_longitude": record.partner_id.partner_longitude if record.partner_id else None,
-                        # "start_date": start_date_user_tz,
-                        # "end_date": end_date_user_tz,
-                        # "allocated_time": record.allocated_hours,
+                        "start_date": False,
+                        "end_date": False,
+                        "allocated_time": record.allocated_hours,
                     })
                 return tickets[0] if tickets else {}
             

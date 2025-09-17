@@ -28,9 +28,12 @@ class GetMonthesDue(models.AbstractModel):
         ]
         
 
+        # TODO: Fix this Collector Condition
+
+
         where = ""
-        if data.get("collector_id", False):
-            where += " AND mbz.collector_id = %s " % data.get("collector_id")[0]
+        # if data.get("collector_id", False):
+        #     where += " AND mbz.collector_id = %s " % data.get("collector_id")[0]
 
         if data.get("zone_id", False):
             where += " AND mbz.id = %s " % data.get("zone_id")[0]

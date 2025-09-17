@@ -7,7 +7,7 @@
             <form string="Get Monthes Due">
                 <group>
                     <group>
-                        <field name="collector_id" />
+                        <field name="collector_ids" widget="many2many_tags_avatar" />
                         <field name="zone_id" />
 
                     </group>

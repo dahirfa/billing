@@ -13,8 +13,10 @@ class MGSBillingZones(models.Model):
 
     property_ids = fields.One2many(
         'mgs_billing.property', 'zone_id', string='Properties')
-    collector_id = fields.Many2one(
-        'res.partner', string='Collector', domain=[('is_collector', '=', True)], tracking=True)
+    # collector_id = fields.Many2one(
+    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)], tracking=True)
+    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+
     counter = fields.Integer(
         string='Properties', compute='_count_properties', store=True)
     active_counter = fields.Integer(

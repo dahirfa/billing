@@ -76,8 +76,9 @@ class MgsRecivablesReport(models.TransientModel):
     date_from = fields.Date(default=date.today().replace(day=1))
     date_to = fields.Date(default=date.today())
     zone_id = fields.Many2one('mgs_billing.zone', required=False)
-    collector_id = fields.Many2one('res.partner', string='Collector', domain=[
-                                   ('is_collector', '=', True)])
+    # collector_id = fields.Many2one('res.partner', string='Collector', domain=[
+    #                                ('is_collector', '=', True)])
+    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
     report_type = fields.Selection([('Billed', 'Billed'), ('Unbilled', 'Unbilled')],
                                    string='Report Type', required=True, default='Unbilled')
     company_id = fields.Many2one(
@@ -111,7 +112,7 @@ class MgsRecivablesReport(models.TransientModel):
 
         query = """
         %s %s %s %s 
-        """ % (select, collection_report_obj._from(date_from, date_to), collection_report_obj._where(self.zone_id.id, self.collector_id.id, self.company_id.id, allowed_reg_date), group)
+        """ % (select, collection_report_obj._from(date_from, date_to), collection_report_obj._where(self.zone_id.id, self.collector_ids.ids, self.company_id.id, allowed_reg_date), group)
 
         if self.report_type == 'Billed':
             query = query.replace('mbr.id is null', 'mbr.id is NOT null')
