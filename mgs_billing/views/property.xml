@@ -180,7 +180,7 @@
                 <separator colspan="4"/>
                 <filter name="disconnected" string="Disconnected " domain="[('state', '=', 'disconnected')]"/>
                 <separator colspan="4"/>
-                <filter name="suspended" string="Suspended " domain="[('state', '=', 'suspend')]"/>
+                <!-- <filter name="suspended" string="Suspended " domain="[('state', '=', 'suspend')]"/> -->
 
                 <separator colspan="4"/>
                 <filter name="normal Meter" string="Normal Meters" domain="[('meter_type', '=', 'normal')]"/>
