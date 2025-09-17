@@ -22,8 +22,7 @@ class GetMonthesDue(models.TransientModel):
     state = fields.Selection(
         [
             ("connected", "Connected"),
-            ("disconnected", "Disconnected"),
-            ("suspend", "Suspended"),
+            ("disconnected", "Disconnected")            
         ],
         default="connected",
     )

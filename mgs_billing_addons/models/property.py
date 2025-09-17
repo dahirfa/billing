@@ -37,6 +37,7 @@ class MgsProperty(models.Model):
     
     
     extra_charge_count = fields.Integer(string='Extra Charge Count', compute="_compute_extra_charge_count")
+    old_house_no = fields.Char(string="Old House #", store=True)
     
 
     note = fields.Char('Note')

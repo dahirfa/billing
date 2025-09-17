@@ -24,6 +24,7 @@
         <group string="Misc.">
           <group>
             <field name="exclude_tax"/>
+            <field name="old_house_no" />
           </group>
 
           <group>

@@ -18,8 +18,7 @@ class MGSBillingPropertyConHistory(models.Model):
     time = fields.Datetime(default=fields.Datetime().now())
     memo = fields.Text(string='Comment')
     state = fields.Selection(
-        [('connected', 'Connected'), ('disconnected', 'disconnected'),
-         ('suspend', 'Suspended')])
+        [('connected', 'Connected'), ('disconnected', 'disconnected')])
 
 
 class MGSBillingPropertyType(models.Model):
@@ -117,8 +116,8 @@ class MGSBillingProperty(models.Model):
         [('normal', 'Normal'), ('smart', 'Smart')], default='normal',required=True)
     
     state = fields.Selection(
-        [('connected', 'Connected'), ('disconnected', 'Disconnected'),
-         ('suspend', 'Suspended')], default='connected', tracking=True)
+        [('connected', 'Connected'), ('disconnected', 'Disconnected')
+         ], default='connected', tracking=True)
     suspended = fields.Boolean(default=False, tracking=True)
     suspension_date = fields.Date(tracking=True)
     connection_date = fields.Datetime(string='Connection Date', tracking=True)
