@@ -5,9 +5,10 @@ class GetMonthesDue(models.TransientModel):
     _name = "get.monthes.due"
     _description = "Mgs Billing Get MOnthes Due"
 
-    collector_id = fields.Many2one(
-        "res.partner", string="Collector", domain=[("is_collector", "=", True)], 
-    )
+    # collector_id = fields.Many2one(
+    #     "res.partner", string="Collector", domain=[("is_collector", "=", True)], 
+    # )
+    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
 
     zone_id = fields.Many2one(
         "mgs_billing.zone",
@@ -22,8 +23,7 @@ class GetMonthesDue(models.TransientModel):
     state = fields.Selection(
         [
             ("connected", "Connected"),
-            ("disconnected", "Disconnected"),
-            ("suspend", "Suspended"),
+            ("disconnected", "Disconnected")            
         ],
         default="connected",
     )
@@ -36,7 +36,8 @@ class GetMonthesDue(models.TransientModel):
         
         wizard_data = {
             'zone_id': [self.zone_id.id, self.zone_id.name] if self.zone_id else False,
-            'collector_id': [self.collector_id.id, self.collector_id.name] if self.collector_id else False,
+            # 'collector_id': [self.collector_id.id, self.collector_id.name] if self.collector_id else False,
+            'collector_ids': self.collector_ids.ids,
             "monthes_due": self.monthes_due,
             "state": self.state,
             "meter_type": self.meter_type,

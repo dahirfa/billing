@@ -36,10 +36,10 @@
 						  <p class="m-0" t-esc="zone_id[1]"/>
 					  </div>
 
-					  <div class="col-3" t-if="collector_id[0]">
+					  <!-- <div class="col-3" t-if="collector_id[0]">
 						  <strong>Collector:</strong>
 						  <p class="m-0" t-esc="collector_id[1]"/>
-					  </div>
+					  </div> -->
 				  </div> <!-- Search criteria -->
 
 				  <table class="table table-sm">
@@ -58,7 +58,7 @@
 					  <t t-set="no" t-value="0"/>
 					  <t t-set="total_zone_customers" t-value="0"/>
 					  <t t-set="total_billed_zone_customers" t-value="0"/>
-						  <tr t-foreach="lines(date_from, date_to, zone_id[0], collector_id[0], company_id.id)" t-as="line">
+						  <tr t-foreach="lines(date_from, date_to, zone_id[0], collector_ids, company_id.id)" t-as="line">
 									<t t-set="total_zone_customers" t-value="total_zone_customers+line['property_count']"/>
 									<t t-set="total_billed_zone_customers" t-value="total_billed_zone_customers+line['billed_count']"/>
 									<t t-set="no" t-value="no + 1"/>

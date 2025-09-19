@@ -11,7 +11,7 @@
         <field name="billing_account_id" />
         <field name="zone_id" optional="show"/>
         <field name="ref" optional="show"/>
-        <field name="collector_id" optional="hide"/>
+        <field name="collector_ids" widget="many2many_tags_avatar" optional="hide"/>
         <field name="company_id" groups="base.group_multi_company" optional="hide"/>
         <field name="amount_total" sum="amount_total"/>
         <!-- <field name="balance" sum="balance"/> -->
@@ -28,7 +28,7 @@
         <field name="date" type="row"/>
         <field name="zone_id" type="row"/>
         <field name="property_id" type="row"/>
-        <field name="collector_id" type="row"/>
+        <field name="collector_ids" widget="many2many_tags_avatar" type="row"/>
         <field name="billing_account_id" type="row"/>
         <field name="amount_total" string="Total" type="measure"/>
       </pivot>
@@ -44,14 +44,14 @@
         <field name="property_id"/>
         <field name="billing_account_id"/>
         <field name="zone_id"/>
-        <field name="collector_id"/>
+        <field name="collector_ids"/>
 
         <group expand="0" string="Group By..." colspan="12" col="10">
           <filter string="Date" name="date" context="{'group_by': 'date'}"></filter>
           <filter string="Property" name="property_id" context="{'group_by': 'property_id'}"></filter>
           <filter string="Billing Account" name="billing_account_id" context="{'group_by': 'billing_account_id'}"></filter>
           <filter string="Zone" name="billing_zone_id" context="{'group_by': 'zone_id'}"></filter>
-          <filter string="Collector" name="billing_collector_id" context="{'group_by': 'collector_id'}"></filter>
+          <filter string="Collectors" name="billing_collector_id" context="{'group_by': 'collector_ids'}"></filter>
         </group>
       </search>
     </field>

@@ -139,7 +139,7 @@ class PropertyInfoApi(http.Controller):
 
         partner_obj = request.env['res.partner']
         domain = [('property_id.name', '=', kw.get("id").upper()),
-                  ('property_id.zone_id.collector_id.id', '=', collector_id), 
+                  ('property_id.zone_id.collector_ids.ids', 'in', collector_id), 
                 #!  ('property_id.state', '=', 'connected'),
                   ('property_id.meter_type', '!=', 'smart')]
         
@@ -251,7 +251,7 @@ class PropertyInfoApi(http.Controller):
         collector_id = self.get_user_partner_id(request.session.uid)
         
         domain = [('name', '=', kw.get("property_id").upper()),
-                  ('zone_id.collector_id.id', '=', collector_id),
+                  ('zone_id.collector_ids.ids', 'in', collector_id),
                 #!  ('state', '=', 'connected'),
                   ('meter_type', '!=', 'smart')]
         
@@ -274,8 +274,8 @@ class PropertyInfoApi(http.Controller):
                                                   'company_id', 'zone_id', 'last_reading', 'current_reading', 'difference', 'rate', 'invoice_amount'])
             result[0]['amount_total'] = round(result[0]['invoice_amount'], 3)
             result[0].update({
-                    'collector_number': property_id.zone_id.collector_id.phone,             
-                    'collector_name': property_id.zone_id.collector_id.name,         
+                    'collector_number': created_reading.create_uid.partner_id.phone,             
+                    'collector_name': created_reading.create_uid.partner_id.name,         
                 })
             if property_id.customer_type == 'free':
                 result[0].update({
@@ -350,8 +350,8 @@ class PropertyInfoApi(http.Controller):
                                               'current_reading', 'difference', 'rate', 'invoice_amount'])
                 result[0]['amount_total'] = round(result[0]['invoice_amount'], 3)
                 result[0].update({
-                    'collector_number': prop_id.zone_id.collector_id.phone,                    
-                    'collector_name': prop_id.zone_id.collector_id.name,                    
+                    'collector_number': reading.create_uid.partner_id.phone,                    
+                    'collector_name': reading.create_uid.partner_id.name,                    
                 })
                 tax_line_ids = move_id.line_ids.filtered(
                     lambda l: l.tax_repartition_line_id)

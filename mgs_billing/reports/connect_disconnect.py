@@ -125,8 +125,9 @@ class MgsSaleReport(models.Model):
         'res.currency', 'Currency', related="billing_account_id.currency_id")
     property_id = fields.Many2one('mgs_billing.property')
     zone_id = fields.Many2one('mgs_billing.zone')
-    collector_id = fields.Many2one(
-        'res.partner', string='Collector', domain=[('is_collector', '=', True)])
+    # collector_id = fields.Many2one(
+    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
+    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
     date = fields.Datetime(string='Date', compute="_compute_date")
     company_id = fields.Many2one(
         'res.company', string='Company', default=lambda self: self.env.user.company_id.id)
@@ -161,7 +162,11 @@ class MgsSaleReport(models.Model):
         return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id', '!=', False), ('billing_account_id.property_id.zone_id.name', 'ilike', value)]
 
     def _search_collector_id(self, operator, value):
-        return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id.collector_id', '!=', False), ('billing_account_id.property_id.zone_id.collector_id.name', 'ilike', value)]
+        # TODO: Fix this Collector Search Filter
+        # return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id.collector_ids', '!=', False), ('billing_account_id.property_id.zone_id.collector_id.name', 'ilike', value)]
+        
+        return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id.collector_ids', '!=', False)]
+        
 
     def _search_property_id(self, operator, value):
         return [('billing_account_id.property_id', '!=', False), ('billing_account_id.property_id.name', 'ilike', value)]
@@ -171,7 +176,9 @@ class MgsSaleReport(models.Model):
         return """
         SELECT mbp.id id, mbp.id property_id, mbp.zone_id zone_id,
         rp.id billing_account_id, rp.company_id company_id, 
-        mbz.collector_id collector_id, mbp.name as property_name,
+        -- mbz.collector_id collector_id, 
+        '' collector_id, 
+        mbp.name as property_name,
         rp.complete_name as display_name
         """
 
@@ -190,8 +197,10 @@ class MgsSaleReport(models.Model):
         if zone_id:
             result += " AND mbp.zone_id = %s" % zone_id
 
-        if collector_id:
-            result += " AND mbz.collector_id = %s" % collector_id
+        # TODO: Fix this Collector Condition
+        
+        # if collector_id:
+        #     result += " AND mbz.collector_id = %s" % collector_id
 
         if company_id:
             result += " AND mbp.company_id = %s" % company_id

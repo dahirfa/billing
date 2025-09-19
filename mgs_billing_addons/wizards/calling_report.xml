@@ -17,7 +17,7 @@
 
 							<group>
 								<field name="date_to" string="To"/>
-								<field name="collector_id" options="{'no_create': True}" />
+								<field name="collector_ids" widget="many2many_tags_avatar" options="{'no_create': True}" />
 								<label for="greater_less"/>
 								<div>
 										<field name="greater_less" class="oe_inline" style="font-weight: bold"/>
