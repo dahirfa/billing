@@ -10,8 +10,8 @@ class MGSBillingOwner(models.Model):
     _order="id DESC"
 
     name = fields.Char('Name', required=True)
-    mobile = fields.Char(string="Mobile", required=True)
-    phone = fields.Char(string="Phone")
+    mobile = fields.Char(string="Tenant's Mobile", required=True)
+    phone = fields.Char(string="Owner's Phone")
     email = fields.Char(string="Email")
     document_type_id = fields.Many2one('mgs_billing.document_type', string="Document Type")
     document_no = fields.Char(string="Document#")

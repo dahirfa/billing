@@ -41,7 +41,12 @@ class MgsProperty(models.Model):
 
     note = fields.Char('Note')
     exclude_tax = fields.Boolean(string='Exclude Tax')
-
+    
+    pipe_extention = fields.Char(string='pipe extention')
+    pipe_type = fields.Char(string='Pipe Type')
+    meter_category = fields.Char(string='Meter Category')
+    
+    
     @api.depends('extra_charge_invoice_ids')
     def _compute_extra_charge_count(self):
         for record in self:
@@ -65,7 +70,7 @@ class MGSBillingReading(models.Model):
     property_type_id = fields.Many2one(
         'mgs_billing.property.type', string='Property Type', related="property_id.property_type_id", store=True)
     customer_type = fields.Selection(
-        [('normal', 'Normal Customer'), ('free', 'Free Customer'), ('shareholder', 'Shareholder')], related="property_id.customer_type", store=True)
+        [('normal', 'Normal Customer'), ('free', 'Free Customer')], related="property_id.customer_type", store=True)
 
 
     def _prepare_invoice_line(self, service_ids):

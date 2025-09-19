@@ -24,6 +24,9 @@
         <group string="Misc.">
           <group>
             <field name="exclude_tax"/>
+            <field name="pipe_extention" string='Nooca Tuubada Biyaha Laga Qabanaayo' />
+            <field name="pipe_type" string="Nooca Tuubada La Jiidaayo" />
+            <field name="meter_category" string="Nooca Saacada" />
           </group>
 
           <group>

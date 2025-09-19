@@ -81,8 +81,7 @@ class MGSBillingProperty(models.Model):
     _order = "id DESC"
 
     name = fields.Char(string='House #', default='/', tracking=True)
-    property_type_id = fields.Many2one(
-        'mgs_billing.property.type', string='Property Type', ondelete='restrict', tracking=True)
+    property_type_id = fields.Many2one('mgs_billing.property.type', string='Property Type', ondelete='restrict', tracking=True)
     zone_id = fields.Many2one('mgs_billing.zone', string='Zone',
                               ondelete='restrict', required=True, tracking=True)
     company_id = fields.Many2one(

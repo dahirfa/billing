@@ -18,16 +18,15 @@ class CreateCustomerWizard(models.TransientModel):
     state_id = fields.Many2one('res.country.state', string='State')
     country_id = fields.Many2one('res.country', string='Country')
     zone_id = fields.Many2one('mgs_billing.zone', string='Zone', required=True)
-    partner_zip = fields.Char()
+    city = fields.Char(string="City")
 
     partner_type = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default='individual')
     
     product_id = fields.Many2one('product.product', string="Billing Plan", domain=[('is_billing_pan', '=', True)], required=True)
     
+    mobile = fields.Char(string="Tenant's Mobile", required=True)
     
-    mobile = fields.Char(string="Mobile", required=True)
-    
-    phone = fields.Char(string="Alternative Mobile")
+    phone = fields.Char(string="Owner's Phone")
     
     email = fields.Char(string="Email")
 
@@ -36,7 +35,6 @@ class CreateCustomerWizard(models.TransientModel):
     customer_id = fields.Many2one('mgs_billing.partner', string="Merge with")
 
     document_type_id = fields.Many2one('mgs_billing.document_type', string="Document Type")
-    
     
     document_no = fields.Char(string="Document#")
 
@@ -50,13 +48,16 @@ class CreateCustomerWizard(models.TransientModel):
     property_type_id = fields.Many2one('mgs_billing.property.type', string='Type', required=True)
 
     technician = fields.Char(string='Technician')
-    company_wires = fields.Char(string='Company Wires')
-    company_poles = fields.Char(string='Company Boles')
    
     customer_type = fields.Selection([('normal', 'Normal Customer'), ('free', 'Free Customer'),], default='normal', string='Customer Type')
 
     connection_date = fields.Datetime(string='Connection Date', default=fields.Datetime.now)
     
+
+    pipe_extention = fields.Char(string='pipe extention')
+    pipe_type = fields.Char(string='Pipe Type')
+    meter_category = fields.Char(string='Meter Category')
+
 
     @api.model
     def default_get(self, fields):
@@ -71,13 +72,19 @@ class CreateCustomerWizard(models.TransientModel):
         rec.update({
             'lead_id': lead_id.id,
             'name': lead_id.name,
-            'mobile': lead_id.phone,
+            'mobile': lead_id.mobile,
+            'phone': lead_id.phone,
             'zone_id': lead_id.zone_id.id,
             'street': lead_id.street,
             'email': lead_id.email_from,
             'company_id': lead_id.company_id.id,
             'country_id': self.env.company.country_id.id,
             'state_id': self.env.company.state_id.id,
+            "city": self.env.company.city,
+            'property_type_id': lead_id.property_type_id,
+            "pipe_extention":lead_id.pipe_extention,
+            "pipe_type": lead_id.pipe_type,
+            "meter_category": lead_id.meter_category,
         })
 
         return rec
@@ -131,17 +138,15 @@ class CreateCustomerWizard(models.TransientModel):
         if not owner_id:
             owner_id = owner_obj.create({
                 'name': self.name,
-                'mobile': self.mobile or 123,
+                'mobile': self.mobile,
                 'phone': self.phone,
                 'email': self.email,
-                # 'ref_name': self.ref_name,
-                # 'ref_mobile': self.ref_mobile,
                 'type': 'owner',
                 'street': self.street,
                 'street2': self.street2,
                 'state_id': self.state_id.id,
-                'zip': self.partner_zip,
                 'country_id': self.country_id.id,
+                "city":self.city,
                 'company_id': self.company_id.id,
                 'image': self.image
             })
@@ -152,18 +157,13 @@ class CreateCustomerWizard(models.TransientModel):
                 "The phone number must have exactly 9 digits after the country code (+252907707070). Please Fix The number of the contact you're mergin with."
             )
             
-        # if not self._check_mobile_number(owner_id.mobile):
-        #     raise ValidationError(
-        #         "The mobile number must have exactly 9 digits after the country code (+252907707070). Please Fix The number of the contact you're mergin with."
-        #     )
-
         property_id = property_obj.create({
             'zone_id': self.zone_id.id,
             'street': self.street,
             'street2': self.street2,
             'state_id': self.state_id.id,
-            'zip': self.partner_zip,
             'country_id': self.country_id.id,
+            'city': self.city,
             'ref_name': self.ref_name,
             'ref_mobile': self.ref_mobile,
             'customer_type': self.customer_type,
@@ -173,7 +173,10 @@ class CreateCustomerWizard(models.TransientModel):
             'product_id': self.product_id.id,
             'property_type_id': self.property_type_id.id,
             'company_id': self.company_id.id,
-            'connection_date': self.connection_date
+            'connection_date': self.connection_date,
+            "pipe_extention":self.pipe_extention,
+            "pipe_type": self.pipe_type,
+            "meter_category": self.meter_category,
         })
 
 

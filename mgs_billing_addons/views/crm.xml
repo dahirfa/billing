@@ -5,26 +5,35 @@
     <field name="inherit_id" ref="crm.crm_lead_view_form"/>
     <field name="arch" type="xml">
       <xpath expr="//header" position="inside">
-        <button invisible="hide_create_customer_btn" name="%(mgs_billing_addons.create_customer_wiz_action)d" string="Create Billing Customer" type="action" class="btn-primary" data-hotkey="q"/>
+        <button invisible="property_id" name="%(mgs_billing_addons.create_customer_wiz_action)d" string="Create Billing Customer" type="action" class="btn-primary"/>
 
-        <button invisible="not hide_create_customer_btn or hide_create_ticket_btn" name="create_helpdesk_ticket" string="Create Ticket" type="object" class="btn-primary" data-hotkey="q"/>
+        <button invisible="not hide_create_customer_btn or hide_create_ticket_btn" name="create_helpdesk_ticket" string="Create Ticket" type="object" class="btn-primary"/>
       </xpath>
 
       <xpath expr="//div[@class='oe_button_box']" position="inside">
-        <!-- <button type="object" class="oe_stat_button" string="Ticket" name="action_open_ticket" attrs="{'invisible': [('help_desk_ticket_id', '=', False)]}" 
-             icon="fa-life-ring">
-            Ticket
-            <field name="help_desk_ticket_id" invisible="1"/>
-        </button> -->
-
         <button invisible="not help_desk_ticket_id" class="oe_stat_button" name="action_open_ticket" type="object" icon="fa-life-ring">
-                  <!-- <field string="Invoice" name="counter" widget="statinfo" /> -->
-                  Ticket
-              </button>
+                Ticket
+        </button>
       </xpath>
 
+      
+      <xpath expr="//field[@name='phone']" position="replace">
+          <field name="phone" widget="phone" string="Owner's Phone" />
+      </xpath>
+      
+      
+      <xpath expr="//field[@name='user_id']" position="before">
+        <field name="pipe_extention" string='Nooca Tuubada Biyaha Laga Qabanaayo' />
+        <field name="pipe_type" string="Nooca Tuubada La Jiidaayo" />
+        <field name="meter_category" string="Nooca Saacada" />
+      </xpath>
+      
+
       <xpath expr="//field[@name='lost_reason_id']" position="before">
+
+        <field name="mobile" widget="phone"/>
         <field name="street" string="Address"/>
+        <field name="property_type_id"/>
         <field name="zone_id" string="Zone" options="{'no_create': True}"/>
         <field name="property_id" readonly="1" string="Meter#" options="{'no_create': True}"/>
         <field name="hide_create_customer_btn" invisible="1"/>
@@ -33,7 +42,7 @@
       </xpath>
 
       <xpath expr="//field[@name='partner_id']" position="attributes">
-          <attribute name="readonly">1</attribute>
+        <attribute name="readonly">1</attribute>
       </xpath>
     </field>
   </record>
@@ -44,11 +53,11 @@
     <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
     <field name="arch" type="xml">
       <xpath expr="//field[@name='partner_id']" position="attributes">
-          <attribute name="readonly">1</attribute>
+        <attribute name="readonly">1</attribute>
       </xpath>
 
       <xpath expr="//field[@name='name']" position="attributes">
-          <attribute name="string">Name</attribute>
+        <attribute name="string">Name</attribute>
       </xpath>
     </field>
   </record>
@@ -89,26 +98,26 @@
     <t t-call="web.html_container">
       <t t-foreach="docs" t-as="doc">
         <t t-call="web.internal_layout" t-lang="en_US">
-            <div class="page">
-              <style>
+          <div class="page">
+            <style>
                   body {
                     padding: 0 !important
                   }
                   div.header {
                     display: none
                   }
-              </style>
+            </style>
 
-              <div class="container" style="position: relative">
-                <img style="background-size: 100%;width: 29.0cm; height: 41.0cm;" src="/mgs_billing_addons/static/src/img/survey_form.png"/>
-                <span t-field="doc.name" style="font-size: 16px; position: absolute; top: 300px; left: 52mm;"/>
-                <span t-field="doc.create_date" t-options="{&quot;widget&quot;: &quot;date&quot;,&quot;format&quot;: &quot;dd-MM-yyyy&quot;}" style="font-size: 16px; position: absolute; top: 204px; right: 35mm;"/>
-                <span t-field="doc.zone_id.name" style="font-size: 16px; position: absolute; top: 270px; right: 81mm;"/>
-                <span t-field="doc.phone" style="font-size: 16px; position: absolute; top: 348px; left: 36mm;"/>
-                <span t-field="doc.email_from" style="font-size: 16px; position: absolute; top: 348px; right: 155mm;"/>
-                <span t-field="doc.street" style="font-size: 16px; position: absolute; top: 400px; left: 60mm;"/>
-              </div>
+            <div class="container" style="position: relative">
+              <img style="background-size: 100%;width: 29.0cm; height: 41.0cm;" src="/mgs_billing_addons/static/src/img/survey_form.png"/>
+              <span t-field="doc.name" style="font-size: 16px; position: absolute; top: 300px; left: 52mm;"/>
+              <span t-field="doc.create_date" t-options="{&quot;widget&quot;: &quot;date&quot;,&quot;format&quot;: &quot;dd-MM-yyyy&quot;}" style="font-size: 16px; position: absolute; top: 204px; right: 35mm;"/>
+              <span t-field="doc.zone_id.name" style="font-size: 16px; position: absolute; top: 270px; right: 81mm;"/>
+              <span t-field="doc.phone" style="font-size: 16px; position: absolute; top: 348px; left: 36mm;"/>
+              <span t-field="doc.email_from" style="font-size: 16px; position: absolute; top: 348px; right: 155mm;"/>
+              <span t-field="doc.street" style="font-size: 16px; position: absolute; top: 400px; left: 60mm;"/>
             </div>
+          </div>
         </t>
       </t>
     </t>

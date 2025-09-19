@@ -18,6 +18,19 @@ class CrmLead(models.Model):
     billing_account_id = fields.Many2one(
         'res.partner', string='Billing Account', tracking=True)
     
+    property_type_id = fields.Many2one('mgs_billing.property.type', string='Property Type', ondelete='restrict', tracking=True)
+    
+    
+    mobile = fields.Char(string="Tenant's Mobile")
+    
+    
+    pipe_extention = fields.Char(string='pipe extention')
+    pipe_type = fields.Char(string='Pipe Type')
+    meter_category = fields.Char(string='Meter Category')
+    
+    
+    
+    
     
     hide_create_customer_btn = fields.Boolean(
         default=False, compute='_compute_hide_create_customer_btn')
@@ -28,6 +41,8 @@ class CrmLead(models.Model):
     
     hide_create_ticket_btn = fields.Boolean(
         default=False, compute='_compute_hide_create_ticket_btn')
+    
+
 
     @api.depends('partner_id', 'property_id')
     def _compute_hide_create_customer_btn(self):
