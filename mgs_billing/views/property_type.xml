@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="mgs_billing_property_type_form" model="ir.ui.view">
+        <field name="name">mgs_billing.property.type.form</field>
+        <field name="model">mgs_billing.property.type</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_properties" type="object" icon="fa-home">
+                            <field string="Properties" name="counter" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="product_id" />
+                        </group>
+
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="mgs_billing_property_type_tree" model="ir.ui.view">
+        <field name="name">mgs_billing.property.type.tree</field>
+        <field name="model">mgs_billing.property.type</field>
+        <field name="arch" type="xml">
+            <list string="">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="counter"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="mgs_billing_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">mgs_billing.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+</odoo>

@@ -23,7 +23,7 @@
                         <group>
                             <field name="date_to"/>
                             <!-- attrs="{'invisible': [('report_by', '!=', 'Zone')]}" -->
-                            <field name="collector_ids" widget="many2many_tags_avatar" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                            <field name="collector_id" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
                             <!-- <a href="/report/billed"><i class="fa fa-pencil mx-1"/>Click me</a> -->
                         </group>
@@ -75,7 +75,6 @@
 
                 <group expand="0" string="Group By..." colspan="12" col="10">
                     <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"></filter>
-                    <!-- <filter string="Collectors" name="collector_ids" context="{'group_by': 'collector_ids'}"></filter> -->
                 </group>
             </search>
         </field>

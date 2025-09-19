@@ -21,7 +21,7 @@ class Mgs_Unbilled_Meter_Event_Controller(http.Controller):
         property_id = kw.get("property")
         reason_id = kw.get("reason")        
         
-        domain = [('name', '=', property_id.upper()), ('zone_id.collector_ids.ids', 'in', collector_id), ('state', '=', 'connected')]        
+        domain = [('name', '=', property_id.upper()), ('zone_id.collector_id.id', 'in', collector_id), ('state', '=', 'connected')]        
         
         property_id = http.request.env['mgs_billing.property'].sudo().search(domain, limit=1)
         

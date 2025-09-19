@@ -31,5 +31,4 @@ def get_billing_start_and_end_dates(current_date, start, end):
     return (start_date, end_date)
 
 
-setattr(date_utils, 'get_billing_start_and_end_dates',
-        get_billing_start_and_end_dates)
+setattr(date_utils, 'get_billing_start_and_end_dates', get_billing_start_and_end_dates)

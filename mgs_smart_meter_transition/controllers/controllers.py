@@ -105,7 +105,7 @@ class PropertyInfoApiOverride(PropertyInfoApi):
         
         domain = [
             ('property_id.name', '=', kw.get("id")),
-            ('property_id.zone_id.collector_ids.ids', 'in', collector_id),
+            ('property_id.zone_id.collector_id.id', 'in', collector_id),
             ('property_id.state', '=', 'connected'),
             '|', ('property_id.meter_type', '!=', 'smart'),
             '&', ('property_id.meter_type', '=', 'smart'),
@@ -167,7 +167,7 @@ class PropertyInfoApiOverride(PropertyInfoApi):
         collector_id = self.get_user_partner_id(request.session.uid)
         
         domain = [('name', '=', kw.get("property_id")),
-                  ('zone_id.collector_ids.ids', 'in', collector_id),
+                  ('zone_id.collector_id.id', 'in', collector_id),
                   ('state', '=', 'connected'),
                   '|', ('meter_type', '!=', 'smart'),
                   '&', ('meter_type', '=', 'smart'),

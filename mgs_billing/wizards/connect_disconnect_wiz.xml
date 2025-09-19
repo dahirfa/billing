@@ -13,7 +13,7 @@
                         <group>
                           <!-- attrs="{'invisible': [('report_by', '!=', 'Zone')]}" -->
                           <field name="zone_id"   string="Zone" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
-                          <field name="collector_ids" widget="many2many_tags_avatar" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
+                          <field name="collector_id" string="Collector" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" />
                           <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
                         </group>
                     </group>

@@ -87,7 +87,7 @@ class BulkSMSLog(models.Model):
     
     datetime = fields.Datetime(string='Datetime', default=fields.Datetime.now, required=True)
     response = fields.Text(string='Response')
-    partner_id = fields.Many2one('mgs_billing.partner', string='Partner', required=True)
+    partner_id = fields.Many2one('mgs_billing.billing_customer', string='Partner', required=True)
     mobile = fields.Char(related='partner_id.mobile')  
     status = fields.Selection([
         ('sent', 'Sent'),

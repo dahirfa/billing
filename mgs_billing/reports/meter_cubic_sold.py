@@ -12,7 +12,7 @@ class MgsMeterCubicSoldReport(models.Model):
         'mgs_billing.zone')
     # collector_id = fields.Many2one(
     #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
     company_id = fields.Many2one(
         'res.company', string='Company', default=lambda self: self.env.company.id)
     total_meter_cubic = fields.Integer(string='Total Meter Cubic')

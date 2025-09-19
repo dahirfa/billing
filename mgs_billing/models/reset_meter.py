@@ -42,18 +42,8 @@ class MGSBillingResetMeter(models.Model):
             create_date, create_uid, write_date, write_uid)
             VALUES ('%s', %s, %s, 'Meter Reset', 'posted', '%s', %s, '%s', %s);
             """ % (r.date, r.property_id.id, r.reading, fields.datetime.now(), self.env.user.id, fields.datetime.now(), self.env.user.id)
-            # created_meter_reading = meter_reading_obj.create({
-            #     'date': r.date,
-            #     'property_id': r.property_id.id,
-            #     'reading_on_date': r.reading,
-            #     'comment': 'Meter Reset',
-            #     'state': 'posted',
-            # })
+           
             self.env.cr.execute(query)
-            # res = self.env.cr.dictfetchall()
-
-            # r.name = self.env['ir.sequence'].next_by_code(
-            #     'mgs_billing.reset_reading') or '/'
             r.state = 'confirm'
 
 

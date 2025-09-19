@@ -8,9 +8,8 @@ class MgsRecivablesReport(models.TransientModel):
     _description = 'mgs_billing.connect_disconnect.wizard'
 
     zone_id = fields.Many2one('mgs_billing.zone', required=False)
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one(
+        'res.partner', string='Collector', domain=[('is_collector', '=', True)])
     state = fields.Selection(
         [('connected', 'Connected'), ('disconnected', 'Disconnected')], default='disconnected', required=True)
     company_id = fields.Many2one(
@@ -20,7 +19,7 @@ class MgsRecivablesReport(models.TransientModel):
         report_obj = self.env['mgs_billing.connect_disconnect.report']
 
         query = report_obj.query_execute(
-            self.state, self.zone_id.id, self.collector_ids.ids, self.company_id.id)
+            self.state, self.zone_id.id, self.collector_id.id, self.company_id.id)
 
         tools.drop_view_if_exists(self._cr, report_obj._table)
         self._cr.execute('''CREATE OR REPLACE VIEW %s AS (%s)''' %

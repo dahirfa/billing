@@ -125,9 +125,8 @@ class MgsSaleReport(models.Model):
         'res.currency', 'Currency', related="billing_account_id.currency_id")
     property_id = fields.Many2one('mgs_billing.property')
     zone_id = fields.Many2one('mgs_billing.zone')
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one(
+        'res.partner', string='Collector', domain=[('is_collector', '=', True)])
     date = fields.Datetime(string='Date', compute="_compute_date")
     company_id = fields.Many2one(
         'res.company', string='Company', default=lambda self: self.env.user.company_id.id)
@@ -147,25 +146,23 @@ class MgsSaleReport(models.Model):
             
 
     def _search_tenant_id(self, operator, value):
-        return [('billing_account_id.customer_id', '!=', False), ('billing_account_id.customer_id.name', 'ilike', value)]
+        return [('billing_account_id.billing_customer_id', '!=', False), ('billing_account_id.billing_customer_id.name', 'ilike', value)]
 
     def _search_tenant_mobile(self, operator, value):
-        return [('billing_account_id.customer_id', '!=', False), ('billing_account_id.customer_id.mobile', 'ilike', value)]
+        return [('billing_account_id.billing_customer_id', '!=', False), ('billing_account_id.billing_customer_id.mobile', 'ilike', value)]
 
     def _search_guarantor_id(self, operator, value):
-        return [('billing_account_id.customer_id', '!=', False), ('billing_account_id.customer_id.guarantor_id', '!=', False), ('billing_account_id.customer_id.guarantor_id.name', 'ilike', value)]
+        return [('billing_account_id.billing_customer_id', '!=', False), ('billing_account_id.billing_customer_id.guarantor_id', '!=', False), ('billing_account_id.billing_customer_id.guarantor_id.name', 'ilike', value)]
 
     def _search_guarantor_mobile(self, operator, value):
-        return [('billing_account_id.customer_id', '!=', False), ('billing_account_id.customer_id.guarantor_id', '!=', False), ('billing_account_id.customer_id.guarantor_id.mobile', 'ilike', value)]
+        return [('billing_account_id.billing_customer_id', '!=', False), ('billing_account_id.billing_customer_id.guarantor_id', '!=', False), ('billing_account_id.billing_customer_id.guarantor_id.mobile', 'ilike', value)]
 
     def _search_zone_id(self, operator, value):
         return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id', '!=', False), ('billing_account_id.property_id.zone_id.name', 'ilike', value)]
 
     def _search_collector_id(self, operator, value):
-        # TODO: Fix this Collector Search Filter
-        # return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id.collector_ids', '!=', False), ('billing_account_id.property_id.zone_id.collector_id.name', 'ilike', value)]
+        return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id.collector_id', '!=', False), ('billing_account_id.property_id.zone_id.collector_id.name', 'ilike', value)]
         
-        return [('billing_account_id.property_id', '!=', False), ('billing_account_id.zone_id.collector_ids', '!=', False)]
         
 
     def _search_property_id(self, operator, value):

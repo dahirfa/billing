@@ -14,9 +14,8 @@ class MgsPaymentReport(models.Model):
         'mgs_billing.property', index=True, string='Property', required=True)
     zone_id = fields.Many2one(
         'mgs_billing.zone', store=True)
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one(
+        'res.partner', string='Collector', domain=[('is_collector', '=', True)])
     billing_account_id = fields.Many2one(
         'res.partner', string='Billing Account', domain=[('is_tenancy', '=', True)])
     amount_total = fields.Monetary(string='Total')

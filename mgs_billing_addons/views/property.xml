@@ -5,41 +5,17 @@
     <field name="inherit_id" ref="mgs_billing.mgs_billing_property_form" />
     <field name="arch" type="xml">
 
-      <!-- <xpath expr="//field[@name='guarantor_id']" position="replace">
-          <field name="ref_name"/>
-          <field name="ref_mobile"/>
-      </xpath> -->
-
-      <xpath expr="//header" position="inside">
-        <button name="%(mgs_billing.mgs_billing_apply_extra_charge_action)d" string="Apply Extra Charges" type="action" data-hotkey="q" />
-      </xpath>
-
-      <xpath expr="//div[@class='oe_button_box']" position="inside">
-        <button class="oe_stat_button" name="action_open_extra_charge_invoices" string="Extra Charges" type="object" icon="fa-list">
-          <field string="Extra Charges" name="extra_charge_count" invisible="1"/>
-        </button>
-      </xpath>
-
       <xpath expr="//sheet" position="inside">
         <group string="Misc.">
           <group>
-            <field name="exclude_tax"/>
-<<<<<<< HEAD
             <field name="pipe_extention" string='Nooca Tuubada Biyaha Laga Qabanaayo' />
             <field name="pipe_type" string="Nooca Tuubada La Jiidaayo" />
             <field name="meter_category" string="Nooca Saacada" />
-=======
             <field name="old_house_no" />
-<<<<<<< HEAD
->>>>>>> 803800d (Removed Suspend state from properties and added old house # field)
-=======
->>>>>>> f0fc47fd3dcb9b64864c1b82b739271205eb7fdf
->>>>>>> f5b44515ff09518e98b694d7ff91d6b66466e7f1
           </group>
 
           <group>
             <field name="technician"/>
-            <field name="customer_type"/>
           </group>
         </group>
       </xpath>
@@ -53,8 +29,7 @@
     <field name="arch" type="xml">
       <!-- Modify or extend the search view as needed -->
       <xpath expr="//filter[@name='property_id']" position="after">
-        <filter string="Customer Type" name="customer_type" domain="[]" context="{'group_by': 'customer_type'}"/>
-        <filter string="Property Type" name="property_type_id" domain="[]" context="{'group_by': 'property_type_id'}"/>
+       
       </xpath>
     </field>
   </record>
@@ -70,5 +45,4 @@
   <menuitem id="mgs_billing_Property_main" name="Properties" parent="mgs_billing.mgs_billing_root" sequence="5" />
 
   <menuitem id="mgs_billing_owner2_menu" name="Billing Customers" parent="mgs_billing_Property_main" action="mgs_billing.mgs_billing_owner_action" sequence="1" />
-  <menuitem id="mgs_billing_property_menu" name="Properties" action="mgs_billing.mgs_billing_property_action" parent="mgs_billing_Property_main" sequence="4"/>
 </odoo>

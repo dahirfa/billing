@@ -5,8 +5,6 @@
     <field name="inherit_id" ref="crm.crm_lead_view_form"/>
     <field name="arch" type="xml">
       <xpath expr="//header" position="inside">
-        <button invisible="property_id" name="%(mgs_billing_addons.create_customer_wiz_action)d" string="Create Billing Customer" type="action" class="btn-primary"/>
-
         <button invisible="not hide_create_customer_btn or hide_create_ticket_btn" name="create_helpdesk_ticket" string="Create Ticket" type="object" class="btn-primary"/>
       </xpath>
 
@@ -16,110 +14,14 @@
         </button>
       </xpath>
 
-      
-      <xpath expr="//field[@name='phone']" position="replace">
-          <field name="phone" widget="phone" string="Owner's Phone" />
-      </xpath>
-      
-      
+
       <xpath expr="//field[@name='user_id']" position="before">
         <field name="pipe_extention" string='Nooca Tuubada Biyaha Laga Qabanaayo' />
         <field name="pipe_type" string="Nooca Tuubada La Jiidaayo" />
         <field name="meter_category" string="Nooca Saacada" />
       </xpath>
-      
 
-      <xpath expr="//field[@name='lost_reason_id']" position="before">
 
-        <field name="mobile" widget="phone"/>
-        <field name="street" string="Address"/>
-        <field name="property_type_id"/>
-        <field name="zone_id" string="Zone" options="{'no_create': True}"/>
-        <field name="property_id" readonly="1" string="Meter#" options="{'no_create': True}"/>
-        <field name="hide_create_customer_btn" invisible="1"/>
-        <field name="help_desk_ticket_id" invisible="1"/>
-        <field name="hide_create_ticket_btn" invisible="1"/>
-      </xpath>
-
-      <xpath expr="//field[@name='partner_id']" position="attributes">
-        <attribute name="readonly">1</attribute>
-      </xpath>
     </field>
   </record>
-
-  <record id="crm_opportunity_kanban_inehrit" model="ir.ui.view">
-    <field name="name">crm.opportunity.kanban.inehrit</field>
-    <field name="model">crm.lead</field>
-    <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
-    <field name="arch" type="xml">
-      <xpath expr="//field[@name='partner_id']" position="attributes">
-        <attribute name="readonly">1</attribute>
-      </xpath>
-
-      <xpath expr="//field[@name='name']" position="attributes">
-        <attribute name="string">Name</attribute>
-      </xpath>
-    </field>
-  </record>
-
-  <record id="mgs_custom_paperformat" model="report.paperformat">
-    <field name="name">Custom Paper Format</field>
-    <field name="default" eval="True"/>
-    <field name="format">A4</field>
-    <field name="orientation">Portrait</field>
-    <field name="margin_top">0</field>
-    <field name="margin_bottom">0</field>
-    <field name="margin_left">0</field>
-    <field name="margin_right">0</field>
-    <field name="header_line" eval="False"/>
-    <field name="header_spacing">35</field>
-    <field name="dpi">90</field>
-  </record>
-
-  <record id="report_print_survay" model="ir.actions.report">
-    <field name="name">Survay</field>
-    <field name="model">crm.lead</field>
-    <field name="report_type">qweb-html</field>
-    <field name="report_name">mgs_billing_addons.applicant_survay_report</field>
-    <field name="report_file">mgs_billing_addons.applicant_survay_report</field>
-    <field name="binding_model_id" ref="model_crm_lead"/>
-    <field name="binding_type">report</field>
-    <field name="paperformat_id" ref="mgs_custom_paperformat"/>
-  </record>
-
-  <!-- <template id="background_layout" inherit_id="web.internal_layout">
-    <xpath expr="//div[@class='header']" position="replace">
-      <div class="header">
-      </div>
-    </xpath>
-  </template> -->
-
-  <template id="applicant_survay_report">
-    <t t-call="web.html_container">
-      <t t-foreach="docs" t-as="doc">
-        <t t-call="web.internal_layout" t-lang="en_US">
-          <div class="page">
-            <style>
-                  body {
-                    padding: 0 !important
-                  }
-                  div.header {
-                    display: none
-                  }
-            </style>
-
-            <div class="container" style="position: relative">
-              <img style="background-size: 100%;width: 29.0cm; height: 41.0cm;" src="/mgs_billing_addons/static/src/img/survey_form.png"/>
-              <span t-field="doc.name" style="font-size: 16px; position: absolute; top: 300px; left: 52mm;"/>
-              <span t-field="doc.create_date" t-options="{&quot;widget&quot;: &quot;date&quot;,&quot;format&quot;: &quot;dd-MM-yyyy&quot;}" style="font-size: 16px; position: absolute; top: 204px; right: 35mm;"/>
-              <span t-field="doc.zone_id.name" style="font-size: 16px; position: absolute; top: 270px; right: 81mm;"/>
-              <span t-field="doc.phone" style="font-size: 16px; position: absolute; top: 348px; left: 36mm;"/>
-              <span t-field="doc.email_from" style="font-size: 16px; position: absolute; top: 348px; right: 155mm;"/>
-              <span t-field="doc.street" style="font-size: 16px; position: absolute; top: 400px; left: 60mm;"/>
-            </div>
-          </div>
-        </t>
-      </t>
-    </t>
-  </template>
 </odoo>

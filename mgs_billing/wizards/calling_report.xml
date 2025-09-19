@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 		<record id="calling_report_form" model="ir.ui.view">
-			<field name="name">mgs_billing_addons.calling_report.form</field>
-			<field name="model">mgs_billing_addons.calling_report_wiz</field>
+			<field name="name">Calling Report</field>
+			<field name="model">mgs_billing.calling_report_wiz</field>
 			<field name="arch" type="xml">
 			   <form>
 					<sheet>
@@ -17,7 +17,7 @@
 
 							<group>
 								<field name="date_to" string="To"/>
-								<field name="collector_ids" widget="many2many_tags_avatar" options="{'no_create': True}" />
+								<field name="collector_id" options="{'no_create': True}" />
 								<label for="greater_less"/>
 								<div>
 										<field name="greater_less" class="oe_inline" style="font-weight: bold"/>
@@ -41,12 +41,11 @@
 
 		<record id="action_calling_report_report" model="ir.actions.act_window">
 			<field name="name">Calling Report</field>
-			<field name="res_model">mgs_billing_addons.calling_report_wiz</field>
+			<field name="res_model">mgs_billing.calling_report_wiz</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="view_id" ref="calling_report_form"/>
 			<field name="target">new</field>
 		</record>
 
     <!-- <menuitem id="menu_necsom_addons_report" name="Reporting" parent="mgs_payment_integration.mgs_payment_integration_root" sequence="12" /> -->
-    <menuitem id="menu_necsom_addons_calling_report" name="Calling Report" parent="mgs_billing.mgs_billing_reports_root" action="action_calling_report_report" sequence="1" />
 </odoo>

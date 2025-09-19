@@ -10,7 +10,7 @@
                 <field name="billing_account_id"/>
                 <field name="date" string='Performed At'/>
                 <field name="zone_id" optional='show'/>
-                <field name="collector_ids" widget="many2many_tags_avatar" optional='show'/>
+                <field name="collector_id" optional='show'/>
                 <field name="currency_id" invisible="1"/>
                 <field name="company_id" groups="base.group_multi_company" optional='hide'/>
                 <field name="balance" sum='Total' widget="monetary" optional='show'/>
@@ -27,12 +27,12 @@
                 <field name="billing_account_id"/>
                 <field name="date" string='Performed At'/>
                 <field name="zone_id"/>
-                <field name="collector_ids"/>
+                <field name="collector_id"/>
                 <filter string="Hide Less Than 0.0" name="has_balance" domain="[('balance','>', 0.0)]"/>
 
                 <group expand="0" string="Group By..." colspan="12" col="10">
                     <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"></filter>
-                    <filter string="Collector" name="collector_ids" context="{'group_by': 'collector_ids'}"></filter>
+                    <filter string="Collector" name="collector_id" context="{'group_by': 'collector_id'}"></filter>
                 </group>
             </search>
         </field>

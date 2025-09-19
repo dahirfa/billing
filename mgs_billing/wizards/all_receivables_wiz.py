@@ -35,9 +35,8 @@ class MgsRecivablesReport2(models.Model):
     company_id = fields.Many2one(
         'res.company', string='Company')
     zone_name = fields.Char()
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector_id')
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one(
+        'res.partner', string='Collector_id' ,domain=[('is_collector', '=', True)])
     collector_name = fields.Char(string='Collector')
     initial_balance = fields.Float('Initial Balance')
     invoiced = fields.Float('Invoiced')
@@ -65,15 +64,10 @@ class MgsRecivablesReport(models.TransientModel):
     def _get_year(self):
         return date.today().year
 
-    # year = fields.Selection(YEARS, string='Year',
-    #                         required=True, default=str(date.today().year))
-    # month = fields.Selection(MONTHS, string='Month',
-    #                          required=True, default=str(date.today().month))
 
     zone_id = fields.Many2one('mgs_billing.zone', required=False)
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one(
+        'res.partner', string='Collector', domain=[('is_collector', '=', True)])
     states = fields.Selection(
         [('all', 'All'), ('posted', 'Posted')], default="all", string='Target Moves', required=True)
     company_id = fields.Many2one(

@@ -2,7 +2,7 @@
 from odoo import models, fields
 
 class MGSBillingOwner(models.Model):
-    _inherit = 'mgs_billing.partner'
+    _inherit = 'mgs_billing.billing_customer'
 
     def write(self, vals):
         res = super(MGSBillingOwner, self).write(vals)

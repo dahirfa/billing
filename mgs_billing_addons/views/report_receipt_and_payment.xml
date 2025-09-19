@@ -61,7 +61,7 @@
                             <t t-if="doc.group_by_option == 'cashier'">
                                 <t t-set="grand_total" t-value="0"/>
                                 <table class="table table-condensed table-sm">
-                                    <thead>
+                                    <thead  style="font-weight:bold; font-size:14px">
                                         <tr>
                                             <th>Date</th>
                                             <th>Number</th>

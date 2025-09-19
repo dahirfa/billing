@@ -4,9 +4,9 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from odoo.addons.phone_validation.tools import phone_validation
 
-class MGSBillingPartner(models.Model):
-    _name = 'mgs_billing.partner'
-    _description = 'MGS Billing Partner'
+class MGSBillingCustomer(models.Model):
+    _name = 'mgs_billing.billing_customer'
+    _description = 'Billing Customer'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "id DESC"
 
@@ -22,8 +22,6 @@ class MGSBillingPartner(models.Model):
     remarks = fields.Char(string="Remarks")
     company_id = fields.Many2one(
         'res.company', string='Company', default=lambda self: self.env.company.id)
-    type = fields.Selection(
-        [('owner', 'Owner'), ('tenant', 'Tenant')], default='owner')
     city = fields.Char(tracking=True)
     street = fields.Char(tracking=True)
     street2 = fields.Char(tracking=True)
@@ -36,15 +34,15 @@ class MGSBillingPartner(models.Model):
         [('individual', 'Individual'), ('company', 'Company')], default='individual')
 
     property_ids = fields.One2many(
-        'mgs_billing.property', 'owner_id', string="Properties")
+        'mgs_billing.property', 'billing_customer_id', string="Properties")
     active = fields.Boolean(
     default=True
     )
     def write(self, vals):
-        res = super(MGSBillingPartner, self).write(vals)
+        res = super(MGSBillingCustomer, self).write(vals)
         partner_obj = self.env['res.partner']
         domain = [('is_tenancy', '=', True),
-                  ('customer_id', '=', self.id),
+                  ('billing_customer_id', '=', self.id),
                   ('active', '=', True)]
         partner_id = partner_obj.search(domain, limit=1)
         if partner_id:
@@ -53,10 +51,6 @@ class MGSBillingPartner(models.Model):
                 name = self.name
             if partner_id.property_id:
                 name += ' - ' + partner_id.property_id.name
-            if not name:
-                partner_id.billing_name = None
-            else:
-                partner_id.billing_name = name
             partner_obj.search(domain, limit=1).name = name
         return res
 
@@ -64,13 +58,13 @@ class MGSBillingPartner(models.Model):
 
     def unlink(self):
         reading_ids = self.env['mgs_billing.reading'].search(
-            [('billing_account_id.customer_id', 'in', self.ids)])
+            [('billing_account_id.billing_customer_id', 'in', self.ids)])
         ba_ids = self.env['res.partner'].search(
-            [('customer_id', 'in', self.ids)])
+            [('billing_customer_id', 'in', self.ids)])
         if reading_ids or ba_ids:
             raise UserError(
                 "You cannot delete partner which has reading history.")
-        return super(MGSBillingPartner, self).unlink()
+        return super(MGSBillingCustomer, self).unlink()
 
 
         

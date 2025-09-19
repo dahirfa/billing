@@ -1,78 +1,20 @@
 <odoo>
-  <record id="customer_create_wizard" model="ir.ui.view">
-    <field name="name">mgs_billing_addons.customer.wizard.form</field>
-    <field name="model">mgs_billing_addons.customer.wizard</field>
+
+  <record id="create_billing_customer_inherit" model="ir.ui.view">
+    <field name="name">model.name.view.form.inherit</field>
+    <field name="model">mgs_billing.customer.wizard</field>
+    <field name="inherit_id" ref="mgs_billing.customer_create_wizard"/>
     <field name="arch" type="xml">
-      <form string="Collect">
-        <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;avatar_128&quot;}"/>
-        <group string="Personal Info">
-          <group>
-            <field name="name" required="1"/>
-            <field name="mobile" required="1"/>
-            <field name="phone"/>
-
-            <field name="existing_customer"/>
-            <field name="customer_id" options="{'no_create': True}" invisible="not existing_customer" required="existing_customer"/>
-          </group>
-
-          <group>
-            <field name="email"/>
-            <field name="ref_name"/>
-            <field name="ref_mobile"/>
-
-          </group>
-        </group>
-
-        <group string="Address &amp; Other Info">
-          <group>
-            <span class="o_form_label o_td_label" name="address_name">
-              <b>Address</b>
-            </span>
-            <div class="o_address_format">
-              <field name="street" placeholder="Street..." class="o_address_street" required="1"/>
-              <field name="street2" placeholder="Street 2..." class="o_address_street"/>
-              <field name="city" placeholder="City" class="o_address_city"/>
-              <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}" required="1" context="{'country_id': country_id, 'default_country_id': country_id}"/>
-              <field name="zone_id" options="{'no_create': True}" placeholder="Zone" class="o_address_city" required="1"/>
-              <field name="country_id" required="1" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
-            </div>
-          </group>
-
-          <group>
-            <field name="property_type_id" required="1"/>
-            <field name="product_id" required="1" options="{'no_create': True}"/>
-            <field name="initial_meter" required="1"/>
-            <field name="customer_type" required="1"/>
-            <field name="technician"/>
-            <field name="connection_date" required="1"/>
-          </group>
-
-
-          <group name="MISC INFO" string="MISC INFO">
+      
+      <xpath expr="//form" position="inside">
+           <group name="MISC INFO" string="MISC INFO">
             <field name="pipe_extention" string='Nooca Tuubada Biyaha Laga Qabanaayo' />
             <field name="pipe_type" string="Nooca Tuubada La Jiidaayo" />
             <field name="meter_category" string="Nooca Saacada" />
           </group>
-
-
-
-        </group>
-
-
-        <footer>
-          <button string="Proceed" name="action_post" type="object" default_focus="1" class="btn-primary"/>
-          <button string="Cancel" class="btn-default" special="cancel"/>
-        </footer>
-      </form>
+      </xpath>
+      
     </field>
-  </record>
-
-  <record id="create_customer_wiz_action" model="ir.actions.act_window">
-    <field name="name">Create Customer</field>
-    <field name="res_model">mgs_billing_addons.customer.wizard</field>
-    <field name="type">ir.actions.act_window</field>
-    <field name="view_id" ref="customer_create_wizard"/>
-    <field name="target">new</field>
   </record>
 
 

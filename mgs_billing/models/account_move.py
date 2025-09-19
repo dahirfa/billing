@@ -26,3 +26,18 @@ class AccountMove(models.Model):
             if r.reading_id and 'allow_action' not in self.env.context:
                 raise UserError("Billing Invoices can be modified from the 'Utility' reading module only!")
         return res
+    
+    
+    def get_mgs_partner_prev_balance(self, partner_id=None, date=fields.Date.today()):
+        params = [str(partner_id), 'asset_receivable', date]
+        query = """
+                SELECT COALESCE(sum(debit - credit), 0)
+                FROM account_move_line aml
+                LEFT JOIN account_account as aa ON aml.account_id=aa.id
+                WHERE aml.partner_id = %s
+                AND aa.account_type = %s
+                AND aml.date < %s
+                AND parent_state = 'posted' """
+        self.env.cr.execute(query, tuple(params))
+        data = self.env.cr.fetchone() or 0.0
+        return data[0]

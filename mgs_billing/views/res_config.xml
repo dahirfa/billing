@@ -7,149 +7,105 @@
     <field name="arch" type="xml">
       <xpath expr="//form" position="inside">
         <!-- <div class="app_settings_block" data-string="Billing" string="Billing" data-key="mgs_billing"> -->
-        <app data-string="mgs_billing" string="Billing" name="mgs_billing" >
-            <h2 name="mgs_billing">Billing</h2>
-            <div class="row mt16 o_settings_container">
-              <!-- Journal-->
+        <app data-string="mgs_billing" string="Billing" name="mgs_billing">
 
-               <div class="col-12 col-lg-6 o_setting_box" id="sale_config_online_confirmation_sign">
-                  <div class="o_setting_left_pane">
-                  </div>
-                  <div class="o_setting_right_pane">
-                      <label for="mgs_billing_if_its_less_than"/>
-                      <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
-                      <div class="text-muted">
-                          If it's less than ____ Make Rate ____
-                      </div>
-                      <field name="mgs_billing_if_its_less_than"/>
-                      <field name="mgs_billing_make_rate"/>
-                  </div>
+          <block title="Billing Validation">
+            <setting string="Default Price if Reading is less Then X">
+              <div class="text-muted">
+              If it's less than ____ Make Rate ____
               </div>
-            </div> <!-- Journal & Location-->
-            
-            
-            
-            <div class="row mt16 o_settings_container">
+              <field name="mgs_billing_if_its_less_than"/>
+              <field name="mgs_billing_make_rate"/>
+            </setting>
 
-              <div class="col-12 col-lg-6 o_setting_box" id="bhnm">
-                <div class="o_setting_left_pane">
-                </div>
 
-                <div class="o_setting_right_pane">
-                  <span class="o_form_label">Reading Restriction</span>
-
-                  <div class="text-muted" invisible="max_above_avg == 0.0">
-                    All Readings above <field name="max_above_avg" widget="percentage" readonly="1"/> <br/>than Average
-                  </div>
-
-                  <div class="text-muted" invisible="max_under_avg == 0.0">
-                    All Readings under <field name="max_under_avg" widget="percentage" readonly="1"/> <br/>than Average
-                  </div>
-
-                  <div class="text-muted" invisible="max_above_avg == 0.0 and max_under_avg == 0.0">
-                    Will go through confirmation
-                  </div>
-                    <br/>
-                    <label for="max_above_avg"/>
-                    <field name="max_above_avg" widget="percentage"/>
-
-                    <label for="max_under_avg"/>
-                    <field name="max_under_avg" widget="percentage"/>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-6 o_setting_box" id="global_seq">
-                <div class="o_setting_left_pane">
-                  <field name="mgs_billing_global_seq"/>
-                </div>
-                <div class="o_setting_right_pane">
-                  <label for="mgs_billing_global_seq"/>
-                  <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
-                  <div class="text-muted">
-                      Use a global sequence of all properties
-                  </div>
-                  <field name="mgs_billing_global_seq_id" options="{'no_create': True}" invisible="not mgs_billing_global_seq" required="mgs_billing_global_seq"/>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-6 o_setting_box" id="sale_config_online_confirmation_sign">
-                <div class="o_setting_left_pane">
-                </div>
-                <div class="o_setting_right_pane">
-                  <label for="mgs_extra_service_ids"/>
-                  <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
-                  <div class="text-muted">
-                      Billing Invoice Extra Services
-                  </div>
-                  <field name="mgs_extra_service_ids" options="{'no_create': True}" widget="many2many_tags"/>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-6 o_setting_box" id="sale_config_online_confirmation_sign">
-                <div class="o_setting_left_pane">
-                </div>
-                <div class="o_setting_right_pane">
-                  <label for="billing_period_start" string="Billing periods"/>
-                  <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
-                  <div class="text-muted">
+            <setting string="Select Billing Period">
+              <div class="text-muted">
                       Billing Period From ___ To ____
-                  </div>
-                      <field name="billing_period_start"/>
-                      <field name="billing_period_end"/>
-                </div>
+              </div>
+              <field name="billing_period_start"/>
+              <field name="billing_period_end"/>
+            </setting>
+
+
+
+            <setting string="Restrict Unusual Reading">
+              <div class="text-muted" invisible="max_above_avg == 0.0">
+                    All Readings above <field name="max_above_avg" widget="percentage" readonly="1"/>
+              <br/>
+                than Average
             </div>
 
-            <div class="col-12 col-lg-6 o_setting_box" id="config_allow_reg_date">
-                <div class="o_setting_left_pane">
-                  <field name="is_allow_reg_date" />
-                </div>
-                <div class="o_setting_right_pane">
-                  <label for="allowed_reg_date" string="Property Registeration Date"/>
-                  <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
-                  <div class="text-muted">
+            <div class="text-muted" invisible="max_under_avg == 0.0">
+                    All Readings under <field name="max_under_avg" widget="percentage" readonly="1"/>
+            <br/>
+          than Average
+          </div>
+
+          <div class="text-muted" invisible="max_above_avg == 0.0 and max_under_avg == 0.0">
+                    Will go through confirmation
+          </div>
+          <br/>
+          <label for="max_above_avg"/>
+          <field name="max_above_avg" widget="percentage"/>
+
+          <label for="max_under_avg"/>
+          <field name="max_under_avg" widget="percentage"/>
+        </setting>
+
+
+
+        <setting string="Property Registeration Date">
+          <div class="o_setting_left_pane">
+            <field name="is_allow_reg_date" />
+          </div>
+
+          <div>
+            <label for="allowed_reg_date" string="Property Registeration Date"/>
+            <div class="text-muted">
                       Allowed Registeration Date
-                  </div>
-                      <field name="allowed_reg_date" invisible="is_allow_reg_date!=True"/>
-                </div>
             </div>
+            <field name="allowed_reg_date" invisible="is_allow_reg_date!=True"/>
+          </div>
+        </setting>
 
-            <div class="col-12 col-lg-6 o_setting_box" id="config_allow_reg_date">
-                <div class="o_setting_left_pane">
-                </div>
-                <div class="o_setting_right_pane">
-                  <label for="mgs_plan_categ_id" string="Plan Category"/>
-                  <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."/>
-                  <div class="text-muted">
-                      Plan Category
-                  </div>
-                      <field name="mgs_plan_categ_id" options="{'no_create': True}"/>
-                </div>
-            </div>
-            
-
-            </div>
-          <!-- </div> -->
-        </app>
-      </xpath>
-    </field>
-  </record>
-
-  <record id="mgs_billing_config_action" model="ir.actions.act_window">
-    <field name="name">Settings</field>
-    <field name="type">ir.actions.act_window</field>
-    <field name="res_model">res.config.settings</field>
-    <field name="view_mode">form</field>
-    <field name="target">inline</field>
-    <field name="context">{'module' : 'mgs_billing'}</field>
-  </record>
+      </block>
 
 
-   <record id="mgs_billing_config_action_menu" model="ir.actions.act_window">
-            <field name="name">Settings</field>
-            <field name="res_model">res.config.settings</field>
-            <field name="view_mode">form</field>
-            <field name="target">inline</field>
-            <field name="context">{'module' : 'mgs_billing', 'bin_size': False}</field>
-    </record>
+      <block title="Default Billing Values">
+        <setting string="Billing Invoice Extra Services">
+          <field name="mgs_extra_service_ids" options="{'no_create': True}" widget="many2many_tags"/>
+        </setting>
+
+
+        <setting string="Billing Plan Product Category">
+          <field name="mgs_plan_categ_id" options="{'no_create': True}"/>
+        </setting>
+      </block>
+
+
+
+    </app>
+  </xpath>
+</field>
+</record>
+
+<record id="mgs_billing_config_action" model="ir.actions.act_window">
+<field name="name">Settings</field>
+<field name="type">ir.actions.act_window</field>
+<field name="res_model">res.config.settings</field>
+<field name="view_mode">form</field>
+<field name="target">inline</field>
+<field name="context">{'module' : 'mgs_billing'}</field>
+</record>
+
+
+<record id="mgs_billing_config_action_menu" model="ir.actions.act_window">
+<field name="name">Settings</field>
+<field name="res_model">res.config.settings</field>
+<field name="view_mode">form</field>
+<field name="target">inline</field>
+<field name="context">{'module' : 'mgs_billing', 'bin_size': False}</field>
+</record>
 
 </odoo>

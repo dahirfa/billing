@@ -1,0 +1,33 @@
+<odoo>
+  <record id="crm_mgs_billing_inheirt" model="ir.ui.view">
+    <field name="name">crm.mg.billing.form.inehrit</field>
+    <field name="model">crm.lead</field>
+    <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button invisible="property_id" name="%(mgs_billing.create_customer_wiz_action)d" string="Create Billing Customer" type="action" class="btn-primary"/>
+      </xpath>
+
+
+      <xpath expr="//field[@name='phone']" position="replace">
+        <field name="phone" widget="phone" string="Owner's Phone" readonly="property_id" />
+      </xpath>
+  
+      <xpath expr="//field[@name='partner_id']" position="attributes">
+        <attribute name="readonly">property_id</attribute>
+      </xpath>
+
+
+      <xpath expr="//field[@name='lost_reason_id']" position="before">
+
+        <field name="mobile" widget="phone" readonly="property_id"/>
+        <field name="street" string="Address" readonly="property_id"/>
+        <field name="property_type_id" readonly="property_id"/>
+        <field name="zone_id" string="Zone" options="{'no_create': True}" readonly="property_id"/>
+        <field name="property_id" readonly="1" string="House#" options="{'no_create': True}"/>
+        <field name="billing_customer_id" readonly="1" string="Billing Customer" options="{'no_create': True}"/>
+        <field name="hide_create_customer_btn" invisible="1"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

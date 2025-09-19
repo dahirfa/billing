@@ -30,42 +30,36 @@ class MgsSaleReport(models.AbstractModel):
         return result
 
     @api.model
-    def _lines(self, date_from, date_to, zone_id, collector_ids, company_id):
-        
-        # TODO: Fix this Collector Condition
-        
+    def _lines(self, date_from, date_to, zone_id, collector_id, company_id):
         params = []
         lines = []
         query = """SELECT
         row_number() over (order by mbz.id DESC) as id,
         mbz.id AS zone_id,
         mbz.name AS zone_name,
-        -- mbz.collector_id AS collector_id,
-        '' AS collector_id,
-        -- rp.name AS collector_name,
-        '' AS collector_name,
+        mbz.collector_id AS collector_id,
+        rp.name AS collector_name,
         mbz.company_id AS company_id,
         COALESCE(mbz.active_counter, 0) AS  property_count
         FROM mgs_billing_zone AS mbz
         LEFT JOIN mgs_billing_reading mbr ON mbr.zone_id=mbz.id 
-        -- LEFT JOIN res_partner rp on mbz.collector_id=rp.id
+        LEFT JOIN res_partner rp on mbz.collector_id=rp.id
         WHERE mbz.counter > 0
         """
 
         if zone_id:
             params.append(zone_id)
-            query += " AND mbz.id = %s"
+            query += " AND mbz.id = %s "
 
-        # if collector_ids:
-        #     params.append(collector_ids)
-        #     query += " AND mbz.collector_id = %s"
+        if collector_id:
+            params.append(collector_id)
+            query += " AND mbz.collector_id = %s "
 
         if company_id:
             params.append(company_id)
-            query += " AND mbz.company_id = %s"
+            query += " AND mbz.company_id = %s "
 
-        # query += "GROUP BY mbz.id, mbz.collector_id,mbz.company_id,rp.name"
-        query += "GROUP BY mbz.id, mbz.company_id,rp.name"
+        query += "GROUP BY mbz.id, mbz.collector_id,mbz.company_id,rp.name"
 
         self.env.cr.execute(query, tuple(params))
         res = self.env.cr.dictfetchall()
@@ -94,7 +88,7 @@ class MgsSaleReport(models.AbstractModel):
             'date_from': data['form']['date_from'],
             'date_to': data['form']['date_to'],
             'zone_id': data['form']['zone_id'],
-            'collector_ids': data['form']['collector_ids'],
+            'collector_id': data['form']['collector_id'],
             'company_id': self.env['res.company'].search([('id', '=', data['form']['company_id'][0])]),
             'lines': self._lines,
         }

@@ -34,9 +34,8 @@ class MgsRPercentageReport(models.TransientModel):
                              required=True, default=str(date.today().month))
 
     zone_id = fields.Many2one('mgs_billing.zone', required=False)
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one('res.partner', string='Collector', domain=[('is_collector', '=', True)])
+    
     datas = fields.Binary('File', readonly=True)
     datas_fname = fields.Char('Filename', readonly=True)
     company_id = fields.Many2one(
@@ -52,8 +51,7 @@ class MgsRPercentageReport(models.TransientModel):
                 'date_from': "%s-%s-%s" % (year, month, self.env.company.billing_period_start),
                 'date_to': "%s-%s-%s" % (next_year, str(next_month), self.env.company.billing_period_end),
                 'zone_id': [self.zone_id.id, self.zone_id.name],
-                # 'collector_id': [self.collector_id.id, self.collector_id.name],
-                'collector_ids': self.collector_ids.ids,
+                'collector_id': [self.collector_id.id, self.collector_id.name],
                 'company_id': [self.company_id.id, self.company_id.name],
             },
         }
@@ -81,7 +79,7 @@ class MgsRPercentageReport(models.TransientModel):
         next_year = str(int(year) + 1) if month == 12 else year
         date_from = "%s-%s-%s" % (year, month, self.env.company.billing_period_start)
         date_to = "%s-%s-%s" % (next_year, str(next_month), self.env.company.billing_period_end)
-        lines = collection_report_obj._lines(date_from, date_to, self.collector_ids.ids,  self.zone_id.id, self.env.company.id)
+        lines = collection_report_obj._lines(date_from, date_to, self.collector_id.id,  self.zone_id.id, self.env.company.id)
         fp = BytesIO()
         workbook = xlsxwriter.Workbook(fp)
         filename = '% Of HHS Billed'

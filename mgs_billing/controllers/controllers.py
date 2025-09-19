@@ -14,11 +14,8 @@ _logger = logging.getLogger(__name__)
 class PropertyInfoApi(http.Controller):
     def _query_collection(self, collector_id):
         billing_period_start = request.env.company.billing_period_start
-        # billing_period_end  = request.env.company.billing_period_end
         report_obj = request.env['mgs.collection.report']
-        # current_date = date.today()
-        # last_month = current_date + \
-        #     relativedelta(months=-1, day=billing_period_start)
+     
         month = date.today().month
         next_month = month + 1 if month != 12 else 1
         start = request.env.company.billing_period_start
@@ -27,10 +24,7 @@ class PropertyInfoApi(http.Controller):
             date.today(), start, end)
         date_from = dates[0]
         date_to = date.today()
-        # date_to = dates[1]
-        # date_from = date.today().replace(day=request.env.company.billing_period_start)
-        # date_to = date.today().replace(
-        #     month=next_month, day=request.env.company.billing_period_end)
+       
         allowed_reg_date = False
         if request.env.company.is_allow_reg_date:
             allowed_reg_date = dates[0].replace(day=request.env.company.allowed_reg_date)
@@ -41,24 +35,7 @@ class PropertyInfoApi(http.Controller):
         _where += " AND mbp.meter_type != 'smart' "
         return _from+_where
 
-    # def get_billed_unbilled(self, report_type, collector_id):
-    #     # query = request.env['mgs.collection.report'].sudo().query_execute(fields.Date.today().replace(day=1), fields.Date.today(), None, collector_id, None)
-
-    #     if 'Dashboard' not in report_type:
-    #         select =  "SELECT rp.id as billing_account_id"
-
-    #         request.env.cr.execute(select + self._query_collection())
-    #         return request.env.cr.fetchall()
-
-    #     query = query.replace("""SELECT
-    #         mbp.id AS id, rp.id AS billing_account_id,
-    #         rp.display_name AS display_name, mbp.id AS property_id,
-    #         mbp.name AS property_name, mbp.zone_id AS zone_id,
-    #         mbz.name AS zone_name, mbp.company_id AS company_id,
-    #         COALESCE(sum(CASE WHEN aa.account_type = 'asset_receivable' THEN aml.debit-aml.credit else 0.0 END), 0) balance""", "SELECT COUNT(*)")
-
-    #     request.env.cr.execute(query)
-    #     return request.env.cr.fetchone()
+  
 
     @http.route('/billingApi/properties/dashboard/', type='json', auth='user')
     def Get_dashboard(self):
@@ -139,7 +116,7 @@ class PropertyInfoApi(http.Controller):
 
         partner_obj = request.env['res.partner']
         domain = [('property_id.name', '=', kw.get("id").upper()),
-                  ('property_id.zone_id.collector_ids.ids', 'in', collector_id), 
+                  ('property_id.zone_id.collector_id', '=', collector_id), 
                 #!  ('property_id.state', '=', 'connected'),
                   ('property_id.meter_type', '!=', 'smart')]
         
@@ -216,20 +193,7 @@ class PropertyInfoApi(http.Controller):
         else:
             last_reading = property_id.initial_meter
         return last_reading
-        # params = [str(property_id)]
-        # query = """
-        # SELECT mbmreading_on_date,mbmr.property_id
-        # FROM mgs_billing_meter_reading mbmr
-        # WHERE mbmr.property_id = %s
-        # AND mbmr.state = 'posted'
-        # ORDER BY mbmr.date, mbmr.id DESC
-        # LIMIT 1"""
-
-        # http.request.cr.execute(query, tuple(params))
-        # res = http.request.cr.dictfetchall()
-
-        # for r in res:
-        #     return r['reading_on_date']
+       
 
     @http.route('/billingApi/createMeterReading/', type='json', auth='user', methods=['POST'], csrf=False)
     def createMeterReading(self, **kw):        
@@ -251,7 +215,7 @@ class PropertyInfoApi(http.Controller):
         collector_id = self.get_user_partner_id(request.session.uid)
         
         domain = [('name', '=', kw.get("property_id").upper()),
-                  ('zone_id.collector_ids.ids', 'in', collector_id),
+                  ('zone_id.collector_id', '=', collector_id),
                 #!  ('state', '=', 'connected'),
                   ('meter_type', '!=', 'smart')]
         

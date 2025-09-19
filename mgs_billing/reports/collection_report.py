@@ -209,9 +209,8 @@ class CollectionReport(models.Model):
         if zone_id:
             result += " AND mbp.zone_id = %s" % zone_id
 
-        # TODO: Fix this Collector Condition
-        # if collector_id:
-        #     result += " AND mbz.collector_ids in %s" % [collector_id]
+        if collector_id:
+            result += " AND mbz.collector_id = %s" % collector_id
 
         if company_id:
             result += " AND mbp.company_id = %s" % company_id

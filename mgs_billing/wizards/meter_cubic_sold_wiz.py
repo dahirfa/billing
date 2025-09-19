@@ -26,9 +26,7 @@ class MeterCubicSoldReportWiz(models.TransientModel):
     month = fields.Selection(MONTHS, string='Month',
                              required=True, default=str(date.today().month))
     zone_id = fields.Many2one('mgs_billing.zone', required=False)
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one('res.partner', string='Collector', domain=[('is_collector', '=', True)])
 
     company_id = fields.Many2one(
         'res.company', string='Company', default=lambda self: self.env.user.company_id.id)
@@ -42,7 +40,7 @@ class MeterCubicSoldReportWiz(models.TransientModel):
         report_obj = self.env['mgs_billing.meter_cubic_sold.report']
 
         query = report_obj.query_execute(self.report_by,
-                                         date_from, date_to, self.zone_id.id, self.collector_ids.ids, self.company_id.id)
+                                         date_from, date_to, self.zone_id.id, self.collector_id.id, self.company_id.id)
         self.env.cr.execute(query)
         lines = self.env.cr.dictfetchall()
         data = {
@@ -51,8 +49,7 @@ class MeterCubicSoldReportWiz(models.TransientModel):
                 'year': self.year,
                 'month': self.month,
                 'zone_id': [self.zone_id.id, self.zone_id.name],
-                # 'collector_id': [self.collector_id.id, self.collector_id.name],
-                'collector_ids': self.collector_ids.ids,
+                'collector_id': [self.collector_id.id, self.collector_id.name],
                 'company_id': [self.company_id.id, self.company_id.name],
             },
             'lines': lines,

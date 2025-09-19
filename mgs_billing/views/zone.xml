@@ -8,7 +8,7 @@
             <list string="">
                 <field name="name"/>
                 <field name="code"/>
-                <field name="collector_ids" widget="many2many_tags_avatar"/>
+                <field name="collector_id" />
                 <field name="counter"/>
                 <field name="company_id" groups="base.group_multi_company" optional='hide'/>
             </list>
@@ -32,7 +32,7 @@
                     <group name="main">
                         <group>
                             <field name="name"/>
-                            <field name="collector_ids" widget="many2many_tags_avatar" options="{'no_create': True}"/>
+                            <field name="collector_id" options="{'no_create': True}"/>
                             <field name="partner_category_id" />
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
                         </group>

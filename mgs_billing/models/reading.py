@@ -108,9 +108,8 @@ class MGSBillingReading(models.Model):
         'mgs_billing.meter.reading', string='Reading',)
     zone_id = fields.Many2one(
         'mgs_billing.zone', related='property_id.zone_id', store=True, tracking=True)
-    # collector_id = fields.Many2one(
-        # 'res.partner', domain=[('is_collector', '=', True)], related='zone_id.collector_id', store=True)
-    collector_ids = fields.Many2many('res.partner', string='Collectors', related='zone_id.collector_ids', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one(
+        'res.partner', domain=[('is_collector', '=', True)], related='zone_id.collector_id', store=True)
 
     state = fields.Selection(
         [('draft', 'draft'), ('pending', 'Pending'), ('posted', 'Posted'), ('cancel', 'Cancelled')], default='draft', tracking=True, index=True)
@@ -202,9 +201,15 @@ class MGSBillingReading(models.Model):
         service_ids = self.env.company.mgs_extra_service_ids
 
         for rec in self:
+            
             start_date, end_date = date_utils.get_billing_start_and_end_dates(
                 rec.date, start, end)
             move_id = rec.move_id
+            
+            if rec.property_id.customer_type == 'free':
+                meter_reading_obj.create({'reading_id': rec.id})
+                rec.state = 'posted'
+            
             if not move_id:
                 post_meter_reading = meter_reading_obj.create({'reading_id': rec.id})
                 if post_meter_reading:
@@ -243,10 +248,11 @@ class MGSBillingReading(models.Model):
         lines = []
         lines.append((0, 0, {
             'product_id': product_id.id if product_id else None,
-            'name': "".join((product_id.name if product_id else None, "= (", str(current_reading), ' - ', str(last_reading), ' = ', str(difference), ")")),
+            'name': "".join((product_id.name if product_id else None, " (", str(current_reading), ' - ', str(last_reading), ' = ', str(difference), ")")),
             'discount': self.discount,
             'quantity': difference if not use_def else 1,
             'price_unit': self.rate if not use_def else self.invoice_amount,
+            'tax_ids': product_id.taxes_id.ids if not self.property_id.exclude_tax else False
 
         }))
 

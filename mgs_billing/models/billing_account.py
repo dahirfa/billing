@@ -3,31 +3,66 @@
 from odoo import models, fields, api
 from statistics import mean
 from odoo.exceptions import ValidationError
+from lxml import etree
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    # name            = fields.Char       (index=True, default='/')
+    
+    # @api.model
+    # def get_view(self, view_id=None, view_type="form", toolbar=False, submenu=False):
+    #     res = super().get_view(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
+    #     if view_type == "form":
+    #         doc = etree.XML(res['arch'])
+    #         if self._context.get('default_is_tenancy'):
+    #             for node in doc.xpath("//field[@name='mobile']"):
+    #                 node.set('string', "Tenant's Mobile")
+    #             for node in doc.xpath("//field[@name='phone']"):
+    #                 node.set('string', "Owner's Phone")
+    #         res['arch'] = etree.tostring(doc, encoding='unicode')
+    #     return res
+
+
+    @api.model
+    def _mgs_credit_search(self, operator, operand):
+        return self._asset_difference_search('asset_receivable', operator, operand)
+    
+    @api.model
+    def _mgs_debit_search(self, operator, operand):
+        return self._asset_difference_search('liability_payable', operator, operand)
+
     is_tenancy = fields.Boolean(default=False)
 
     is_collector = fields.Boolean(default=False)
-    date = fields.Date('Date', default=lambda self: fields.Date.today())
+    
     product_id = fields.Many2one('product.product', string="Plan", domain=[('is_billing_pan', '=', True)])
+         
+    billing_customer_id = fields.Many2one('mgs_billing.billing_customer', string="Billing Customer", ondelete='restrict')
     
-    
-    # owner_id = fields.Many2one('mgs_billing.partner', string="Owner", store=True, readonly=True, compute='_get_owner')
-    customer_id = fields.Many2one(
-        'mgs_billing.partner', string="Billing Customer", ondelete='restrict')
     property_id = fields.Many2one('mgs_billing.property', string="Property", ondelete='restrict')
+    
     zone_id = fields.Many2one('mgs_billing.zone', related='property_id.zone_id', store=True)
     
-    mgs_ref = fields.Char(string='Ref')
-    average_usage = fields.Float(
-        'Average Usage', compute='_compute_average_usage')
-    mgs_state = fields.Selection(
-        [('active', 'Active'), ('close', 'Closed')], default='active')
-    billing_name = fields.Char(string='Billing Name', compute='_compute_billing_name', store=True)
+    average_usage = fields.Float('Average Usage', compute='_compute_average_usage')
+    
+    
+    mgs_credit = fields.Monetary(compute='_mgs_credit_debit_get', search=_mgs_credit_search,
+        string='Total Receivable', help="Total amount this customer owes you.",
+        groups='account.group_account_invoice,account.group_account_readonly')
+    
+    
+    mgs_debit = fields.Monetary(
+        compute='_mgs_credit_debit_get', search=_mgs_debit_search, string='Total Payable',
+        help="Total amount you have to pay to this vendor.",
+        groups='account.group_account_invoice,account.group_account_readonly')
+    
+    
+    mgs_total_due = fields.Monetary(
+        compute='_mgs_credit_debit_get', string='Total Due',
+        help="Total amount due",
+        groups='account.group_account_invoice,account.group_account_readonly')
+    
     
     alternative_number = fields.Char(
         "Sender's Number",
@@ -38,6 +73,17 @@ class ResPartner(models.Model):
     reading_history_counter = fields.Integer(string='Reading History', compute='compute_counter')
     
     payment_counter = fields.Integer(string='Customer Payments', compute='compute_counter')
+    
+    
+    def name_get(self):
+        result = []
+        for record in self:
+            name = record.name
+            if record.property_id:
+                name = " | ".join((name, record.property_id.name))
+            result.append((record.id, name))
+        return result
+    
     
     @api.constrains("mobile", "country_id")
     def _check_mobile_number(self):
@@ -83,81 +129,78 @@ class ResPartner(models.Model):
                         "The phone number must have exactly 9 digits after the country code."
                     )
 
-
     @api.constrains('property_id')
     def _check_property_id(self):
         for record in self:
             if self.search_count([('active', '=', True), ('property_id.id', '=', record.property_id.id)]) > 1:
-                raise ValidationError(
-                    "This property has an active billing account!.")
+                raise ValidationError("This property has an active billing account!.")
+                
+    
+    def get_partner_balance(self, account_type, id, debit_credit):
+        partner_balance = """
+                            select COALESCE(sum(%s""" % debit_credit + """), 0)
+                            from account_move_line as aml
+                            left join account_account as aa on aml.account_id=aa.id
+                            where aml.partner_id = %s""" % str(id) + """
+                            and aa.account_type in %s""" % account_type + """
+                            and parent_state in ('posted')"""
+        self.env.cr.execute(partner_balance)
+        contemp = self.env.cr.fetchone()
+        if contemp is not None:
+            result = contemp[0] or 0.0
+        return result
 
-    @api.onchange('property_id')
-    def _onchange_property_id(self):
-        if self.property_id:
-            self.property_product_pricelist = self.property_id.property_type_id.pricelist_id
-            self.product_id = self.property_id.product_id.id
-            self.category_id = None
-            self.category_id = [(4,self.property_id.zone_id.partner_category_id.id)]
-
-    @api.onchange('billing_name')
-    def _onchange_billing_name(self):
-        if self.billing_name:
-            self.name = self.billing_name
-
-
-    @api.depends('property_id', 'customer_id')
-    def _compute_billing_name(self):
-        for record in self:
-            name = None
-            if record.customer_id:
-                name = record.customer_id.name
-            if record.property_id:
-                name += ' - ' + record.property_id.name
-            if not name:
-                record.billing_name = None
-            else:
-                record.billing_name = name
+    @api.depends_context('company')
+    def _mgs_credit_debit_get(self):
+        if not self.ids:
+            self.mgs_debit = False
+            self.mgs_credit = False
+            return
+        for r in self:
+            r.mgs_debit = r.get_partner_balance("('liability_payable')", r.id, 'aml.credit - aml.debit')
+            r.mgs_credit = r.get_partner_balance("('asset_receivable')", r.id, 'aml.debit - aml.credit')
+            r.mgs_total_due = r.get_partner_balance("('liability_payable', 'asset_receivable')", r.id, 'aml.debit - aml.credit')
 
     @api.depends('property_id.meter_reading_ids', 'property_id.meter_reading_ids.reading_difference')
     def _compute_average_usage(self):
         for r in self:
-            differences = r.property_id.meter_reading_ids.filtered(
-                lambda x: x.state == 'posted' and x.billing_account_id.id == r.id).mapped('reading_difference')
+            differences = r.property_id.meter_reading_ids.filtered(lambda x: x.state == 'posted' and x.billing_account_id.id == r.id).mapped('reading_difference')
             r.average_usage = mean(differences) if differences else 0.0
 
-    @api.onchange('is_tenancy', 'customer_id')
+
+    @api.onchange('is_tenancy', 'billing_customer_id')
     def _onchange_tenancy(self):
         # for r in self:
-        if self.is_tenancy and self.customer_id:
-            self.street = self.customer_id.street
-            self.mobile = self.customer_id.mobile
-            self.phone = self.customer_id.phone
-            self.zip = self.customer_id.zip
-            self.city = self.customer_id.city
-            self.state_id = self.customer_id.state_id.id or None
-            self.country_id = self.customer_id.country_id.id or None
+        if self.is_tenancy and self.billing_customer_id:
+            self.street = self.billing_customer_id.street
+            self.mobile = self.billing_customer_id.mobile
+            self.phone = self.billing_customer_id.phone
+            self.zip = self.billing_customer_id.zip
+            self.city = self.billing_customer_id.city
+            self.state_id = self.billing_customer_id.state_id.id or None
+            self.country_id = self.billing_customer_id.country_id.id or None
 
-    def name_get(self):
-        result = []
-        for record in self:
-            name = record.name
-            # if record.property_id:
-                # name = record.property_id.name
-            if record.property_id:
-                name = " | ".join((name, record.property_id.name))
-            result.append((record.id, name))
-        return result
+
+    @api.model
+    def _mgs_credit_search(self, operator, operand):
+        return self._asset_difference_search('asset_receivable', operator, operand)
+    
+    @api.model
+    def _mgs_debit_search(self, operator, operand):
+        return self._asset_difference_search('liability_payable', operator, operand)
+    
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
         args = args or []
         recs = self.browse()
         if name:
-            recs = self.search((args + ['|', '|', '|',
+            recs = self.search((args + ['|', '|', '|', '|',
                                         ('name', 'ilike', name),
                                         ('mobile', 'ilike', name),
+                                        ('phone', 'ilike', name),
                                         ('property_id.name', 'ilike', name),
-                                        ('customer_id.name', 'ilike', name)]), limit=limit)
+                                        ('billing_customer_id.name', 'ilike', name)]), limit=limit)
         if not recs:
             recs = self.search([('name', operator, name)] + args, limit=limit)
         return recs.name_get()
@@ -179,6 +222,7 @@ class ResPartner(models.Model):
             'domain': [('property_id', 'in', self.property_id.ids)],
             'context': {"create":False, 'search_default_posted': 1}
         }
+
 
     def action_open_reading_history(self):
         self.ensure_one()

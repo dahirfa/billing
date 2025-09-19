@@ -12,18 +12,23 @@
       parent="mgs_billing_root"
       sequence="2"/>
 
-    <menuitem
-      id="mgs_billing_transaction_partner"
-      name="Partners"
-      parent="mgs_billing_root"
-      sequence="5"
-    />
-    <menuitem
-      id="mgs_billing_property_menu"
+    <menuitem id="mgs_billing_Property_main" 
+    name="Properties" 
+    parent="mgs_billing.mgs_billing_root" 
+    sequence="5"/>
+
+    <menuitem id="mgs_billing_property_menu"
       name="Properties"
-      action="mgs_billing_property_action"
-      parent="mgs_billing_root"
-      sequence="4"/>
+      action="mgs_billing.mgs_billing_property_action"
+      parent="mgs_billing_Property_main"
+      sequence="1"/>
+
+    <menuitem id="mgs_billing_customer_menu"
+      name="Billing Customers" 
+      parent="mgs_billing_Property_main" 
+      action="mgs_billing.mgs_billing_customer_action" 
+      sequence="2" />
+
 
     <menuitem
       id="mgs_billing_tenancy_menu"
@@ -32,29 +37,16 @@
       parent="mgs_billing_root"
       sequence="3"/>
 
-    <menuitem
-      id="mgs_billing_customer_menu"
-      name="Tenants"
-      parent="mgs_billing_transaction_partner"
-      action="mgs_billing_customer_action"
-      sequence="1"
-    />
 
-    <menuitem
-      id="mgs_billing_owner_menu"
-      name="Owners"
-      parent="mgs_billing_transaction_partner"
-      action="mgs_billing_owner_action"
-      sequence="2"
-    />
-
-    <menuitem
+    <!-- <menuitem
       id="mgs_billing_guarantor_menu"
       name="Guarantors"
       parent="mgs_billing_transaction_partner"
       action="mgs_billing_guarantor_action"
       sequence="5"
-    />
+    /> -->
+
+
 <!-- configuration -->
     <menuitem
       id="mgs_billing_transaction_config"
@@ -183,11 +175,24 @@
       parent="mgs_billing_reports_root" 
       action="mgs_billing_meter_cubic_sold_zone_action" 
       sequence="7" />
+      
 
   
-      <menuitem id="menu_get_monthes_due" name="# Due Monthes" parent="mgs_billing_reports_root"
+    <menuitem id="menu_get_monthes_due" 
+      name="# Due Monthes" 
+      parent="mgs_billing_reports_root"
       action="action_get_monthes_due" />
 
-      <menuitem id="menu_property_log_report" name="Property Log" parent="mgs_billing_reports_root"
+    <menuitem id="menu_property_log_report"
+      name="Property Log" 
+      parent="mgs_billing_reports_root"
       action="mgs_billing_property_log_report_action" />
+
+
+    <menuitem id="menu_necsom_addons_calling_report" 
+      name="Calling Report" 
+      parent="mgs_billing.mgs_billing_reports_root" 
+      action="action_calling_report_report" 
+      sequence="1" />
+
 </odoo>

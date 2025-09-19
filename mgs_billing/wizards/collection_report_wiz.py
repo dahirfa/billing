@@ -76,9 +76,8 @@ class MgsRecivablesReport(models.TransientModel):
     date_from = fields.Date(default=date.today().replace(day=1))
     date_to = fields.Date(default=date.today())
     zone_id = fields.Many2one('mgs_billing.zone', required=False)
-    # collector_id = fields.Many2one('res.partner', string='Collector', domain=[
-    #                                ('is_collector', '=', True)])
-    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one('res.partner', string='Collector', domain=[
+                                   ('is_collector', '=', True)])
     report_type = fields.Selection([('Billed', 'Billed'), ('Unbilled', 'Unbilled')],
                                    string='Report Type', required=True, default='Unbilled')
     company_id = fields.Many2one(
@@ -90,20 +89,13 @@ class MgsRecivablesReport(models.TransientModel):
 
     def action_view_report(self, page=1, limit=50):
         collection_report_obj = self.env['mgs.collection.report']
-        # next_month = int(self.month) + 1 if self.month != '12' else 1,
-
-        # start = request.env.company.billing_period_start
-        # end = request.env.company.billing_period_end
-        # last_day = calendar.monthrange(int(self.year), int(self.month))[1]
-        # date = '%s-%s-%s' % (self.year, self.month, last_day)
-        # date = datetime.strptime(date, "%Y-%m-%d").date()
-        # dates = date_utils.get_billing_start_and_end_dates(
-        #     date, start, end)
-        # date_from = dates[0]
-        # date_to = dates[1]
+       
         date_from = self.date_from
         date_to = self.date_to
-        allowed_reg_date = self.date_from.replace(day=self.env.company.allowed_reg_date)
+        allowed_reg_date = self.date_from
+        is_allow_reg_date = self.env.company.is_allow_reg_date
+        if is_allow_reg_date:
+            allowed_reg_date = self.date_from.replace(day=self.env.company.allowed_reg_date)
         user_id = self.env.user.id
         select = collection_report_obj._select() + ", %s as user_id" % user_id
         group = collection_report_obj._group_by() + ", user_id"
@@ -112,7 +104,7 @@ class MgsRecivablesReport(models.TransientModel):
 
         query = """
         %s %s %s %s 
-        """ % (select, collection_report_obj._from(date_from, date_to), collection_report_obj._where(self.zone_id.id, self.collector_ids.ids, self.company_id.id, allowed_reg_date), group)
+        """ % (select, collection_report_obj._from(date_from, date_to), collection_report_obj._where(self.zone_id.id, self.collector_id.id, self.company_id.id, allowed_reg_date), group)
 
         if self.report_type == 'Billed':
             query = query.replace('mbr.id is null', 'mbr.id is NOT null')
