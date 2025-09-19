@@ -35,8 +35,9 @@ class MgsRecivablesReport2(models.Model):
     company_id = fields.Many2one(
         'res.company', string='Company')
     zone_name = fields.Char()
-    collector_id = fields.Many2one(
-        'res.partner', string='Collector_id')
+    # collector_id = fields.Many2one(
+    #     'res.partner', string='Collector_id')
+    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
     collector_name = fields.Char(string='Collector')
     initial_balance = fields.Float('Initial Balance')
     invoiced = fields.Float('Invoiced')
@@ -70,8 +71,9 @@ class MgsRecivablesReport(models.TransientModel):
     #                          required=True, default=str(date.today().month))
 
     zone_id = fields.Many2one('mgs_billing.zone', required=False)
-    collector_id = fields.Many2one(
-        'res.partner', string='Collector', domain=[('is_collector', '=', True)])
+    # collector_id = fields.Many2one(
+    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
+    collector_ids = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
     states = fields.Selection(
         [('all', 'All'), ('posted', 'Posted')], default="all", string='Target Moves', required=True)
     company_id = fields.Many2one(
@@ -82,6 +84,12 @@ class MgsRecivablesReport(models.TransientModel):
         string='Amount', default=1, required=True)
     include_disconnected = fields.Boolean(
         string='Include Disconnected', default=False)
+
+
+
+    # TODO: Fix this Collector Condition
+
+
 
     def drop_records(self, user_id):
         query = "DELETE FROM mgs_billing_receivables_wizard_line WHERE user_id=%s" % user_id
@@ -110,13 +118,15 @@ class MgsRecivablesReport(models.TransientModel):
         report_obj = self.env['mgs_billing.receivables.report']
         move_states = " ('posted') "if self.states == 'posted' else " ('draft','posted') "
         zone_clause = " AND mbz.id = %s" % self.zone_id.id if self.zone_id else " "
-        collector_clause = " AND mbz.collector_id = %s" % self.collector_id.id if self.collector_id else " "
+        # collector_clause = " AND mbz.collector_id = %s" % self.collector_id.id if self.collector_id else " "
         company_id_clause = " AND aml.company_id = %s " % self.company_id.id if self.company_id else " "
         greater_less_clause = "> %s" % self.greater_less_amount if self.greater_less == 'Greater' else "< %s" % self.greater_less_amount
         having = "HAVING COALESCE(sum (aml.debit-aml.credit), 0.0) " + greater_less_clause
             
+        # query = report_obj.query_execute(having, date_from, date_to, move_states, "".join(
+        #     (zone_clause, collector_clause, company_id_clause)))
         query = report_obj.query_execute(having, date_from, date_to, move_states, "".join(
-            (zone_clause, collector_clause, company_id_clause)))
+            (zone_clause, company_id_clause)))
         query = query.replace('rp.id AS billing_account_id',
                               'rp.id AS billing_account_id, %s as user_id' % user_id)
 

@@ -108,8 +108,10 @@ class MGSBillingReading(models.Model):
         'mgs_billing.meter.reading', string='Reading',)
     zone_id = fields.Many2one(
         'mgs_billing.zone', related='property_id.zone_id', store=True, tracking=True)
-    collector_id = fields.Many2one(
-        'res.partner', domain=[('is_collector', '=', True)], related='zone_id.collector_id', store=True)
+    # collector_id = fields.Many2one(
+        # 'res.partner', domain=[('is_collector', '=', True)], related='zone_id.collector_id', store=True)
+    collector_ids = fields.Many2many('res.partner', string='Collectors', related='zone_id.collector_ids', domain=[('is_collector', '=', True)], tracking=True)
+
     state = fields.Selection(
         [('draft', 'draft'), ('pending', 'Pending'), ('posted', 'Posted'), ('cancel', 'Cancelled')], default='draft', tracking=True, index=True)
     payment_state = fields.Selection(

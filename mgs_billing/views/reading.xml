@@ -133,7 +133,7 @@
           <filter string="Payment Status" name="payment_state" context="{'group_by': 'payment_state'}"/>
           <filter string="Billing Account" name="billing_account_id" context="{'group_by': 'billing_account_id'}"/>
           <filter string="Zone" name="zone_id" context="{'group_by': 'zone_id'}"/>
-          <filter string="Collector" name="collector_id" context="{'group_by': 'collector_id'}"/>
+          <filter string="Collector" name="collector_ids" context="{'group_by': 'collector_ids'}"/>
         </group>
       </search>
     </field>

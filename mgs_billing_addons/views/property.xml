@@ -30,7 +30,11 @@
             <field name="meter_category" string="Nooca Saacada" />
 =======
             <field name="old_house_no" />
+<<<<<<< HEAD
 >>>>>>> 803800d (Removed Suspend state from properties and added old house # field)
+=======
+>>>>>>> f0fc47fd3dcb9b64864c1b82b739271205eb7fdf
+>>>>>>> f5b44515ff09518e98b694d7ff91d6b66466e7f1
           </group>
 
           <group>
