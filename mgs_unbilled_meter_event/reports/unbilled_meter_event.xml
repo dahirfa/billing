@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="unbilled_event_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Title</h2>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+
+    <record id="action_meter_event_report" model="ir.actions.report">
+        <field name="name">Unbilled Meter Event</field>
+        <field name="model">mgs.unbilled.meter.event.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_unbilled_meter_event.unbilled_event_report</field>
+        <field name="report_file">mgs_unbilled_meter_event.unbilled_event_report</field>
+        <field name="print_report_name">'%s - %s' % (object.date_from,object.date_to) </field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

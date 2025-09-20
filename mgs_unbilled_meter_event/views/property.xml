@@ -25,6 +25,7 @@
     <field name="arch" type="xml">
       <list string="Unbilled Meter Event">
         <field name="property_id"/>
+        <field name="zone_id"/>
         <field name="date"/>
         <field name="reason_id" optional="show"/>
         <field name="user_id"/>

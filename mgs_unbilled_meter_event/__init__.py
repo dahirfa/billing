@@ -2,3 +2,5 @@
 
 from . import controller
 from . import model
+from . import reports
+from . import wizards

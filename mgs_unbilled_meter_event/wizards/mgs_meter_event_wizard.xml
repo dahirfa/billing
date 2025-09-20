@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View mgs.meter.event.wizard form -->
+    <record id="view_mgs_meter_event_wizard_form" model="ir.ui.view">
+        <field name="name">view.mgs.meter.event.wizard.form</field>
+        <field name="model">mgs.unbilled.meter.event.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Mgs Meter Event Wizard">
+                <group>
+                    <group>
+                        <field name="date_from" required="1"/>
+                        <field name="zone_id" />
+                        <field name="reason_id" />
+
+                    </group>
+
+                    <group>
+                        <field name="date_to" required="1" />
+                        <field name="collector_id" />
+                    </group>
+
+                    <footer>
+                        <button name="get_meter_event_wizard_data" type="object" string="View" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+
+
+                </group>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Action mgs.unbilled.meter.event.wizard -->
+    <record id="action_mgs_meter_event_wizard" model="ir.actions.act_window">
+        <field name="name">Unbilled Meter Event</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mgs.unbilled.meter.event.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="mgs_billing_receivables_report_menu" name="Unbilled Meter Event" parent="mgs_billing.mgs_billing_reports_root" action="action_mgs_meter_event_wizard" />
+
+
+</odoo>

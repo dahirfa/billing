@@ -10,6 +10,7 @@ class Mgs_Meter_Event_Blocking(models.Model):
     
     
     property_id = fields.Many2one(string="Property", comodel_name="mgs_billing.property")
+    zone_id = fields.Many2one(string="Zone", related="property_id.zone_id", comodel_name="mgs_billing.zone")
     date = fields.Date(string="Date", default=fields.Date.today())
     reason_id = fields.Many2one(string="Reason", comodel_name="mgs.meter.event.blocking.reason")
     user_id = fields.Many2one(string="Registered Collector", comodel_name="res.users")

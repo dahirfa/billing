@@ -2,9 +2,8 @@ from odoo import _, api, fields, models
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import logging
+
 _logger = logging.getLogger(__name__)
-
-
 
 
 class GetMonthesDue(models.AbstractModel):
@@ -26,14 +25,11 @@ class GetMonthesDue(models.AbstractModel):
             if (months_ago + timedelta(days=day)).month
             != (months_ago + timedelta(days=day + 1)).month
         ]
-        
-
-        # TODO: Fix this Collector Condition
 
 
         where = ""
-        # if data.get("collector_id", False):
-        #     where += " AND mbz.collector_id = %s " % data.get("collector_id")[0]
+        if data.get("collector_id", False):
+            where += " AND mbz.collector_id = %s " % data.get("collector_id")[0]
 
         if data.get("zone_id", False):
             where += " AND mbz.id = %s " % data.get("zone_id")[0]
@@ -60,7 +56,6 @@ class GetMonthesDue(models.AbstractModel):
                 LEFT JOIN res_partner srp ON am.partner_id = srp.id
                 WHERE am.state = 'posted' 
                 AND am.reading_id IS NOT NULL 
-                --AND am.invoice_date >= '%s'
                 AND am.payment_state = 'not_paid'
                 AND srp.is_tenancy = TRUE
                 GROUP BY am.partner_id
@@ -69,8 +64,7 @@ class GetMonthesDue(models.AbstractModel):
                 
                 WHERE aa.account_type = 'asset_receivable' %s
                 AND aml.parent_state = 'posted' AND rp.is_tenancy = TRUE AND lams.am_count >= %s
-                GROUP BY aml.partner_id, lams.amount, rp.complete_name, rp.mobile, mbp.name, mbz.name, lams.am_count
-                -- HAVING lams.amount < COALESCE(SUM(aml.debit - aml.credit), 0) ;
+                GROUP BY aml.partner_id, lams.amount, rp.complete_name, rp.mobile, mbp.name, mbz.name, lams.am_count;
                 
         """ % tuple(
             [months_ago, where, monthes_due]
@@ -79,8 +73,5 @@ class GetMonthesDue(models.AbstractModel):
         self.env.cr.execute(query)
 
         records = self._cr.fetchall()
-        
-        _logger.info("================== CHECK ====================")
-        _logger.info(records)
 
         return {"data": data, "records": records, "months": months_between_dates}
