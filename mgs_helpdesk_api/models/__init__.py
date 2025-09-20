@@ -3,3 +3,4 @@
 from . import models
 from . import res_config
 from . import stages
+from . import res_users

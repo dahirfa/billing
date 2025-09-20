@@ -153,3 +153,61 @@ class InheritHelpDeskTicket(models.Model):
             domain = [('field_id.name', 'like', 'priority'),
                       ('field_id.model_id.model', '=', self._name), ('value', '=', r.priority)]
             r.priority_name = selection_obj.search(domain).name
+
+
+    @api.model
+    def create(self, vals):
+        res = super(InheritHelpDeskTicket, self).create(vals)
+        if res.user_id:
+            _logger.info("==================== Push Notification =======================")            
+            res._send_assignment_notification(res.user_id, res)
+            _logger.info("==================== Pushed Notification =======================")
+        return res
+
+    #! Push Notifications on User Assignment Change
+    @api.model
+    def write(self, vals):
+        """Override write to detect user assignment changes on helpdesk tickets"""
+        _logger.info("==================== Executed =======================")
+        
+        if 'user_id' in vals:  # Only one responsible user (Many2one)
+            _logger.info("==================== User Changed =======================")
+            
+            for ticket in self:
+                old_user_id = ticket.user_id.id
+                new_user_id = vals.get('user_id')
+                
+                _logger.info(f"Old user: {old_user_id}, New user: {new_user_id}")
+                
+                # Only notify if assignment actually changed
+                if new_user_id and new_user_id != old_user_id:
+                    new_user = self.env['res.users'].browse(new_user_id)
+                    if new_user.exists():
+                        _logger.info("==================== Push Notification =======================")
+                        self._send_assignment_notification(new_user, ticket)
+                        _logger.info("==================== Pushed Notification =======================")
+
+        return super().write(vals)
+
+    
+    def _send_assignment_notification(self, user, task):
+        """Send notification for task assignment"""
+        title = "New Task Has Been Assigned"
+        body = f"Task: {task.name}"
+        data = {
+            'task_id': str(task.id),
+            'task_name': task.name,
+            'type': 'task_assignment'
+        }
+        
+        results = user.send_fcm_notification(title, body, data)
+        self.message_post(body=results)
+
+    
+
+
+
+
+
+
+

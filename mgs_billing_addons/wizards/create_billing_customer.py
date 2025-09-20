@@ -5,7 +5,7 @@ from odoo.addons.phone_validation.tools import phone_validation
 
 
 class CreateCustomerWizardInherit(models.TransientModel):
-    _inheirt = 'mgs_billing.customer.wizard'
+    _inherit = 'mgs_billing.customer.wizard'
     _description = 'Create Customer Wizard'
 
 
