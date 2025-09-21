@@ -12,6 +12,7 @@
 								<field name="zone_id" required="1" string="Zone" options="{'no_create': True}" />
 								<field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" />
 								<field name="states" widget="radio" invisible="1"/>
+								<field name="property_state" string="State" />
 							</group>
 
 
@@ -20,8 +21,8 @@
 								<field name="collector_id" options="{'no_create': True}" />
 								<label for="greater_less"/>
 								<div>
-										<field name="greater_less" class="oe_inline" style="font-weight: bold"/>
-										<field name="greater_less_amount" class="oe_inline" style="text-align: right"/>
+									<field name="greater_less" class="oe_inline" style="font-weight: bold"/>
+									<field name="greater_less_amount" class="oe_inline" style="text-align: right"/>
 								</div>   
 							</group>
 						</group>

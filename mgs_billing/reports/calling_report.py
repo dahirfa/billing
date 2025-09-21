@@ -10,7 +10,7 @@ class CallingReportReport(models.AbstractModel):
     _description = 'Calling Report'
 
     @api.model
-    def _lines(self, date_from, date_to, zone_id, collector_id, company_id, greater_less, greater_less_amount):
+    def _lines(self, date_from, date_to, zone_id, collector_id, company_id, greater_less, greater_less_amount, property_state):
         
         
         params = [date_from, date_from, date_to,
@@ -47,6 +47,10 @@ class CallingReportReport(models.AbstractModel):
         if zone_id:
             params.append(zone_id)
             query += " AND mbz.id = %s"
+            
+        if property_state:
+            params.append(property_state)
+            query += " AND mbp.state = %s"
 
         if collector_id:
             params.append(collector_id)

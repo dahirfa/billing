@@ -26,6 +26,8 @@ class CallingReport(models.TransientModel):
         string='Amount', default=1, required=True)
     datas = fields.Binary('File', readonly=True)
     datas_fname = fields.Char('Filename', readonly=True)
+    property_state = fields.Selection(
+        [("connected", "Connected"), ("disconnected", "Disconnected")], default="connected", required=True)
 
     @api.constrains('date_from', 'date_to')
     def _check_the_date_from_and_to(self):
@@ -39,6 +41,7 @@ class CallingReport(models.TransientModel):
             'form': {
                 'date_from': self.date_from,
                 'date_to': self.date_to,
+                'property_state': self.property_state,
                 'zone_id': [self.zone_id.id, self.zone_id.name],
                 'collector_id': [self.collector_id.id, self.collector_id.name],
                 'states': self.states,

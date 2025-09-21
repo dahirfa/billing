@@ -85,7 +85,7 @@
                                 <tbody >
                                     <t t-set="no" t-value="0"/>
                                     <t t-set="total_balance" t-value="0"/>
-                                    <tr t-foreach="lines(date_from, date_to, zone_id[0], collector_id[0], company_id.id, greater_less, greater_less_amount)" t-as="line">
+                                    <tr t-foreach="lines(date_from, date_to, zone_id[0], collector_id[0], company_id.id, greater_less, greater_less_amount, doc['property_state'])" t-as="line">
                                         <t t-set="no" t-value="no+1"/>
                                         <td nowrap="nowrap">
                                             <span t-esc="no"/>
