@@ -7,7 +7,7 @@
         <field name="report_type">qweb-html</field>
         <field name="report_name">mgs_billing_addons.receipt_and_payment_report</field>
         <field name="report_file">mgs_billing_addons.receipt_and_payment_report</field>
-        <field name="print_report_name">Payment Report</field>
+        <field name="print_report_name">'Payment Report'</field>
         <field name="binding_model_id" ref="model_mgs_billing_addons_receipt_and_payment"/>
         <field name="binding_type">report</field>
     </record>
@@ -23,13 +23,17 @@
                             border-top: 1px solid #212529 !important;
                             border-bottom: 1px solid #212529 !important;
                         }
+                        th{
+
+                            font-weight:bold;
+                        }
                         </style>
 
-                        <div class="container" style="font-size:12px;font-family:Arial;margin-top:1px;">
+                        <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
                             <h2>Payment and Receipt</h2>
 
                             <!-- Filters header -->
-                            <div class="row" style="margin-top: 32px !important;font-size: 1.2em; font-family: 'Lato-Reg'">
+                            <div class="row" style="margin-top: 32px !important;font-size: 1.2em;">
                                 <div class="col-3" t-if="date_from or date_to">
                                     <strong>Date:</strong>
                                     <p t-esc="date_from" style="margin-bottom: 0"/>
@@ -61,7 +65,7 @@
                             <t t-if="doc.group_by_option == 'cashier'">
                                 <t t-set="grand_total" t-value="0"/>
                                 <table class="table table-condensed table-sm">
-                                    <thead  style="font-weight:bold; font-size:14px">
+                                    <thead >
                                         <tr>
                                             <th>Date</th>
                                             <th>Number</th>
@@ -83,7 +87,7 @@
                                             <t t-set="group_total" t-value="0"/>
                                             <!-- Detail Lines -->
                                             <tr t-foreach="cashier_group[1]" t-as="line">
-                                                <td>
+                                                <td  nowrap='nowrap'>
                                                     <span t-esc="line['date']"/>
                                                 </td>
                                                 <td>
@@ -154,7 +158,7 @@
                                             <t t-set="group_total" t-value="0"/>
                                             <!-- Detail Lines -->
                                             <tr t-foreach="journal_group[1]" t-as="line">
-                                                <td>
+                                                <td nowrap='nowrap'>
                                                     <span t-esc="line['date']"/>
                                                 </td>
                                                 <td>
@@ -215,7 +219,7 @@
                                     </thead>
                                     <tbody>
                                         <tr t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option)" t-as="line">
-                                            <td>
+                                            <td nowrap='nowrap'>
                                                 <span t-esc="line['date']"/>
                                             </td>
                                             <td>
@@ -241,7 +245,7 @@
                                             </td>
                                             <t t-set="total_amount" t-value="total_amount+line['amount_paid']"/>
                                         </tr>
-                                        <tr style="font-weight:bold;">
+                                        <tr style="font-weight:bold; background:#ffe6e6;">
                                             <td colspan="7">Grand Total</td>
                                             <td style="text-align:right">
                                                 <span t-esc="'{0:,.2f}'.format(total_amount)"/>

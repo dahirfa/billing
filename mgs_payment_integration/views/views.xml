@@ -22,7 +22,7 @@
       </xpath>
       <xpath expr="//field[@name='memo']" position="before">
         <field name="mgs_transaction_ref" invisible="payment_type != 'inbound'"/>
-        <field name="mgs_sender_phone" invisible="payment_type != 'inbound'" readonly="state != 'draft'"/>
+        <field name="mgs_sender_phone" invisible="payment_type != 'inbound'" readonly="state != 'draft'"  required="payment_type == 'inbound'" />
       </xpath>
     </field>
   </record>
