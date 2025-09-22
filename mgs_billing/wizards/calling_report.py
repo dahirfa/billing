@@ -114,7 +114,7 @@ class CallingReport(models.TransientModel):
             LEFT JOIN account_move_line aml ON aml.partner_id=rp.id
             LEFT JOIN account_account AS aa ON aml.account_id = aa.id
         WHERE aa.account_type = 'asset_receivable' and aml.partner_id IS NOT NULL AND aml.date <= %s
-            AND aml.parent_state = 'posted'
+            AND aml.parent_state = 'posted' AND rp.is_shareholder != True
             AND rp.is_tenancy = True
         """
 

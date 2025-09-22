@@ -36,6 +36,8 @@ class ResPartner(models.Model):
 
     is_collector = fields.Boolean(default=False)
     
+    is_shareholder = fields.Boolean(default=False, string="Shareholder?", store=True)
+    
     product_id = fields.Many2one('product.product', string="Plan", domain=[('is_billing_pan', '=', True)])
          
     billing_customer_id = fields.Many2one('mgs_billing.billing_customer', string="Billing Customer", ondelete='restrict')
