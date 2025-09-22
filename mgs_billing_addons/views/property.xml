@@ -22,27 +22,4 @@
     </field>
   </record>
 
-  <record id="mgs_reading_search_inherit" model="ir.ui.view">
-    <field name="name">mgs.reading.search.inherit</field>
-    <field name="model">mgs_billing.reading</field>
-    <field name="inherit_id" ref="mgs_billing.mgs_billing_reading_search" />
-    <field name="arch" type="xml">
-      <!-- Modify or extend the search view as needed -->
-      <xpath expr="//filter[@name='property_id']" position="after">
-       
-      </xpath>
-    </field>
-  </record>
-
-  <record model="ir.ui.menu" id="mgs_billing.mgs_billing_transaction_partner">
-    <field name="active">0</field>
-  </record>
-
-  <record model="ir.ui.menu" id="mgs_billing.mgs_billing_property_menu">
-    <field name="active">0</field>
-  </record>
-
-  <menuitem id="mgs_billing_Property_main" name="Properties" parent="mgs_billing.mgs_billing_root" sequence="5" />
-
-  <menuitem id="mgs_billing_owner2_menu" name="Billing Customers" parent="mgs_billing_Property_main" action="mgs_billing.mgs_billing_owner_action" sequence="1" />
 </odoo>

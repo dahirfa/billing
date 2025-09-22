@@ -29,13 +29,12 @@
         "views/crm.xml",
         "views/bulk_payment.xml",
         "views/balance_transfer.xml",
-        "views/res_config.xml",
+        # "views/res_config.xml",
         "views/report_receipt_and_payment.xml",
         
         
         "wizards/create_billing_customer.xml",
         "wizards/receipt_and_payment.xml",
-        "wizards/calling_report.xml",
     ],
     # only loaded in demonstration mode
 }

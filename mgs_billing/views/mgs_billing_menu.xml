@@ -41,7 +41,7 @@
     <!-- <menuitem
       id="mgs_billing_guarantor_menu"
       name="Guarantors"
-      parent="mgs_billing_transaction_partner"
+      parent="mgs_billing_root"
       action="mgs_billing_guarantor_action"
       sequence="5"
     /> -->
