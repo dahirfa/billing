@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <record id="mgs_billing_property_form_extension" model="ir.ui.view">
+        <field name="name">Property Inherit</field>
+        <field name="model">mgs_billing.property</field>
+        <field name="inherit_id" ref="mgs_billing.mgs_billing_property_form"/>
+        <field name="arch" type="xml">
+            <field name="connection_date" position="after">
+                <field name="meter_serial_id" readonly="0" />
+            </field>
+        </field>
+    </record>
+
+
+    
+</odoo>

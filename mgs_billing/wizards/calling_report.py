@@ -57,35 +57,6 @@ class CallingReport(models.TransientModel):
 
 
     def export_to_excel(self):
-        # params = [
-        #     self.date_from,  
-        #     self.date_from,  
-        #     self.date_to,    
-        #     self.date_to,    
-        #     self.date_to,
-        # ]
-        # query = """
-        #     SELECT
-        #         rp.property_id,
-        #         mbp.name AS property_name,
-        #         rp.name AS partner_name,
-        #         rp.phone AS sender_phone,
-        #         rp.mobile AS tenant_mobile,
-        #         COALESCE(SUM(CASE WHEN ai.date < %s THEN ai.amount_total - ai.amount_residual ELSE 0 END), 0) AS initial_balance,
-        #         COALESCE(SUM(CASE WHEN ai.date >= %s AND ai.date <= %s THEN ai.amount_total ELSE 0 END), 0) AS invoiced,
-        #         COALESCE(SUM(CASE WHEN ai.date <= %s THEN ai.amount_total - ai.amount_residual ELSE 0 END), 0) AS balance
-        #     FROM account_move ai
-        #     JOIN res_partner rp ON ai.partner_id = rp.id
-        #     JOIN mgs_billing_property mbp ON rp.property_id = mbp.id
-        #     WHERE ai.move_type = 'out_invoice'
-        #     AND ai.state = 'posted'
-        #     AND ai.date <= %s
-        #     GROUP BY rp.property_id, mbp.name, rp.name, rp.phone, rp.mobile
-        #     ORDER BY mbp.name;
-        # """
-
-        # self.env.cr.execute(query, tuple(params))
-        # rows = self.env.cr.dictfetchall()
         
         params = [self.date_from, self.date_from, self.date_to,
                   self.date_from, self.date_to, self.date_to]
