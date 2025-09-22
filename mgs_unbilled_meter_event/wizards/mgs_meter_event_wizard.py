@@ -37,14 +37,10 @@ class MgsMeterEventWizard(models.TransientModel):
 
         wizard_data = {
             "zone_id": [self.zone_id.id, self.zone_id.name] if self.zone_id else False,
-            "collector_id": (
-                [self.collector_id.id, self.collector_id.name]
-                if self.collector_id
-                else False
-            ),
+            "collector_id": [self.collector_id.id, self.collector_id.name] if self.collector_id else False,
+            "reason_id": [self.reason_id.id, self.reason_id.name] if self.reason_id else False,
             "date_from": self.date_from,
             "date_to": self.date_to,
-            "reason_id": [self.reason_id.id, self.reason_id.name],
         }
 
         return self.env.ref(

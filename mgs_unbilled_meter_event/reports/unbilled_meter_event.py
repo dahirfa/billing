@@ -26,6 +26,8 @@ class UnbilledMeterEvent(models.AbstractModel):
             domain.append(("zone_id", "=", zone_id))
             
         if data.get("collector_id"):
+            
+            _logger.info(type(data.get("collector_id")))
             collector_id = data["collector_id"][0]
             domain.append(("user_id", "=", collector_id))
             
@@ -38,14 +40,17 @@ class UnbilledMeterEvent(models.AbstractModel):
         if date_to:
             domain.append(("date", "<=", date_to))
         
+        _logger.info("---------------")
+        
+        _logger.info(data.get("reason_id"))
+        _logger.info(data.get("zone_id"))
+        _logger.info(data.get("collector_id"))
         _logger.info(domain)
         
         results = self.env["mgs.meter.event.blocking"].search(domain)
         
-        _logger.info("Report data: %s", data)
-        _logger.info("Report data: %s", results)
-        _logger.info("Found %s results", len(results))
-
+        _logger.info(f"Result: {results} ")
+        
         return {
             "doc_ids": docids,
             "doc_model": model,
