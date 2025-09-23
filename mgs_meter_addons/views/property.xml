@@ -6,8 +6,14 @@
         <field name="model">mgs_billing.property</field>
         <field name="inherit_id" ref="mgs_billing.mgs_billing_property_form"/>
         <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button name="%(mgs_meter_create_customer_action)d" string="Assign/Change Meter" type="action" class="btn-info"/>
+              </xpath>
+
+
             <field name="connection_date" position="after">
-                <field name="meter_serial_id" readonly="0" />
+                <field name="meter_serial_id" readonly="1" />
             </field>
         </field>
     </record>

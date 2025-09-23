@@ -8,7 +8,9 @@
     "version": "18.0",
     "depends": ["base", "mgs_billing"],
     "data": [
+        "security/ir.model.access.csv",
         "views/meter_addons.xml",
+        "views/meter_change_wizard.xml",
         "views/property.xml",
     ],
 }
