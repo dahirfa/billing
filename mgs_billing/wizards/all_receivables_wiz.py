@@ -128,7 +128,7 @@ class MgsRecivablesReport(models.TransientModel):
             query = query.replace(
                 "and mbp.state = 'connected'", "and mbp.state in ('connected', 'disconnected')")
 
-        query = query.replace('GROUP BY', 'GROUP BY ru.id, ')
+        # query = query.replace('GROUP BY', 'GROUP BY ru.id, ')
         insert_query = """INSERT INTO mgs_billing_receivables_wizard_line 
         (%s)
         %s""" % (self.insert_query(), query)
@@ -168,3 +168,6 @@ class MgsRecivablesReport(models.TransientModel):
         # action['context'] = {}
         # action['context']['create'] = False
         # return action
+    def action_print_pdf(self):
+        self.action_view_report()
+        return self.env.ref('mgs_billing.action_report_receivables_pdf').report_action(self)

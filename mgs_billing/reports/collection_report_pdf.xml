@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_report_collection_template_report_view" model="ir.actions.report">
+        <field name="name">Collection Report</field>
+        <field name="model">mgs_billing.collection.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.report_collection_template</field>
+        <field name="report_file">mgs_billing.report_collection_template</field>
+        <field name="binding_type">report</field>
+    </record>
+        <template id="report_collection_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="wizard">
+                        <t t-set="lines" t-value="env['mgs_billing.collection.wizard.line'].search([('user_id', '=', wizard.env.user.id)])"/>
+        
+                        <div class="page">
+                            <h2 style="text-align:center;"><t t-esc="wizard.report_type"/> Houses</h2>
+                            <p style="text-align:center;"><strong>From:</strong> <t t-esc="wizard.date_from"/> 
+                            <strong>To:</strong> <t t-esc="wizard.date_to"/></p>
+        
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Property</th>
+                                        <th>Billing Account</th>
+                                        <th>Zone</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="lines" t-as="line">
+                                        <tr>
+                                            <td><t t-esc="line.property_name"/></td>
+                                            <td><t t-esc="line.billing_account_id.name"/></td>
+                                            <td><t t-esc="line.zone_name"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    
+</odoo>

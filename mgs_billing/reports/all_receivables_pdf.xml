@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+    <record id="action_report_receivables_pdf" model="ir.actions.report">
+        <field name="name">Receivables Report</field>
+        <field name="model">mgs_billing.receivables.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.report_receivables_pdf</field>
+        <field name="report_file">mgs_billing.report_receivables_pdf</field>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_receivables_pdf">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="wizard">
+                    <t t-set="lines" t-value="env['mgs_billing.receivables.wizard.line'].search([('user_id', '=', wizard.env.user.id)])"/>
+
+                    <div class="page">
+                        <h2 style="text-align:center;">Receivables Report</h2>
+                        <p style="text-align:center;">
+                            <strong>From:</strong> <t t-esc="wizard.date_from"/> 
+                            <strong>To:</strong> <t t-esc="wizard.date_to"/>
+                        </p>
+
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Zone</th>
+                                    <th>Initial Balance</th>
+                                    <th>Invoiced</th>
+                                    <th>Paid</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="line.billing_account_id.display_name"/></td>
+                                        <td><t t-esc="line.zone_name"/></td>
+                                        <td class="text-right"><t t-esc="line.initial_balance"/></td>
+                                        <td class="text-right"><t t-esc="line.invoiced"/></td>
+                                        <td class="text-right"><t t-esc="line.paid"/></td>
+                                        <td class="text-right"><t t-esc="line.balance"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    
+</odoo>
