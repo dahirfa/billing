@@ -35,6 +35,7 @@
         "reports/property_log_rep.xml",
         "reports/calling_report.xml",
         "reports/collection_report_pdf.xml",
+        "reports/all_receivables_pdf.xml",
         
         
         "wizards/all_receivables_wiz.xml",
