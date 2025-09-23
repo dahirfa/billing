@@ -29,7 +29,7 @@ class CreateCustomerWizard(models.TransientModel):
     phone = fields.Char(string="Owner's Phone")
     
     email = fields.Char(string="Email")
-
+    
     existing_customer = fields.Boolean(default=False, string='Ma Customer Horay u Jiray baa?')
     
     billing_customer_id = fields.Many2one('mgs_billing.billing_customer', string="Merge with")
@@ -184,6 +184,8 @@ class CreateCustomerWizard(models.TransientModel):
             write_vals["partner_id"] = property_id.billing_account_id.id
 
         self.lead_id.write(write_vals)
+        
+        return property_id
 
     
     

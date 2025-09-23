@@ -6,9 +6,10 @@
         <field name="model">mgs_billing.meter</field>
         <field name="arch" type="xml">
             <list editable="top" delete="0">
-                <field name="meterid" required='1'/>
+                <field name="meterid" required="meter_type == 'smart'"/>
                 <field name="name" required='1'/>
                 <field name="property_id" optional="hide"/>
+                <field name="meter_type" optional="hide"/>
                 <field name="owner" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional='hide'/>
             </list>
@@ -22,6 +23,7 @@
             <search string="">
                 <field name="name"/>
                 <field name="meterid"/>
+                
 
                 <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>
                 <filter string="Inactive" name="filter_inactive" domain="[('active', '=', False)]"/>

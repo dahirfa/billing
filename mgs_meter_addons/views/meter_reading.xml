@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="mgs_billing_meter_reading_meter_inherit" model="ir.ui.view">
+        <field name="name">mgs.billing.meter.reading.view.list.inherit</field>
+        <field name="model">mgs_billing.meter.reading</field>
+        <field name="inherit_id" ref="mgs_billing.mgs_billing_meter_reading_tree"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='property_id']" position="after">
+                <field name="meter_serial_id" readonly="1"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+
+
+    <record id="mgs_billing_reading_meter_inherit_form" model="ir.ui.view">
+        <field name="name">mgs.billing.reading.view.form.inherit</field>
+        <field name="model">mgs_billing.reading</field>
+        <field name="inherit_id" ref="mgs_billing.mgs_billing_reading_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='rate']" position="after">
+                <field name="meter_serial_id" readonly="1"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+
+    <record id="mgs_billing_reading_meter_inherit_list" model="ir.ui.view">
+        <field name="name">mgs.billing.reading.view.list.inherit</field>
+        <field name="model">mgs_billing.reading</field>
+        <field name="inherit_id" ref="mgs_billing.mgs_billing_reading_tree"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='billing_account_id']" position="after">
+                <field name="meter_serial_id" readonly="1"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

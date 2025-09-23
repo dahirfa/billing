@@ -1,0 +1,18 @@
+<odoo>
+
+  <record id="mgs_create_billing_customer_inherit" model="ir.ui.view">
+    <field name="name">Create Customer Billing Meter</field>
+    <field name="model">mgs_billing.customer.wizard</field>
+    <field name="inherit_id" ref="mgs_billing.customer_create_wizard"/>
+    <field name="arch" type="xml">
+      
+      <xpath expr="//field[@name='initial_meter']" position="after">
+          <field name="meter_type"/>
+          <field name="meter_serial" required="1"/>
+      </xpath>
+      
+    </field>
+  </record>
+
+
+</odoo>

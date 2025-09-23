@@ -59,10 +59,15 @@ class Mgs_Assign_Meter(models.TransientModel):
                 f"Please select a different meter or unassign it from the existing property first."
             )
         
+        if self.property_id.meter_serial_id:
+            self.property_id.meter_serial_id.property_id = False
+        
         # Update the property with the selected meter
         self.property_id.write({
             'meter_serial_id': self.meter_id.id
         })
+        
+        self.meter_id.property_id = self.property_id.id
         
         return {
             'type': 'ir.actions.client',
@@ -72,6 +77,7 @@ class Mgs_Assign_Meter(models.TransientModel):
                 'message': f"Meter '{self.meter_id.name}' has been successfully assigned to property '{self.property_id.name}'.",
                 'type': 'success',
                 'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
             }
         }
 

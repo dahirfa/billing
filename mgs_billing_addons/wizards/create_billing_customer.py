@@ -32,8 +32,8 @@ class CreateCustomerWizardInherit(models.TransientModel):
 
         
         
-    def _prepare_property_vals(self):
-        vals = super()._prepare_property_vals()
+    def _prepare_property_vals(self, billing_customer_id):
+        vals = super(CreateCustomerWizardInherit, self)._prepare_property_vals(billing_customer_id)
         vals.update({
             "pipe_extention": self.pipe_extention,
             "pipe_type": self.pipe_type,

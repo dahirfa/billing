@@ -86,6 +86,7 @@ class MGSBillingProperty(models.Model):
     connection_log_count = fields.Integer(
         "Log Count", default=0, compute="_compute_connection_log_count", store=True
     )
+    
     meter_id = fields.Many2one("mgs_billing.meter", ondelete="restrict")
     
     initial_meter = fields.Float(string="Initial Meter Read", tracking=True)
@@ -272,19 +273,20 @@ class MGSBillingProperty(models.Model):
 
     def get_reading_history(self):
         for r in self:
-            r.reading_history_counter = len(r.meter_reading_ids)
+            r.reading_history_counter = self.env['mgs_billing.meter.reading'].search_count([('property_id.id', '=', r.id)])
 
     def action_open_reading_history(self):
-        self.ensure_one()
-        action = (
-            self.env.ref("mgs_billing.mgs_billing_meter_reading_action")
-            .sudo()
-            .read()[0]
-        )
-        action["domain"] = "[('property_id.id','=',%s)]" % str(self.id)
-        action["context"] = {}
-        action["context"]["create"] = False
-        return action
+
+        return {
+            'name': 'Reading History',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'list,form',
+            'res_model': 'mgs_billing.meter.reading',
+            "context": {"create": False},
+            'domain': [('property_id.id', '=', self.id)],
+        }
+    
 
 
 

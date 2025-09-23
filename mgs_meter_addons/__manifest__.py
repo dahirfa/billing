@@ -9,8 +9,11 @@
     "depends": ["base", "mgs_billing"],
     "data": [
         "security/ir.model.access.csv",
-        "views/meter_addons.xml",
-        "views/meter_change_wizard.xml",
+        
+        "wizards/meter_change_wizard.xml",
+        "wizards/create_billing_customer.xml",
+        
+        "views/meter_reading.xml",
         "views/property.xml",
     ],
 }

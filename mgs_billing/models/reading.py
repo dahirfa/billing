@@ -40,18 +40,19 @@ class MGSBillingMeterReadings(models.Model):
     @api.depends('reading_id')
     def _get_reading_info(self):
         for r in self:
-            r.product_id = r.reading_id.product_id.id
-            r.billing_account_id = r.reading_id.billing_account_id.id
-            r.date = r.reading_id.date
-            r.property_id = r.reading_id.property_id.id
-            r.uom_id = r.reading_id.uom_id.id
-            r.move_id = r.reading_id.move_id.id
-            r.currency_id = r.move_id.currency_id.id
-            r.reading_on_date = r.reading_id.current_reading
-            r.previous_reading = r.reading_id.last_reading
-            r.reading_difference = r.reading_id.difference
-            r.rate = r.reading_id.rate
-            r.invoice_amount = r.reading_id.amount_total
+            if r.reading_id:
+                r.product_id = r.reading_id.product_id.id
+                r.billing_account_id = r.reading_id.billing_account_id.id
+                r.date = r.reading_id.date
+                r.property_id = r.reading_id.property_id.id
+                r.uom_id = r.reading_id.uom_id.id
+                r.move_id = r.reading_id.move_id.id
+                r.currency_id = r.move_id.currency_id.id
+                r.reading_on_date = r.reading_id.current_reading
+                r.previous_reading = r.reading_id.last_reading
+                r.reading_difference = r.reading_id.difference
+                r.rate = r.reading_id.rate
+                r.invoice_amount = r.reading_id.amount_total
 
     def unlink(self):
         raise UserError("You cannot delete reading history.")
@@ -88,8 +89,7 @@ class MGSBillingReading(models.Model):
         'uom.uom', compute='_compute_uom', string='Unit of Measure', store=True)
     discount = fields.Float(string='Discount (%)',
                             digits='Discount', readonly=False, store=True, tracking=True)
-    rate = fields.Monetary(
-        string='Price/Unit', compute="_get_pricelist_price", readonly=False, store=True, copy=False, tracking=True)
+    rate = fields.Monetary(string='Rate', compute="_get_product", readonly=False, store=True, copy=False, tracking=True)
     comment = fields.Char(string='Comment', tracking=True)
 
     use_default_amount = fields.Boolean(
@@ -121,14 +121,7 @@ class MGSBillingReading(models.Model):
         string='unusual Usage', compute='_check_usage', store=True, tracking=True)
 
     average_usage = fields.Float(compute="_get_tenant", string="Normal Usage")
-    pricelist_id = fields.Many2one(
-        'product.pricelist',
-        string="Pricelist",
-        compute='_compute_pricelist_id',
-        store=True, readonly=False, check_company=True,
-        tracking=1,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"
-    )
+
     invoiced_amount = fields.Monetary(related='move_id.amount_total')
     allow_extra_reading = fields.Boolean(default=False)
 
@@ -163,14 +156,6 @@ class MGSBillingReading(models.Model):
             r.billed_before = self._get_billed_unbilled(
                 r.date, r.property_id.id)
 
-    @api.depends('billing_account_id')
-    def _compute_pricelist_id(self):
-        for reading in self:
-            if not reading.billing_account_id:
-                reading.pricelist_id = False
-                continue
-            reading = reading.with_company(reading.company_id)
-            reading.pricelist_id = reading.billing_account_id.property_product_pricelist.id
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -345,15 +330,8 @@ class MGSBillingReading(models.Model):
     def _get_product(self):
         for r in self:
             r.product_id = r.billing_account_id.product_id.id
+            r.rate = r.product_id.lst_price
 
-
-    @api.depends('billing_account_id', 'pricelist_id', 'product_id', 'difference')
-    def _get_pricelist_price(self):
-        for r in self:
-            pricelist_id = r.pricelist_id
-            if r.product_id:
-                r.rate = pricelist_id._price_get(r.product_id, r.difference)[
-                    pricelist_id.id]
 
     @api.depends('billing_account_id')
     def _compute_uom(self):

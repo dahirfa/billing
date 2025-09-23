@@ -13,7 +13,8 @@ class MGSBillingMeter(models.Model):
     owner       = fields.Selection([('company', 'Owned by company'), ('third_party', 'Third Party')], tracking=1)
     company_id  = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company.id, tracking=1)
     property_id = fields.Many2one('mgs_billing.property')
-    active = fields.Boolean(default=True)
+    meter_type  = fields.Selection([('smart', 'Smart'), ('normal', 'Normal')], tracking=1, default='normal')
+    active      = fields.Boolean(default=True)
     
     _sql_constraints = [
         ('unique_name', 'UNIQUE(name)', 'The name must be unique.'),

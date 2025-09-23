@@ -51,7 +51,6 @@
               <field name="current_reading" readonly="state != 'draft'"/>
 
               <separator string="Pricing" colspan="4"/>
-              <field name="pricelist_id" readonly="state != 'draft'" force_save="1" groups="product.group_product_pricelist"/>
               <field name="rate" readonly="True or (state != 'draft')"/>
               <field name="discount" readonly="state != 'draft'" invisible="1"/>
 
