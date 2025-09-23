@@ -123,3 +123,7 @@ class MgsRecivablesReport(models.TransientModel):
             'domain': [('user_id.id', '=', user_id)],
             'context': "{'create': False}",
         }
+    def action_print_pdf(self):
+        # refresh the wizard lines before printing
+        self.action_view_report()
+        return self.env.ref('mgs_billing.action_report_collection_template_report_view').report_action(self)

@@ -31,7 +31,8 @@
                 </sheet>
 
                 <footer>
-                    <button name="action_view_report" type="object" string="VIEW"/>
+                    <button name="action_print_pdf" string="Print" type="object" class="btn btn-primary" icon="fa-file-pdf-o"/> or
+                    <button name="action_view_report" type="object" string="VIEW"/> 
                 </footer>
             </form>
         </field>
