@@ -3,12 +3,12 @@
 
     <record id="action_receipt_and_payment" model="ir.actions.report">
         <field name="name">Payment Report</field>
-        <field name="model">mgs_billing_addons.receipt_and_payment</field>
+        <field name="model">mgs_payment_integration.receipt_and_payment</field>
         <field name="report_type">qweb-html</field>
-        <field name="report_name">mgs_billing_addons.receipt_and_payment_report</field>
-        <field name="report_file">mgs_billing_addons.receipt_and_payment_report</field>
+        <field name="report_name">mgs_payment_integration.receipt_and_payment_report</field>
+        <field name="report_file">mgs_payment_integration.receipt_and_payment_report</field>
         <field name="print_report_name">'Payment Report'</field>
-        <field name="binding_model_id" ref="model_mgs_billing_addons_receipt_and_payment"/>
+        <field name="binding_model_id" ref="model_mgs_payment_integration_receipt_and_payment"/>
         <field name="binding_type">report</field>
     </record>
 
@@ -86,6 +86,7 @@
                                             </tr>
                                             <t t-set="group_total" t-value="0"/>
                                             <!-- Detail Lines -->
+                                            <t t-set="partner_count" t-value="0"/>
                                             <tr t-foreach="cashier_group[1]" t-as="line">
                                                 <td  nowrap='nowrap'>
                                                     <span t-esc="line['date']"/>
@@ -112,10 +113,15 @@
                                                     <span t-esc="'{0:,.2f}'.format(line['amount_paid'])"/>
                                                 </td>
                                                 <t t-set="group_total" t-value="group_total+line['amount_paid']"/>
+                                                <t t-set="partner_count" t-value="partner_count + 1"/>
                                             </tr>
                                             <!-- Subtotal Row -->
                                             <tr style="font-weight:bold; background:#e6f2ff;">
-                                                <td colspan="7">Subtotal</td>
+                                                <td colspan="2">TOTAL RECEIVED</td>
+                                                <td style="text-align:right">
+                                                    <span t-esc="partner_count"/>
+                                                </td>
+                                                <td colspan="4">Subtotal</td>
                                                 <td style="text-align:right">
                                                     <span t-esc="'{0:,.2f}'.format(group_total)"/>
                                                 </td>

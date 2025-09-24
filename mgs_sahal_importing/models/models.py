@@ -10,15 +10,13 @@ import pytz
 
 class MgsPaymentLineInherit(models.Model):
     _inherit = 'mgs.payment.line'
-    mgs_sahal_im_line_id = fields.Many2one(
-        'mgs.golis.sahal.payment', string='Sahal Statement Line')
+    mgs_sahal_im_line_id = fields.Many2one('mgs.golis.sahal.payment', string='Sahal Statement Line')
 
 
 class PaymentInheritMgs(models.Model):
     _inherit = 'account.payment'
 
-    mgs_sahal_im_line_id = fields.Many2one(
-        'mgs.golis.sahal.payment', string='Sahal Statement Line')
+    mgs_sahal_im_line_id = fields.Many2one('mgs.golis.sahal.payment', string='Sahal Statement Line')
 
     def action_draft(self):
         for r in self:
@@ -43,6 +41,21 @@ class PaymentInheritMgs(models.Model):
             if r.mgs_sahal_im_line_id and 'allow_action' not in self.env.context:
                 raise UserError("Action not allowed!")
         return super(PaymentInheritMgs, self).action_post()
+    
+    
+    def action_open_mgs_payment(self):
+       
+        self.ensure_one()
+
+        if self.mgs_sahal_im_line_id:
+            action = self.env.ref('mgs_sahal_importing.action_mgs_golis_sahal_payment').sudo().read()[0]
+            action['views'] = [(self.env.ref('mgs_sahal_importing.view_mgs_golis_sahal_payment_form').id, 'form')]
+            action['res_id'] = self.mgs_sahal_im_line_id.id
+            action['context'] = {'create': False}
+
+            return action
+        
+        return super(PaymentInherit, self).action_open_mgs_payment()
 
 
 class MgsGolisPayment(models.Model):

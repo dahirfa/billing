@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="group_mgs_utility_balance_transfer" model="res.groups">
-        <field name="name">Utility Balance Transfer</field>
-    </record>
-</odoo>

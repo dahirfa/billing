@@ -9,10 +9,8 @@ _logger = logging.getLogger(__name__)
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    bulk_payment_id = fields.Many2one(
-        'mgs_billing_addons.bulk_payment', string='Bulk Payment')
-    zone_id = fields.Many2one(
-        'mgs_billing.zone', string='Zone', related="partner_id.property_id.zone_id", store=True)
+    bulk_payment_id = fields.Many2one('mgs_payment_integration.bulk_payment', string='Bulk Payment')
+    zone_id = fields.Many2one('mgs_billing.zone', string='Zone', related="partner_id.property_id.zone_id", store=True)
 
     def action_draft(self):
         for r in self:
@@ -30,8 +28,6 @@ class AccountPayment(models.Model):
                 raise UserError("Action not allowed!")
         return super(AccountPayment, self).action_cancel()
 
-    def calculate_percentage(self, amount, percentage):
-        return amount * (percentage / 100)
 
     def action_post(self):
         for r in self:
@@ -40,17 +36,7 @@ class AccountPayment(models.Model):
             
             if r.bulk_payment_id and 'allow_action' not in self.env.context:
                 raise UserError("Action not allowed!")
-            
-            
         res = super(AccountPayment, self).action_post()
-        property_id = self.partner_id.property_id
-        mgs_auto_reconnect_house = self.env.company.mgs_auto_reconnect_house
-        
-        if self.partner_id.is_tenancy == True and property_id and property_id.state == 'disconnected' and mgs_auto_reconnect_house:
-            prev_bal = self.partner_id.mgs_credit
-            if self.amount >= self.calculate_percentage(prev_bal, self.env.company.mgs_reconnection_percentage):
-                self.partner_id.property_id.action_change_state(
-                    'connected', 'Auto reconnect')
         return res
 
     def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
@@ -61,38 +47,21 @@ class AccountPayment(models.Model):
             res[1]['name'] += '| by: %s' % mgs_sender_phone if mgs_sender_phone else ''
         return res
 
-    def action_open_mgs_payment(self):
+    def action_open_bulk_payment(self):
         self.ensure_one()
         if self.bulk_payment_id:
-            action = self.env.ref(
-                'mgs_billing_addons.action_bulk_payment').sudo().read()[0]
-            action['views'] = [
-                (self.env.ref('mgs_billing_addons.view_bulk_payment_form').id, 'form')]
+            action = self.env.ref('mgs_payment_integration.action_bulk_payment').sudo().read()[0]
+            action['views'] = [(self.env.ref('mgs_payment_integration.view_bulk_payment_form').id, 'form')]
             action['res_id'] = self.bulk_payment_id.id
             action['context'] = {'create': False}
             return action
-        if self.mgs_p_transaction_id:
-            action = self.env.ref(
-                'mgs_payment_integration.action_mgs_e_payment_transaction').sudo().read()[0]
-            action['views'] = [
-                (self.env.ref('mgs_payment_integration.mgs_payment_transaction_form').id, 'form')]
-            action['res_id'] = self.mgs_p_transaction_id.id
-            action['context'] = {'create': False}
-            return action
 
-        if self.mgs_sahal_im_line_id:
-            action = self.env.ref(
-                'mgs_sahal_importing.action_mgs_golis_sahal_payment').sudo().read()[0]
-            action['views'] = [(self.env.ref(
-                'mgs_sahal_importing.view_mgs_golis_sahal_payment_form').id, 'form')]
-            action['res_id'] = self.mgs_sahal_im_line_id.id
-            action['context'] = {'create': False}
-
-            return action
+        
+     
 
 
 class BulkPayment(models.Model):
-    _name = 'mgs_billing_addons.bulk_payment'
+    _name = 'mgs_payment_integration.bulk_payment'
     _description = 'Bulk Payment'
     _order = 'id desc'
 
@@ -101,7 +70,7 @@ class BulkPayment(models.Model):
                                  ('type', 'in', ['cash', 'bank'])])
     date = fields.Date(string='Date', default=lambda self: fields.Date.today())
     payment_lines = fields.One2many(
-        'mgs_billing_addons.bulk_payment_line', 'bulk_payment_id', string='Payment Lines')
+        'mgs_payment_integration.bulk_payment_line', 'bulk_payment_id', string='Payment Lines')
     amount = fields.Float(string='Amount')
     total = fields.Float(string='Total', compute='_compute_total', store=True)
     state = fields.Selection(
@@ -118,7 +87,7 @@ class BulkPayment(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             vals['name'] = vals['name'] = self.env['ir.sequence'].next_by_code(
-                'mgs_billing_addons.bulk_payment') or '/'
+                'mgs_payment_integration.bulk_payment') or '/'
         res = super(BulkPayment, self).create(vals_list)
         return res
 
@@ -208,11 +177,11 @@ class BulkPayment(models.Model):
 
 
 class BulkPaymentLine(models.Model):
-    _name = 'mgs_billing_addons.bulk_payment_line'
+    _name = 'mgs_payment_integration.bulk_payment_line'
     _description = 'Bulk Payment Line'
 
     bulk_payment_id = fields.Many2one(
-        'mgs_billing_addons.bulk_payment', string='Bulk Payment')
+        'mgs_payment_integration.bulk_payment', string='Bulk Payment')
     partner_id = fields.Many2one('res.partner', string='Partner')
     payment_id = fields.Many2one('account.payment', string='Payment')
     amount = fields.Float(string='Amount')

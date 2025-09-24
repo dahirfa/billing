@@ -2,14 +2,14 @@
     <data>
         <record model="ir.sequence" id="balance_transfer">
             <field name="name">Balance Transfer</field>
-            <field name="code">mgs_billing_addons.balance_transfer</field>
+            <field name="code">mgs_billing.balance_transfer</field>
             <field name="prefix">BT/%(year)s%(month)s/</field>
             <field name="padding">3</field>
         </record>
         <!-- Bulk Payment Tree View -->
         <record id="view_balance_transfer_tree" model="ir.ui.view">
             <field name="name">bulk.payment.tree</field>
-            <field name="model">mgs_billing_addons.balance_transfer</field>
+            <field name="model">mgs_billing.balance_transfer</field>
             <field name="arch" type="xml">
                 <list decoration-info="state=='draft'" decoration-danger=" state=='cancel' " decoration-success="state=='confirm'">
                     <field name="name"/>
@@ -24,7 +24,7 @@
         <!-- Bulk Payment Form View -->
         <record id="view_balance_transfer_form" model="ir.ui.view">
             <field name="name">bulk.payment.form</field>
-            <field name="model">mgs_billing_addons.balance_transfer</field>
+            <field name="model">mgs_billing.balance_transfer</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
@@ -79,7 +79,7 @@
 
         <record id="view_balance_transfer_search" model="ir.ui.view">
             <field name="name">bulk.payment.search</field>
-            <field name="model">mgs_billing_addons.balance_transfer</field>
+            <field name="model">mgs_billing.balance_transfer</field>
             <field name="arch" type="xml">
                 <search>
                     <field name="name"/>
@@ -90,10 +90,9 @@
         <!-- Bulk Payment Action Window -->
         <record id="action_balance_transfer" model="ir.actions.act_window">
             <field name="name">Balance Transfers</field>
-            <field name="res_model">mgs_billing_addons.balance_transfer</field>
+            <field name="res_model">mgs_billing.balance_transfer</field>
             <field name="view_mode">list,form</field>
         </record>
     </data>
-    <menuitem id="mgs_billing_transaction_utility" name="Utility" parent="mgs_billing.mgs_billing_root" sequence="60"/>
-    <menuitem id="menu_balance_transfer" name="Balance Transfers" parent="mgs_billing_transaction_utility" sequence="1" action="action_balance_transfer" groups="group_mgs_utility_balance_transfer"/>
+    
 </odoo>

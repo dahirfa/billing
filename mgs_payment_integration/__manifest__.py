@@ -11,7 +11,12 @@
     "data": [
         "security/groups.xml",
         "security/ir.model.access.csv",
-        "views/views.xml",
+        
+        "reports/receipt_and_payment.xml",
+        "wizards/receipt_and_payment.xml",
+        
+        "views/payment_integration.xml",
+        "views/bulk_payment.xml",
         "views/res_config.xml",
     ],
 }

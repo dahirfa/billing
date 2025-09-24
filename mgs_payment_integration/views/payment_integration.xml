@@ -17,11 +17,23 @@
     <field name="model">account.payment</field>
     <field name="inherit_id" ref="account.view_account_payment_form"/>
     <field name="arch" type="xml">
+
+      <xpath expr="//div[@name='button_box']" position="inside">
+
+        <field name="mgs_p_transaction_id" invisible="1"/>
+        <button name="action_open_mgs_payment" type="object" class="oe_stat_button" icon="fa-money" invisible="not mgs_p_transaction_id">
+            Source
+        </button>
+    </xpath>
+
+
       <xpath expr="//field[@name='partner_id']" position="after">
-        <field name="mgs_partner_bal" style="font-weight: bold;color:red" invisible="payment_type != 'inbound' or not partner_id"/>
+          <field name="zone_id" readonly="1"/>
+          <field name="mgs_partner_bal" style="font-weight: bold;color:red" invisible="payment_type != 'inbound' or not partner_id"/>
       </xpath>
+
       <xpath expr="//field[@name='memo']" position="before">
-        <field name="mgs_transaction_ref" invisible="payment_type != 'inbound'"/>
+        <field name="mgs_transaction_ref" readonly="state != 'draft'" invisible="payment_type != 'inbound'"/>
         <field name="mgs_sender_phone" invisible="payment_type != 'inbound'" readonly="state != 'draft'"  required="payment_type == 'inbound'" />
       </xpath>
     </field>
@@ -131,12 +143,12 @@
   </record>
 
   <record model="ir.actions.act_window" id="action_mgs_e_payment_transaction">
-    <field name="name">E-Payment</field>
+    <field name="name">Payment</field>
     <field name="res_model">mgs.payment.transaction</field>
     <field name="view_mode">form</field>
   </record>
 
-  <menuitem name="E-Payments" id="mgs_payment_integration_root" web_icon="mgs_payment_integration,static/description/icon.png" groups="group_collection_user"/>
+  <menuitem name="Payments" id="mgs_payment_integration_root" web_icon="mgs_payment_integration,static/description/icon.png" groups="group_collection_user"/>
   <menuitem id="mgs_menu_action_account_payments_receivable" parent="mgs_payment_integration_root" action="account.action_account_payments" sequence="-1" name="Manual Payments"/>
   <!-- <menuitem name="Payment Methods" id="mgs_payment_integration_payment_method_menu" action="mgs_payment_integration_payment_method_action" parent="mgs_payment_integration_root"/> -->
 

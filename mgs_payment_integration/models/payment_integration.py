@@ -100,6 +100,7 @@ class PaymentInherit(models.Model):
         return res
     
     
+    
     def _allow_reconcile(self):
         for rec in self:
             return True
@@ -125,12 +126,21 @@ class PaymentInherit(models.Model):
                     moves.reconcile()
 
     
-    
-    
-        
-        
-    
+    def action_open_mgs_payment(self):
+        self.ensure_one()        
+        if self.mgs_p_transaction_id:
+            action = self.env.ref(
+                'mgs_payment_integration.action_mgs_e_payment_transaction').sudo().read()[0]
+            action['views'] = [
+                (self.env.ref('mgs_payment_integration.mgs_payment_transaction_form').id, 'form')]
+            action['res_id'] = self.mgs_p_transaction_id.id
+            action['context'] = {'create': False}
+            return action
 
+    
+        
+        
+    
 
 class PaymentLine(models.Model):
     _name = 'mgs.payment.line'
@@ -216,13 +226,15 @@ class Payment(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-        mpt = self.env['mgs.golis.sahal.payment']
+        # mpt = self.env['mgs.golis.sahal.payment']
         ap = self.env['account.payment']
 
         for vals in vals_list:
             transactionid = vals.get('name')
             journal_clause = ('journal_id.id', '=', vals.get('journal_id'))
-            if self.search_count([('name', '=', transactionid), journal_clause]) or mpt.search_count([('transactionid', '=', transactionid), journal_clause]) or ap.search_count([('mgs_transaction_ref', '=', transactionid), journal_clause]):
+            # TODO: TRANSFER TO SAHAL IMPORT
+            # if self.search_count([('name', '=', transactionid), journal_clause]) or mpt.search_count([('transactionid', '=', transactionid), journal_clause]) or ap.search_count([('mgs_transaction_ref', '=', transactionid), journal_clause]):
+            if self.search_count([('name', '=', transactionid), journal_clause]) or ap.search_count([('mgs_transaction_ref', '=', transactionid), journal_clause]):
                 vals['state'] = 'duplicate'
                 vals['active'] = False
             else:

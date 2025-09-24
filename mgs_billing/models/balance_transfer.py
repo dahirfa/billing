@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError, UserError
 
 
 class BalanceTransfer(models.Model):
-    _name = 'mgs_billing_addons.balance_transfer'
+    _name = 'mgs_billing.balance_transfer'
     _description = 'Balance Transfer'
     _order = 'id desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -17,7 +17,7 @@ class BalanceTransfer(models.Model):
         string='Balance', default=0.0, compute='_compute_cust_balance', store=True)
 
     transfer_lines = fields.One2many(
-        'mgs_billing_addons.balance_transfer_line', 'transfer_id', string='Transfer Lines')
+        'mgs_billing.balance_transfer_line', 'transfer_id', string='Transfer Lines')
 
     state = fields.Selection(
         [('draft', 'To Confirm'), ('confirm', 'Confirmed'), ('cancel', 'Cancel')], default='draft', tracking=True)
@@ -32,7 +32,7 @@ class BalanceTransfer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             vals['name'] = vals['name'] = self.env['ir.sequence'].next_by_code(
-                'mgs_billing_addons.balance_transfer') or '/'
+                'mgs_billing.balance_transfer') or '/'
         res = super(BalanceTransfer, self).create(vals_list)
         return res
 
@@ -158,11 +158,11 @@ class BalanceTransfer(models.Model):
 
 
 class BalanceTransferLine(models.Model):
-    _name = 'mgs_billing_addons.balance_transfer_line'
+    _name = 'mgs_billing.balance_transfer_line'
     _description = 'Balance Transfer Line'
 
     transfer_id = fields.Many2one(
-        'mgs_billing_addons.balance_transfer', string='Balance Transfer')
+        'mgs_billing.balance_transfer', string='Balance Transfer')
     partner_id = fields.Many2one('res.partner', string='Partner')
     amount = fields.Float(string='Amount')
     company_id = fields.Many2one(

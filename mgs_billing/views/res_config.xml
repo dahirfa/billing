@@ -10,6 +10,22 @@
         <app data-string="mgs_billing" string="Billing" name="mgs_billing">
 
           <block title="Billing Validation">
+           
+
+            <setting>
+              <div class="o_setting_left_pane">
+                <field name="mgs_auto_reconnect_house"/>
+              </div>
+    
+              <div>
+                <label for="mgs_reconnection_percentage" string="Reconnection Precentage"/>
+                <div class="text-muted">
+                  Reconnection Balance Precentage Paid
+                </div>
+                <field name="mgs_reconnection_percentage" invisible="mgs_auto_reconnect_house!=True"/>
+              </div>
+            </setting>
+
             <setting string="Default Price if Reading is less Then X">
               <div class="text-muted">
               If it's less than ____ Make Rate ____

@@ -28,6 +28,10 @@ class ResCompany(models.Model):
     is_allow_reg_date = fields.Boolean(string="Enable Allowed Registeration Date", default=False)
     
     allowed_reg_date = fields.Integer(string="Allowed Registeration Date")
+    
+    mgs_auto_reconnect_house = fields.Boolean(default=False, string="Auto Reconnect")
+
+    mgs_reconnection_percentage = fields.Float(string="Reconnection Percentage")
 
 
 class ResConfigSettings(models.TransientModel):
@@ -94,4 +98,16 @@ class ResConfigSettings(models.TransientModel):
         string="Plan Category",
         related="company_id.mgs_plan_categ_id",
         readonly=False,
+    )
+    
+    
+    mgs_auto_reconnect_house = fields.Boolean(
+        string="Auto Reconnect",
+        related="company_id.mgs_auto_reconnect_house",
+        readonly=False,
+    )
+    mgs_reconnection_percentage = fields.Float(
+        related="company_id.mgs_reconnection_percentage",
+        readonly=False,
+        string="Reconnection Percentage",
     )

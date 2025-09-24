@@ -64,6 +64,7 @@
         "views/meter_reading.xml",
         "views/document_type.xml",
         "views/crm.xml",
+        "views/balance_transfer.xml",
         "views/res_config.xml",
         "views/mgs_billing_menu.xml",
     ],

@@ -40,8 +40,7 @@ class GetMonthesDue(models.AbstractModel):
         if data.get("state", False):
             where += " AND mbp.state = '%s' " % data.get("state")
 
-        query = """
-                SELECT aml.partner_id, rp.complete_name, rp.mobile, mbp.name, mbz.name, COALESCE(SUM(aml.debit - aml.credit), 0), lams.amount, lams.am_count
+        query = """ SELECT aml.partner_id, rp.complete_name, rp.alternative_number sender_phone, rp.mobile, mbp.name, mbz.name, COALESCE(SUM(aml.debit - aml.credit), 0), lams.amount, lams.am_count
                 FROM account_move_line aml
                 LEFT JOIN account_account aa ON aml.account_id = aa.id
                 LEFT JOIN res_partner rp ON aml.partner_id = rp.id
@@ -64,14 +63,14 @@ class GetMonthesDue(models.AbstractModel):
                 
                 WHERE aa.account_type = 'asset_receivable' %s
                 AND aml.parent_state = 'posted' AND rp.is_tenancy = TRUE AND lams.am_count >= %s
-                GROUP BY aml.partner_id, lams.amount, rp.complete_name, rp.mobile, mbp.name, mbz.name, lams.am_count;
+                GROUP BY aml.partner_id, lams.amount, rp.complete_name, rp.alternative_number, rp.mobile, mbp.name, mbz.name, lams.am_count;
                 
         """ % tuple(
-            [months_ago, where, monthes_due]
+            [where, monthes_due]
         )
 
         self.env.cr.execute(query)
 
         records = self._cr.fetchall()
-
+        _logger.info(records)
         return {"data": data, "records": records, "months": months_between_dates}

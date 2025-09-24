@@ -111,6 +111,20 @@
       action="mgs_billing_collector_action"
       parent="mgs_billing_transaction_config"
       sequence="11"/>
+
+
+    <menuitem id="mgs_billing_transaction_utility" 
+      name="Utility" 
+      parent="mgs_billing.mgs_billing_root" 
+      sequence="60"/>
+  
+    <menuitem id="menu_balance_transfer" 
+      name="Balance Transfers" 
+      parent="mgs_billing_transaction_utility" 
+      sequence="1" action="action_balance_transfer" 
+      groups="group_mgs_utility_balance_transfer"/>
+
+    
 <!-- configuration -->
 
 
