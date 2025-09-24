@@ -7,10 +7,18 @@
         <field name="arch" type="xml">
             <form string="Expense Report Wizard">
                 <group>
-                    <field name="product_id"/>
-                    <field name="journal_id"/>
-                    <field name="date_from"/>
-                    <field name="date_to"/>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="journal_id"/>
+
+                    </group>
+                    
+                    <group>
+                        <field name="date_to"/>
+                        <field name="product_id"/>
+
+
+                    </group>
                 </group>
                 <footer>
                     <button string="Print" type="object" name="action_print_report" class="btn-primary"/>
@@ -26,10 +34,5 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-    <menuitem
-        id="hr_expense_report_wizard_menu"
-        name="Expense Report"
-        action="action_hr_expense_report_wizard"
-        parent="hr_expense.menu_hr_expense_reports"
-        sequence="10"/>
+    <menuitem id="hr_expense_report_wizard_menu" name="Expense Report" action="action_hr_expense_report_wizard" parent="hr_expense.menu_hr_expense_reports" sequence="10"/>
 </odoo>

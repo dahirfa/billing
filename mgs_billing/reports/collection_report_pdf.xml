@@ -15,6 +15,18 @@
                         <t t-set="lines" t-value="env['mgs_billing.collection.wizard.line'].search([('user_id', '=', wizard.env.user.id)])"/>
         
                         <div class="page">
+                            <style>
+                                th, td {
+                                    padding: 0.30rem !important;
+                                    border-top: 1px solid #212529 !important;
+                                    border-bottom: 1px solid #212529 !important;
+                                }
+                                th{
+        
+                                    font-weight:bold;
+                                }
+                                </style>
+                            <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
                             <h2 style="text-align:center;"><t t-esc="wizard.report_type"/> Houses</h2>
                             <p style="text-align:center;"><strong>From:</strong> <t t-esc="wizard.date_from"/> 
                             <strong>To:</strong> <t t-esc="wizard.date_to"/></p>
@@ -38,6 +50,7 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
                     </t>
                 </t>
             </t>

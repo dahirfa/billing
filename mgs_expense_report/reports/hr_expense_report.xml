@@ -14,6 +14,19 @@
             <t t-call="web.external_layout">
                 
                 <div class="page">
+                    <style>
+                        th, td {
+                            padding: 0.30rem !important;
+                            border-top: 1px solid #212529 !important;
+                            border-bottom: 1px solid #212529 !important;
+                        }
+                        th{
+
+                            font-weight:bold;
+                        }
+                        </style>
+
+                    <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
                     <h2 style="text-align:center;">Expense Report</h2>
                     <p style="text-align:center;">
                         From <t t-esc="date_from"/> To <t t-esc="date_to"/>
@@ -27,24 +40,30 @@
                                 <th>Category</th>
                                 <th>Employee</th>
                                 <th>Journal</th>
+                                <th>Paid By</th>
+                                <th>State</th>
+                                <th>Payment State</th>
                                 <th style="text-align:right;">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr t-foreach="get_report_lines(data)" t-as="line">
-                                <td><t t-esc="line['date']"/></td>
+                                <td nowrap="nowrap"><t t-esc="line['date']"/></td>
                                 <td><t t-esc="line['description']"/></td>
                                 <td><t t-esc="line['product']"/></td>
                                 <td><t t-esc="line['employee']"/></td>
                                 <td><t t-esc="line['journal']"/></td>
+                                <td><t t-esc="line['payment_mode']"/></td>
+                                <td><t t-esc="line['state']"/></td>
+                                <td><t t-esc="line['payment_state']"/></td>
                                 <td style="text-align:right;">
                                     <t t-esc="line['amount']" t-options='{"widget": "monetary", "display_currency": env.user.company_id.currency_id}'/>
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot>
+                        <tfoot style="font-weight:bold; background:#ffe6e6;">
                             <tr>
-                                <td colspan="5" class="text-right"><strong>Total</strong></td>
+                                <td colspan="8" class="text-right"><strong>Total</strong></td>
                                 <td style="text-align:right;">
                                     <strong>
                                         <t t-esc="sum(line['amount'] for line in get_report_lines(data))" 
@@ -55,7 +74,7 @@
                         </tfoot>
                     </table>
                     
-                    
+                </div>
                 </div>
             </t>
         </t>
