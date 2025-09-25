@@ -13,10 +13,11 @@
                     </div>
                     <group>
                         <group>
-                            <field name="partner_id"  placeholder="Partner"/>                        
+                            <field name="partner_id" readonly="1" placeholder="Partner"/>                        
+                            <field name="tag_id" readonly="1" placeholder="Tag"/>                        
                         </group>
                         <group>
-                            <field name="team_id"  placeholder="Team"/>
+                            <field name="team_id" readonly="1" placeholder="Team"/>
                         </group>
                     </group>                    
                 </sheet>

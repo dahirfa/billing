@@ -1,22 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
   <record id="crm_opportunity_form_inehrit" model="ir.ui.view">
     <field name="name">crm.opportunity.form.inehrit</field>
     <field name="model">crm.lead</field>
     <field name="inherit_id" ref="crm.crm_lead_view_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//header" position="inside">
-        <!-- <button invisible="not hide_create_customer_btn or hide_create_ticket_btn" name="create_helpdesk_ticket" string="Create Ticket" type="object" class="btn-primary"/> -->
-        
-          <button name="%(mgs_create_ticket_action)d" string="Create Ticket" type="action" class="btn-info"/>
-        
-      </xpath>
-
-      <xpath expr="//div[@class='oe_button_box']" position="inside">
-        <button invisible="not help_desk_ticket_id" class="oe_stat_button" name="action_open_ticket" type="object" icon="fa-life-ring">
-                Ticket
-        </button>
-      </xpath>
-
 
       <xpath expr="//field[@name='user_id']" position="before">
         <field name="pipe_extention" string='Nooca Tuubada Biyaha Laga Qabanaayo' />

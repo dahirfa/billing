@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="crm_opportunity_form_inehrit_helpdesk" model="ir.ui.view">
+    <field name="name">crm.opportunity.form.inehrit.helpdesk</field>
+    <field name="model">crm.lead</field>
+    <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button name="%(mgs_create_ticket_action)d" invisible="not hide_create_customer_btn or hide_create_ticket_btn" string="Create Ticket" type="action" class="btn-info"/>
+      </xpath>
+
+
+
+      <xpath expr="//div[@class='oe_button_box']" position="inside">
+        <button invisible="not help_desk_ticket_id" class="oe_stat_button" name="action_open_ticket" type="object" icon="fa-life-ring">
+                Ticket
+        </button>
+      </xpath>
+
+
+    </field>
+  </record>
+</odoo>

@@ -48,48 +48,66 @@
             <xpath expr="//form" position="inside">
                 <app data-string="helpdesk" string="Helpdesk" name="helpdesk">
                     <h2>HelpDesk Settings</h2>
-
-                    <div class="row mt16 o_settings_container" name="sms_config_container">
-                        <div class="col-12 col-lg-6 o_setting_box" id="sms_config">
+                
+                    <div class="row mt16 o_settings_container" name="helpdesk_config_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="helpdesk_config">
                             <div class="o_setting_left_pane"/>
                             <div class="o_setting_right_pane">
                                 <span class="o_form_label">HELPDESK</span>
                                 <span class="fa fa-lg fa-building-o" groups="base.group_no_one" role="img"/>
+                
                                 <div class="text-muted">
-                                            Set Stages
+                                    Configure your Helpdesk settings, including stages, team, and tags.
                                 </div>
+                
                                 <div class="content-group">
-                                    <div class="row mt16">
-                                        <label for="done_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
-                                        <field name="done_stage_id"/>
-                                    </div>
-                                    <div class="row mt16">
-                                        <label for="in_progress_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
-                                        <field name="in_progress_stage_id"/>
-                                    </div>
-                                    <div class="row mt16">
-                                        <label for="to_review_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
-                                        <field name="to_review_stage_id"/>
-                                    </div>
-                                    <div class="row mt16">
-                                        <label for="cancel_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
-                                        <field name="cancel_stage_id"/>
-                                    </div>
-
-                                    <div class="row mt16">
-                                        <label for="suspended_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
-                                        <field name="suspended_stage_id"/>
-                                    </div>
-
-                                    <div class="row mt16">
-                                        <label for="draft_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
-                                        <field name="draft_stage_id"/>
-                                    </div>
+                
+                                    <!-- Stages Block -->
+                                    <block title="Ticket Stages">
+                                        <div class="row mt16">
+                                            <label for="done_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="done_stage_id"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label for="in_progress_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="in_progress_stage_id"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label for="to_review_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="to_review_stage_id"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label for="cancel_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="cancel_stage_id"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label for="suspended_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="suspended_stage_id"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label for="draft_stage_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="draft_stage_id"/>
+                                        </div>
+                                    </block>
+                
+                                    <!-- Team & Tag Block -->
+                                    <block title="Team &amp; Tags">
+                                        <div class="row mt16">
+                                            <label for="team_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="team_id"/>
+                                        </div>
+                                        <div class="row mt16">
+                                            <label for="tag_id" options="{'no_create_edit': True}" class="col-lg-3 o_light_label"/>
+                                            <field name="tag_id"/>
+                                        </div>
+                                    </block>
+                
                                 </div>
                             </div>
                         </div>
                     </div>
                 </app>
+                
             </xpath>
         </field>
     </record>

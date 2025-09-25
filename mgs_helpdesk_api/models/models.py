@@ -35,7 +35,7 @@ class InheritHelpDeskTicket(models.Model):
     qr_image = fields.Binary(string="QR Code", compute="generate_qr_code")
     accepted_rejected_state = fields.Selection(string="Accepted/Rejected", selection=[("rejected", "Rejected"), ("accepted", "Accepted")], tracking=True)
     reject_reason = fields.Char(string="Reason for Rejection", tracking=True)
-    
+    crm_lead_id = fields.Many2one("crm.lead", string="CRM Lead", index=True)
     
     def generate_qr_code(self):
         for rec in self:
