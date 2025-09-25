@@ -57,6 +57,15 @@ class InheritHelpDeskTicket(models.Model):
                 rec.qr_image = False
     
     
+    @api.onchange('stage_id')
+    def close_crm_opportunity(self):
+        for rec in self:
+            done_stage = self.env.company.done_stage_id
+            crm_done_stage = self.env['crm.stage'].search([('is_won', '!=', False)], limit=1)
+            if rec.crm_lead_id:
+                if rec.stage_id.id == done_stage.id:
+                    rec.crm_lead_id.stage_id = crm_done_stage.id
+    
 
     def action_send_sms_technician(self):
         mgs_sms_obj = self.env['mgs.sms']

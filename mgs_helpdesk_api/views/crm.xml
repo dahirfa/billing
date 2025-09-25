@@ -6,7 +6,7 @@
     <field name="inherit_id" ref="crm.crm_lead_view_form"/>
     <field name="arch" type="xml">
       <xpath expr="//header" position="inside">
-        <button name="%(mgs_create_ticket_action)d" invisible="not hide_create_customer_btn or hide_create_ticket_btn" string="Create Ticket" type="action" class="btn-info"/>
+        <button name="%(mgs_helpdesk_api.mgs_create_ticket_action)d" invisible="not hide_create_customer_btn or hide_create_ticket_btn" string="Create Ticket" type="action" class="btn-info"/>
       </xpath>
 
 

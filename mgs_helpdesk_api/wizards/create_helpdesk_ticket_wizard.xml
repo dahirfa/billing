@@ -14,10 +14,10 @@
                     <group>
                         <group>
                             <field name="partner_id" readonly="1" placeholder="Partner"/>                        
-                            <field name="tag_id" readonly="1" placeholder="Tag"/>                        
+                            <field name="tag_id" placeholder="Tag"/>                        
                         </group>
                         <group>
-                            <field name="team_id" readonly="1" placeholder="Team"/>
+                            <field name="team_id" placeholder="Team"/>
                         </group>
                     </group>                    
                 </sheet>

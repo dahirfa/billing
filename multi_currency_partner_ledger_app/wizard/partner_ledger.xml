@@ -30,14 +30,12 @@
                             <field name="currency_ids" widget="many2many_tags" placeholder="Select Currency" style="color:#898687"/>
                             <field name="result_selection"/>
                             <field name="reconciled"/>
-                            <field name="include_lines"/>
                             <field name="summary"/>
                             <field name="display_zero_values"/>
                         </group>
                     </group>
                     <footer>
                         <button name="print_partner_ledger" type="object" string="Print" class="btn btn-primary active" icon="fa-file-pdf-o" data-toggle="tooltip" title="Print Partner Ledger"/>
-                        <!-- or <button name="print_excel_report" type="object" string="XLS" class="btn btn-success active" icon="fa-file-excel-o" data-toggle="tooltip" title="Print Partner Ledger XLS"/> -->
 
                         <button string="Cancel" class="btn btn-danger" special="cancel" icon="fa-times"/>
                     </footer>
@@ -51,7 +49,6 @@
         <record id="multi_currency_partner_ledger_action" model="ir.actions.act_window">
             <field name="name">Partner Ledger</field>
             <field name="res_model">multicurrency.partnerledger</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="multi_currency_partner_ledger_wizard"/>
             <field name="target">new</field>

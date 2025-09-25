@@ -17,8 +17,8 @@
     "depends": ["base", "helpdesk", "mgs_billing", "hr", "crm"],
     "data": [
         'security/ir.model.access.csv',
-        "views/crm.xml",
         "wizards/create_helpdesk_ticket_wizard.xml",
+        "views/crm.xml",
         "views/views.xml",
         "views/templates.xml",
         "views/stages.xml",

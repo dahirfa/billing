@@ -8,8 +8,10 @@ _logger = logging.getLogger(__name__)
 
 class MultiReportPartnerLedger(models.AbstractModel):
     _name = "report.multi_currency_partner_ledger_app.report_partnerledger"
-    def _get_invoice(self, invoice_number):
-        return self.env['account.move'].search([('name', '=', invoice_number)], limit=1).invoice_line_ids
+    
+    
+    def _get_invoice(self, line_id):
+        return self.env['account.move'].search([('id', '=', line_id)], limit=1).invoice_line_ids
     
     
     def _lines(self, data, partner, currency):
@@ -99,6 +101,7 @@ class MultiReportPartnerLedger(models.AbstractModel):
                 
            
             vals = {
+                
                 "company_curr_debit": company_curr_debit,
                 "company_curr_credit": company_curr_credit,
                 "company_curr_balance": company_curr_balance,
@@ -115,6 +118,7 @@ class MultiReportPartnerLedger(models.AbstractModel):
                 "description": invoice.name or ", ".join(invoice.move_id.payment_ids.mapped("memo")) or invoice.move_id.ref or invoice.move_id.payment_reference,
                 "currency_id": invoice.currency_id.symbol or company_id.currency_id.symbol,
                 "invoice_id": invoice.move_id.id,
+                "journal_id": invoice.journal_id.name,
             }
 
             debit_currecny_amount_total += debit_amt_convert
@@ -226,6 +230,7 @@ class MultiReportPartnerLedger(models.AbstractModel):
             "extra": data,
             # "sum_partner": self._sum_partner,
             "previous_balance": self._get_previous_balance,
+            "get_invoice_data": self._get_invoice
         }
 
 
