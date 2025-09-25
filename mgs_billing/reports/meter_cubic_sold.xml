@@ -1,50 +1,46 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Report Action -->
     <record id="action_bill_meter_cubic_sold_report_view" model="ir.actions.report">
         <field name="name">Usage Report</field>
         <field name="model">mgs_billing.meter_cubic_sold.report</field>
         <field name="report_type">qweb-html</field>
         <field name="report_name">mgs_billing.bill_meter_cubic_sold_report_template</field>
         <field name="report_file">mgs_billing.bill_meter_cubic_sold_report_template</field>
-        <!-- <field name="binding_model_id" ref="model_load_line_dispatch"/> -->
+         <field name="print_report_name">'Usage Performace'</field>
         <field name="binding_type">report</field>
     </record>
 
+    <!-- Report Template -->
     <template id="bill_meter_cubic_sold_report_template">
         <t t-call="web.html_container">
-            <t t-call="web.internal_layout" t-lang="en_US">
+            <t t-call="web.external_layout" t-lang="en_US">
                 <div class="page">
-                    <div class="container">
+                    <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
+
+                        <!-- Inline Table Styling -->
                         <style>
-                            #customers {
-                                font-family: Arial, Helvetica, sans-serif;
-                                border-collapse: collapse;
-                                width: 100%;
+                            th, td {
+                                padding: 0.30rem !important;
+                                border-top: 1px solid #212529 !important;
+                                border-bottom: 1px solid #212529 !important;
                             }
-
-                            #customers td, #customers th {
-                                border: 1px solid #ddd;
-                                padding: 8px;
-                            }
-
-                            #customers tr:nth-child(even){background-color: #f2f2f2;}
-
-                            #customers tr:hover {background-color: #ddd;}
-
-                            #customers th {
-                                padding-top: 12px;
-                                padding-bottom: 12px;
-                                text-align: left;
-                                background-color: #04AA6D;
-                                color: white;
+                            th {
+                                font-weight: bold;
                             }
                         </style>
-                        <h1> Usage by <span t-esc="form['report_by']"/></h1>
 
-                        <div class="row">
-                            <div class="col-3" t-if="month or year">
+                        <!-- Report Title -->
+                        <h2>
+                            Usage by <span t-esc="form['report_by']"/>
+                        </h2>
+
+                        <!-- Filters -->
+                        <div class="row" style="margin-top: 32px !important;font-size: 1.2em;">
+
+                            <div class="col-3" t-if="form['month'] or form['year']">
                                 <strong>Date:</strong><br/>
-                                <span t-esc="get_month_name(form['month'])"/>, <span t-esc="form['year']"/>
+                                <span t-esc="form['month']"/>/<span t-esc="form['year']"/>
                             </div>
 
                             <div class="col-3" t-if="form['zone_id'][0]">
@@ -52,10 +48,10 @@
                                 <p class="m-0" t-esc="form['zone_id'][1]"/>
                             </div>
 
-                            <!-- <div class="col-3" t-if="form['collector_id'][0]">
+                            <div class="col-3" t-if="form['collector_id'][0]">
                                 <strong>Collector:</strong>
                                 <p class="m-0" t-esc="form['collector_id'][1]"/>
-                            </div> -->
+                            </div>
 
                             <div class="col-3" t-if="form['company_id'][0]" groups="base.group_multi_company">
                                 <strong>Company:</strong>
@@ -63,37 +59,43 @@
                             </div>
                         </div>
 
-                        <table id="customers">
-                            <tr>
-                                <th>No.</th>
-                                <th>
-                                  <t t-if="form['report_by'] == 'Zone'">Zone</t>
-                                  <t t-if="form['report_by'] == 'Collector'">Collector</t>
-                                  </th>
-                                <th style="text-align: right;">Usage</th>
-                            </tr>
-                            <t t-set="no" t-value="0"/>
-                            <t t-set="total_usage" t-value="0"/>
+                        <!-- Table -->
+                        <table class="table table-condensed table-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <t t-if="form['report_by'] == 'Zone'">Zone</t>
+                                        <t t-if="form['report_by'] == 'Collector'">Collector</t>
+                                    </th>
+                                    <th style="text-align: right;">Usage</th>
+                                </tr>
+                            </thead>
 
-                            <tr t-foreach="lines" t-as="line">
-                                <t t-set="no" t-value="no+1"/>
-                                <td><span t-esc="no"/></td>
-                                <td>
-                                  <span t-if="form['report_by'] == 'Zone'" t-esc="line['zone_name']"/>
-                                  <span t-if="form['report_by'] == 'Collector'" t-esc="line['collector_name']"/>
-                                </td>
+                            <tbody>
+                                <t t-set="total_usage" t-value="0"/>
 
-                                <td style="text-align: right;"><span t-esc="line['total_meter_cubic']"/></td>
+                                <tr t-foreach="lines" t-as="line">
+                                    <td>
+                                        <span t-if="form['report_by'] == 'Zone'" t-esc="line['zone_name']"/>
+                                        <span t-if="form['report_by'] == 'Collector'" t-esc="line['collector_name']"/>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <span t-esc="line['total_meter_cubic']"/>
+                                    </td>
+                                    <!-- Accumulate Total -->
+                                    <t t-set="total_usage" t-value="total_usage + line['total_meter_cubic']"/>
+                                </tr>
 
-                                <!-- Total variables -->
-                                <t t-set="total_usage" t-value="total_usage+line['total_meter_cubic']"/>
-                            </tr>
-
-                            <tr style="font-weight: bold">
-                                <td colspan="2"/>
-                                <td style="text-align: right;"><span t-esc="total_meter_cubic"/></td>
-                            </tr>
+                                <!-- Total Row -->
+                                <tr style="font-weight:bold; background:#ffe6e6;">
+                                    <td>Total Usage</td>
+                                    <td style="text-align: right;">
+                                        <span t-esc="total_usage"/>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
+
                     </div>
                 </div>
             </t>

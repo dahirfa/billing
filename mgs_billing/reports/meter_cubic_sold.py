@@ -10,15 +10,10 @@ class MgsMeterCubicSoldReport(models.Model):
 
     zone_id = fields.Many2one(
         'mgs_billing.zone')
-    # collector_id = fields.Many2one(
-    #     'res.partner', string='Collector', domain=[('is_collector', '=', True)])
-    collector_id = fields.Many2many('res.partner', string='Collectors', domain=[('is_collector', '=', True)], tracking=True)
+    collector_id = fields.Many2one('res.partner', string='Collector', domain=[('is_collector', '=', True)])
     company_id = fields.Many2one(
         'res.company', string='Company', default=lambda self: self.env.company.id)
     total_meter_cubic = fields.Integer(string='Total Meter Cubic')
-
-
-    # TODO: Fix this Collector Condition
 
 
     @api.model
@@ -26,9 +21,7 @@ class MgsMeterCubicSoldReport(models.Model):
         result = "SELECT mbz.id AS id, mbz.id AS zone_id, mbz.name as zone_name, null AS collector_id, null As collector_name, mbr.company_id AS company_id"
 
         if report_by == 'Collector':
-            # result = "SELECT mbz.collector_id AS id, mbz.collector_id AS collector_id, rp.name AS collector_name, null AS zone_id, null AS zone_name,  mbr.company_id AS company_id"
-            
-            result = "SELECT null AS id, null AS collector_id, '' AS collector_name, null AS zone_id, null AS zone_name,  mbr.company_id AS company_id"
+            result = "SELECT mbz.collector_id AS id, mbz.collector_id AS collector_id, rp.name AS collector_name, null AS zone_id, null AS zone_name,  mbr.company_id AS company_id"
 
         result += ", sum(mbr.difference) AS total_meter_cubic"
         return result
@@ -38,7 +31,7 @@ class MgsMeterCubicSoldReport(models.Model):
         return """
             FROM mgs_billing_reading mbr
             LEFT JOIN mgs_billing_zone mbz ON mbr.zone_id=mbz.id
-            -- LEFT JOIN res_partner rp ON mbz.collector_id=rp.id
+            LEFT JOIN res_partner rp ON mbz.collector_id=rp.id
             """
 
     @api.model
@@ -49,8 +42,8 @@ class MgsMeterCubicSoldReport(models.Model):
         if zone_id:
             result += " AND mbr.zone_id = %s" % zone_id
 
-        # if collector_id:
-        #     result += " AND mbz.collector_id = %s" % collector_id
+        if collector_id:
+            result += " AND mbz.collector_id = %s" % collector_id
 
         if company_id:
             result += " AND mbr.company_id = %s" % company_id
@@ -58,8 +51,7 @@ class MgsMeterCubicSoldReport(models.Model):
 
     @api.model
     def _group_by(self, report_by):
-        # result = "GROUP BY mbz.id, mbr.company_id" if report_by == 'Zone' else "GROUP BY mbz.collector_id, mbr.company_id,rp.name"
-        result = "GROUP BY mbz.id, mbr.company_id" if report_by == 'Zone' else "GROUP BY mbr.company_id"
+        result = "GROUP BY mbz.id, mbr.company_id" if report_by == 'Zone' else "GROUP BY mbz.collector_id, mbr.company_id,rp.name"
         return result
 
     def query_execute(self, report_by='Zone', date_from=fields.Date.today().replace(day=1), date_to=fields.Date.today(), zone_id=None, collector_id=None, company_id=None):

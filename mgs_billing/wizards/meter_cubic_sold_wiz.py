@@ -55,17 +55,3 @@ class MeterCubicSoldReportWiz(models.TransientModel):
             'lines': lines,
         }
         return self.env.ref('mgs_billing.action_bill_meter_cubic_sold_report_view').with_context(landscape=False).report_action(self, data=data)
-        # print(query)
-        # raise ValidationError(query)
-        # tools.drop_view_if_exists(self._cr, report_obj._table)
-        # self._cr.execute('''CREATE OR REPLACE VIEW %s AS (%s)''' %
-        #                  (report_obj._table, query))
-        # action = self.env.ref(
-        #     'mgs_billing.mgs_billing_meter_cubic_sold_report_action').sudo().read()[0]
-        # if self.report_by == 'collector':
-        #     action = self.env.ref(
-        #         'mgs_billing.mgs_billing_meter_cubic_sold_report_action2').sudo().read()[0]
-
-        # action['context'] = {}
-        # action['context']['create'] = False
-        # return action

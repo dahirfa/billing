@@ -149,6 +149,7 @@
                                             <th>Number</th>
                                             <th>Partner</th>
                                             <th>Sender</th>
+                                            <th>Cashier</th>
                                             <th>Memo</th>
                                             <th>Transaction Ref</th>
                                             <th style="text-align:right">Total</th>
@@ -175,6 +176,9 @@
                                                 </td>
                                                 <td>
                                                     <span t-esc="line['mgs_sender_phone']"/>
+                                                </td>
+                                                 <td>
+                                                    <span t-esc="line['cashier_name']"/>
                                                 </td>
                                                 <td>
                                                     <span t-esc="line['memo']"/>

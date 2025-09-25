@@ -185,7 +185,7 @@
       sequence="6" />
 
     <menuitem id="mgs_billing_meter_cubic_sold_zone_menu" 
-      name="Usage by Zone" 
+      name="Usage Perfomance" 
       parent="mgs_billing_reports_root" 
       action="mgs_billing_meter_cubic_sold_zone_action" 
       sequence="7" />
