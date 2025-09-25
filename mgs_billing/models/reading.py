@@ -32,7 +32,7 @@ class MGSBillingMeterReadings(models.Model):
     currency_id = fields.Many2one(
         'res.currency', 'Currency', compute='_get_reading_info', store=True)
     invoice_amount = fields.Monetary(compute='_get_reading_info', store=True)
-    state = fields.Selection(related='reading_id.state', store=True)
+    state = fields.Selection([('draft', 'draft'), ('pending', 'Pending'), ('posted', 'Posted'), ('cancel', 'Cancelled')], readonly=False)
     zone_id = fields.Many2one(
         'mgs_billing.zone', related='property_id.zone_id', store=True)
     comment = fields.Char(string="Comment")
@@ -52,6 +52,7 @@ class MGSBillingMeterReadings(models.Model):
                 r.previous_reading = r.reading_id.last_reading
                 r.reading_difference = r.reading_id.difference
                 r.rate = r.reading_id.rate
+                r.state = r.reading_id.state
                 r.invoice_amount = r.reading_id.amount_total
 
     def unlink(self):
@@ -344,7 +345,8 @@ class MGSBillingReading(models.Model):
         meter_reading_obj = self.env['mgs_billing.meter.reading']
         for r in self:
             last_reading = meter_reading_obj.search(
-                [('property_id.id', '=', r.property_id.id), ('state', '=', 'posted')], limit=1, order='id DESC, date DESC')
+                [('property_id', '=', r.property_id.id), ('state', '=', 'posted')], limit=1, order='id DESC, date DESC')
+            
             if last_reading:
                 r.last_reading = last_reading.reading_on_date
             else:
