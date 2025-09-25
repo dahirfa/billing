@@ -44,6 +44,15 @@ class PaymentInherit(models.Model):
     mgs_payment_line_id = fields.Many2one('mgs.payment.line')
     mgs_partner_bal = fields.Monetary(
         string='Balance', compute="_compute_mgs_partner_bal", store=True)
+    
+    
+    zone_id = fields.Many2one(
+        string='Zone',
+        related='partner_id.zone_id',
+        comodel_name='mgs_billing.zone',
+        ondelete='restrict',
+    )
+    
 
     @api.depends('partner_id')
     def _compute_mgs_partner_bal(self):

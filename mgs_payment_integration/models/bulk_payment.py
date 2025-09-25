@@ -43,8 +43,9 @@ class AccountPayment(models.Model):
         res = super(AccountPayment, self)._prepare_move_line_default_vals(
             write_off_line_vals=write_off_line_vals, force_balance=None)
         mgs_sender_phone = self.mgs_sender_phone
-        if self.payment_type == 'inbound' and self.partner_id.id:
-            res[1]['name'] += '| by: %s' % mgs_sender_phone if mgs_sender_phone else ''
+        if self.bulk_payment_id:
+            if self.payment_type == 'inbound' and self.partner_id.id:
+                res[1]['name'] += '| by: %s' % mgs_sender_phone if mgs_sender_phone else ''
         return res
 
     def action_open_bulk_payment(self):

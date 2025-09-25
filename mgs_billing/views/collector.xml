@@ -14,6 +14,20 @@
     </field>
   </record>
 
+  <record id="mgs_billing_collector_tree" model="ir.ui.view">
+    <field name="name">MGS Billing Collector List</field>
+    <field name="model">res.partner</field>
+    <field name="priority">20</field>
+    <field name="arch" type="xml">
+      <list string="Collector List" default_order="id desc">
+        <field name="name"/>
+        <field name="mobile" string="Collecotr's Mobile"/>
+        <field name="phone" string="Collecotr's Phone"/>
+        <field name="assigned_zone_ids" />
+      </list>
+    </field>
+  </record>
+
 
 
 

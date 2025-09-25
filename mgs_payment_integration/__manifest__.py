@@ -13,10 +13,11 @@
         "security/ir.model.access.csv",
         
         "reports/receipt_and_payment.xml",
-        "wizards/receipt_and_payment.xml",
         
         "views/payment_integration.xml",
         "views/bulk_payment.xml",
         "views/res_config.xml",
+        
+        "wizards/receipt_and_payment.xml",
     ],
 }
