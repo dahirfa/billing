@@ -13,11 +13,15 @@
         "crm",
         "mgs_billing",
         "helpdesk",
+        "mgs_helpdesk_api"
     ],
     # always loaded
     "data": [
+        "security/ir.model.access.csv",
+        "wizards/create_helpdesk_ticket_wizard.xml",
         "views/property.xml",
         "views/crm.xml",
+        "views/res_config.xml",
         "wizards/create_billing_customer.xml",
     ],
     # only loaded in demonstration mode

@@ -25,15 +25,15 @@
 
             <xpath expr="//notebook/page[@name='description']" position="after">
                 <page name="work_images" string="Work Images">
-                    <group>                        
+                    <group>
                         <group name="before_work_starts_image" string="Before Work Image">
-                            <field name="before_work_start_image"></field>                        
+                            <field name="before_work_start_image"></field>
                         </group>
                         <group name="after_work_ends_image" string="After Work Image">
-                            <field name="after_work_end_image"></field>                        
+                            <field name="after_work_end_image"></field>
                         </group>
                     </group>
-                </page>                
+                </page>
             </xpath>
 
         </field>
@@ -93,6 +93,24 @@
             </xpath>
         </field>
     </record>
+
+
+    <record id="mgs_helpdesk_api_config_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'helpdesk'}</field>
+    </record>
+
+
+    <menuitem id="mgs_billing_settings_menu" name="Settings" parent="helpdesk.helpdesk_menu_config" action="mgs_helpdesk_api_config_action" sequence="-99"/>
+
+
+
+
+
 
 
 </odoo>

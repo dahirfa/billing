@@ -95,6 +95,7 @@ class MgsHelpdeskApi(http.Controller):
                         "name": record.name,
                         "create_date": create_date_user_tz,
                         "description": record.description,
+                        "created_by": record.create_uid.name,
                         "qr_code": record.qr_code,
                         "priority": record.priority,
                         "stage_name": record.stage_id.name if record.stage_id else None,
@@ -126,6 +127,7 @@ class MgsHelpdeskApi(http.Controller):
                 tickets.append({
                     "id": record.id,
                     "name": record.name,
+                    "created_by": record.create_uid.name,
                     "create_date": record.create_date,
                     "description": record.description,
                     "priority": record.priority,
