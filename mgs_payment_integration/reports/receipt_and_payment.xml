@@ -29,11 +29,11 @@
                         }
                         </style>
 
-                        <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
+                        <div class="container" style="font-size:13px;font-family:Arial;margin-top:1px;">
                             <h2>Payment and Receipt</h2>
 
                             <!-- Filters header -->
-                            <div class="row" style="margin-top: 32px !important;font-size: 1.2em;">
+                            <div class="row" style="margin-top: 32px !important;font-size: 1.1em;">
                                 <div class="col-3" t-if="date_from or date_to">
                                     <strong>Date:</strong>
                                     <p t-esc="date_from" style="margin-bottom: 0"/>
@@ -80,7 +80,7 @@
                                     <tbody>
                                         <t t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option).items()" t-as="cashier_group">
                                             <!-- Group Row -->
-                                            <tr style="background:#f0f0f0; font-weight:bold; font-size:15px;">
+                                            <tr style="background:#f0f0f0; font-weight:bold; font-size:12px;">
                                                 <td colspan="8" style=" color:blue;">Cashier: <t t-esc="cashier_group[0]"/>
                                                 </td>
                                             </tr>
@@ -158,8 +158,8 @@
                                     <tbody>
                                         <t t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option).items()" t-as="journal_group">
                                             <!-- Group Row -->
-                                            <tr style="background:#f0f0f0; font-weight:bold; font-size:15px; color:blue;">
-                                                <td colspan="7" style="color:blue;"><t t-esc="journal_group[0]"/>
+                                            <tr style="background:#f0f0f0; font-weight:bold; font-size:12px; color:blue;">
+                                                <td colspan="8" style="color:blue;"><t t-esc="journal_group[0]"/>
                                                 </td>
                                             </tr>
                                             <t t-set="group_total" t-value="0"/>
@@ -193,7 +193,7 @@
                                             </tr>
                                             <!-- Subtotal Row -->
                                             <tr style="font-weight:bold; background:#e6f2ff;">
-                                                <td colspan="6">Subtotal</td>
+                                                <td colspan="7">Subtotal</td>
                                                 <td style="text-align:right">
                                                     <span t-esc="'{0:,.2f}'.format(group_total)"/>
                                                 </td>
@@ -202,7 +202,7 @@
                                         </t>
                                         <!-- Grand Total Row -->
                                         <tr style="font-weight:bold; background:#ffe6e6;">
-                                            <td colspan="6">Grand Total</td>
+                                            <td colspan="7">Grand Total</td>
                                             <td style="text-align:right">
                                                 <span t-esc="'{0:,.2f}'.format(grand_total)"/>
                                             </td>

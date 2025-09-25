@@ -10,13 +10,13 @@
 			<t t-foreach="docs" t-as="o">
 				<t t-call="web.external_layout">
 					<div class="page">
-						<div t-if="data['form']['result_selection'] == 'customer'" style="font-weight:bold; font-size:22px; text-align:center; background-color:#FEF9E7; border:1px solid #FEF9E7;border-radius:18px;">
+						<div t-if="data['form']['result_selection'] == 'customer'" style="font-weight:bold; font-size:22px; text-align:center;">
 										  Customer Statement
 										  </div>
-						<div t-if="data['form']['result_selection'] == 'supplier'" style="font-weight:bold; font-size:22px; text-align:center; background-color:#FEF9E7; border:1px solid #FEF9E7;border-radius:18px;">
+						<div t-if="data['form']['result_selection'] == 'supplier'" style="font-weight:bold; font-size:22px; text-align:center;">
 										  Vendor Statement
 										  </div>
-						<div t-if="data['form']['result_selection'] == 'customer_supplier'" style="font-weight:bold; font-size:22px; text-align:center; background-color:#FEF9E7; border:1px solid #FEF9E7;border-radius:18px;">
+						<div t-if="data['form']['result_selection'] == 'customer_supplier'" style="font-weight:bold; font-size:22px; text-align:center;">
 										  Customer+Vendor Statements
 										  </div>
 						<br/>
@@ -75,7 +75,7 @@
 						<!--<table class="table table-condensed mt32">-->
 						<table class="table table-sm o_main_table mt-0" style="font-weight:bold">
 							<thead>
-								<tr style="background-color:#FEF9E7;">
+								<tr>
 									<th style="text-align:left">Date</th>
 									<th style="text-align:left">Acc</th>
 									<th style="text-align:left">JRNL</th>
@@ -176,7 +176,7 @@
 														<br/>
 														<span t-esc="invoice_line.product_id.name"/>
 														<span t-esc="invoice_line.quantity"/>
-														<!--<span t-esc="invoice_line.uom_id.name"/>-->  @
+														  X
 														<span t-esc="invoice_line.currency_id.symbol"/>
 														<span t-esc="invoice_line.price_unit" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> =
 														<span t-esc="invoice_line.price_subtotal" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;res_company.currency_id&quot;}"/>
@@ -267,9 +267,9 @@
 									</tr>
 								</t>
 								<!-- ###################################################################### -->
-								<tr style="color:red;font-style:italic;text-align:right">
+								<tr class="text-right" style="font-weight:bold; text-align:right; background:#ffe6e6;">
 									<td class="text-right" colspan="4">
-										<strong>Balance on Date</strong>
+										<strong>TOTAL</strong>
 									</td>
 									<td class="text-right">
 										<strong t-esc="'{0:,.2f}'.format(sum_partner(data, o, 'debit'))" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;res_company.currency_id&quot;}"/>
