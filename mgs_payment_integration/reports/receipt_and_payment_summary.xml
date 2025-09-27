@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="receipt_and_payment_report_summary_table">
+        <t t-if="doc.group_by_option == 'account'">
+            <h3>Summary by Account</h3>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Account</th>
+                        <th>Cashier</th>
+                        <!-- <th>Receipt Count</th> -->
+                        <th style="text-align:right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="grand_total" t-value="0"/>
+                    <t t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option, doc.report_type).items()" t-as="acc_group">
+                        <t t-set="acc_total" t-value="0"/>
+                        <tr>
+                            <td colspan="3"  style="background:#f0f0f0; color:blue; font-weight:bold; font-size:16px;">
+                                <t t-esc="acc_group[0]"/>
+                            </td>
+                        </tr>
+                        <tr t-foreach="acc_group[1].items()" t-as="cashier_row">
+                            <td></td>
+                            <td style="font-weight:bold;">
+                                <t t-esc="cashier_row[0]"/>
+                            </td>
+                            <!-- <td style="text-align:right">
+                                <t t-esc="cashier_row[1]['total_receipts']"/>
+                            </td> -->
+                             <td style="text-align:right; font-weight:bold;">
+                                 <span t-esc="res_company.currency_id.symbol"/><t t-esc="cashier_row[1]['total']"/>
+                            </td>
+                            <t t-set="acc_total" t-value="acc_total+cashier_row[1]['total']"/>
+                        </tr>
+                        <tr style="font-weight:bold;background:#e6f2ff;">
+                            <td colspan="2">Subtotal</td>
+                            <td style="text-align:right">
+                                 <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(acc_total)"/>
+                            </td>
+                        </tr>
+                        <t t-set="grand_total" t-value="grand_total+acc_total"/>
+                    </t>
+                    <tr style="font-weight:bold;background:#ffe6e6;">
+                        <td colspan="2">Grand Total</td>
+                        <td style="text-align:right">
+                             <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_total)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+
+        <t t-elif="doc.group_by_option == 'cashier'">
+            <h3>Summary by Cashier</h3>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Cashier</th>
+                        <th>Account</th>
+                        <th>Receipt Count</th>
+                        <th style="text-align:right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="grand_total" t-value="0"/>
+                    <t t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option, doc.report_type).items()" t-as="cashier_group">
+                        <t t-set="cashier_total" t-value="0"/>
+                        <t t-set="cashier_count" t-value="0"/>
+                        <tr>
+                            <td colspan="4"  style="background:#f0f0f0; color:blue; font-weight:bold; font-size:16px;">
+                                <t t-esc="cashier_group[0]"/>
+                            </td>
+                        </tr>
+                        <tr t-foreach="cashier_group[1].items()" t-as="acc_row">
+                            <td></td>
+                            <td  style="font-weight:bold;">
+                                <t t-esc="acc_row[0]"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="acc_row[1]['total_receipts']"/>
+                            </td>
+
+                            <td style="text-align:right; font-weight:bold;">
+                                 <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(acc_row[1]['total'])"/>
+                            </td>
+                            <t t-set="cashier_total" t-value="cashier_total+acc_row[1]['total']"/>
+                            <t t-set="cashier_count" t-value="cashier_count+acc_row[1]['total_receipts']"/>
+                        </tr>
+                        <tr style="font-weight:bold;background:#e6f2ff;">
+                            <td colspan="2">Total Receipt Count</td>
+                            <td style="text-align:right">
+                                <t t-esc="cashier_count"/>
+                            </td>
+                            <td colspan="2" style="text-align:right">
+                            </td>
+                        </tr>
+                        <tr style="font-weight:bold;background:#e6f2ff;">
+                            <td colspan="3">Subtotal</td>
+                            <td style="text-align:right">
+                                <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(cashier_total)" />
+                            </td>
+                        </tr>
+                        <t t-set="grand_total" t-value="grand_total+cashier_total"/>
+                    </t>
+                    <tr style="font-weight:bold;background:#ffe6e6;">
+                        <td colspan="3">Grand Total</td>
+                        <td style="text-align:right">
+                             <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_total)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+
+        <t t-else="">
+            <h3>Summary</h3>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Account</th>
+                        <th>Cashier</th>
+                        <th style="text-align:right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="grand_total" t-value="0"/>
+                    <t t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option, doc.report_type).items()" t-as="acc_group">
+                        <t t-set="acc_total" t-value="0"/>
+                        <tr>
+                            <td colspan="3"  style="background:#f0f0f0; color:blue; font-weight:bold; font-size:16px;">
+                                <t t-esc="acc_group[0]"/>
+                            </td>
+                        </tr>
+                        <tr t-foreach="acc_group[1].items()" t-as="cashier_row">
+                            <td></td>
+                            <td>
+                                <t t-esc="cashier_row[0]"/>
+                            </td>
+                             <td style="text-align:right; font-weight:bold;">
+                                 <span t-esc="res_company.currency_id.symbol"/><t t-esc="cashier_row[1]['total']"/>
+                            </td>
+                            <t t-set="acc_total" t-value="acc_total+cashier_row[1]['total']"/>
+                        </tr>
+                        <t t-set="grand_total" t-value="grand_total+acc_total"/>
+                    </t>
+                    <tr style="font-weight:bold;background:#ffe6e6;">
+                        <td colspan="2">Grand Total</td>
+                        <td style="text-align:right">
+                             <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_total)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+
+
+
+</odoo>

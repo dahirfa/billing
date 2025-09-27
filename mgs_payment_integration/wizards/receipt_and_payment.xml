@@ -10,6 +10,7 @@
 							<group>
 								<field name="date_from" string = "From"/>
 								<field name="group_by_option" string="Group By"/>
+								<field name="report_type" string="Type"/>
 								<field name="journal_id" string="Account" options="{'no_create': True}" />
 								<field name="user_id" options="{'no_create': True}" />
 								<field name="mgs_sender_phone"/>

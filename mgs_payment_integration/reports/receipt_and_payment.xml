@@ -13,30 +13,29 @@
     </record>
 
     <template id="receipt_and_payment_report">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <t t-call="web.external_layout" t-lang="en_US">
-                    <div class="page">
-                        <style>
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.external_layout" t-lang="en_US">
+                <div class="page">
+                     <style>
                         th, td {
                             padding: 0.30rem !important;
-                            border-top: 1px solid #212529 !important;
-                            border-bottom: 1px solid #212529 !important;
+                            border-top: 1.5px solid #212529 !important;
+                            border-bottom: 1.5px solid #212529 !important;
                         }
-                        th{
-
-                            font-weight:bold;
+                        th {
+                            font-weight: bold;
                         }
                         </style>
 
-                        <div class="container" style="font-size:13px;font-family:Arial;margin-top:1px;">
-                            <h2>Payment and Receipt</h2>
+                    <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
+                        <h2>Payment and Receipt</h2>
 
-                            <!-- Filters header -->
+                         <!-- Filters header -->
                             <div class="row" style="margin-top: 32px !important;font-size: 1.1em;">
                                 <div class="col-3" t-if="date_from or date_to">
                                     <strong>Date:</strong>
-                                    <p t-esc="date_from" style="margin-bottom: 0"/>
+                                    <p t-esc="date_from" class="m-0"/>
                                     <p t-esc="date_to"/>
                                 </div>
                                 <div class="col-3" t-if="partner_id[0]">
@@ -57,218 +56,25 @@
                                 </div>
                                 <div class="col-4" t-if="company_id" groups="base.group_multi_company">
                                     <strong>Company:</strong>
-                                    <span style="border: 1px solid black; padding: 1px; border-radius: 4px; background: #eeebeb; margin-right: 2px " t-esc="company_id.name"/>
+                                    <span style="border: 1px solid black; padding: 1px; border-radius: 4px; background: #eeebeb; margin-right: 2px" t-esc="company_id.name"/>
                                 </div>
                             </div>
 
-                            <!-- CASE 1: Group by Cashier -->
-                            <t t-if="doc.group_by_option == 'cashier'">
-                                <t t-set="grand_total" t-value="0"/>
-                                <table class="table table-condensed table-sm">
-                                    <thead >
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Number</th>
-                                            <th>Partner</th>
-                                            <th>Journal</th>
-                                            <th>Sender</th>
-                                            <th>Memo</th>
-                                            <th>Transaction Ref</th>
-                                            <th style="text-align:right">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option).items()" t-as="cashier_group">
-                                            <!-- Group Row -->
-                                            <tr style="background:#f0f0f0; font-weight:bold; font-size:12px;">
-                                                <td colspan="8" style=" color:blue;">Cashier: <t t-esc="cashier_group[0]"/>
-                                                </td>
-                                            </tr>
-                                            <t t-set="group_total" t-value="0"/>
-                                            <!-- Detail Lines -->
-                                            <t t-set="partner_count" t-value="0"/>
-                                            <tr t-foreach="cashier_group[1]" t-as="line">
-                                                <td  nowrap='nowrap'>
-                                                    <span t-esc="line['date']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['receipt_no']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['partner_name']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['journal_name']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['mgs_sender_phone']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['memo']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['mgs_transaction_ref']"/>
-                                                </td>
-                                                <td style="text-align:right">
-                                                    <span t-esc="'{0:,.2f}'.format(line['amount_paid'])"/>
-                                                </td>
-                                                <t t-set="group_total" t-value="group_total+line['amount_paid']"/>
-                                                <t t-set="partner_count" t-value="partner_count + 1"/>
-                                            </tr>
-                                            <!-- Subtotal Row -->
-                                            <tr style="font-weight:bold; background:#e6f2ff;">
-                                                <td colspan="2">TOTAL RECEIVED</td>
-                                                <td style="text-align:right">
-                                                    <span t-esc="partner_count"/>
-                                                </td>
-                                                <td colspan="4">Subtotal</td>
-                                                <td style="text-align:right">
-                                                    <span t-esc="'{0:,.2f}'.format(group_total)"/>
-                                                </td>
-                                            </tr>
-                                            <t t-set="grand_total" t-value="grand_total+group_total"/>
-                                        </t>
-                                        <!-- Grand Total Row -->
-                                        <tr style="font-weight:bold; background:#ffe6e6;">
-                                            <td colspan="7">Grand Total</td>
-                                            <td style="text-align:right">
-                                                <span t-esc="'{0:,.2f}'.format(grand_total)"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </t>
-
-                            <!-- CASE 2: Group by Journal -->
-                            <t t-elif="doc.group_by_option == 'account'">
-                                <t t-set="grand_total" t-value="0"/>
-                                <table class="table table-condensed table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Number</th>
-                                            <th>Partner</th>
-                                            <th>Sender</th>
-                                            <th>Cashier</th>
-                                            <th>Memo</th>
-                                            <th>Transaction Ref</th>
-                                            <th style="text-align:right">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option).items()" t-as="journal_group">
-                                            <!-- Group Row -->
-                                            <tr style="background:#f0f0f0; font-weight:bold; font-size:12px; color:blue;">
-                                                <td colspan="8" style="color:blue;"><t t-esc="journal_group[0]"/>
-                                                </td>
-                                            </tr>
-                                            <t t-set="group_total" t-value="0"/>
-                                            <!-- Detail Lines -->
-                                            <tr t-foreach="journal_group[1]" t-as="line">
-                                                <td nowrap='nowrap'>
-                                                    <span t-esc="line['date']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['receipt_no']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['partner_name']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['mgs_sender_phone']"/>
-                                                </td>
-                                                 <td>
-                                                    <span t-esc="line['cashier_name']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['memo']"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="line['mgs_transaction_ref']"/>
-                                                </td>
-                                                <td style="text-align:right">
-                                                    <span t-esc="'{0:,.2f}'.format(line['amount_paid'])"/>
-                                                </td>
-                                                <t t-set="group_total" t-value="group_total+line['amount_paid']"/>
-                                            </tr>
-                                            <!-- Subtotal Row -->
-                                            <tr style="font-weight:bold; background:#e6f2ff;">
-                                                <td colspan="7">Subtotal</td>
-                                                <td style="text-align:right">
-                                                    <span t-esc="'{0:,.2f}'.format(group_total)"/>
-                                                </td>
-                                            </tr>
-                                            <t t-set="grand_total" t-value="grand_total+group_total"/>
-                                        </t>
-                                        <!-- Grand Total Row -->
-                                        <tr style="font-weight:bold; background:#ffe6e6;">
-                                            <td colspan="7">Grand Total</td>
-                                            <td style="text-align:right">
-                                                <span t-esc="'{0:,.2f}'.format(grand_total)"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </t>
-
-                            <!-- CASE 3: No Grouping -->
-                            <t t-else="">
-                                <t t-set="total_amount" t-value="0"/>
-                                <table class="table table-condensed table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Number</th>
-                                            <th>Partner</th>
-                                            <th>Journal</th>
-                                            <th>Sender</th>
-                                            <th>Memo</th>
-                                            <th>Transaction #</th>
-                                            <th style="text-align:right">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr t-foreach="lines(date_from, date_to, company_id.id, partner_id[0], journal_id[0], user_id[0], payment_type, mgs_sender_phone, mgs_transaction_ref, doc.group_by_option)" t-as="line">
-                                            <td nowrap='nowrap'>
-                                                <span t-esc="line['date']"/>
-                                            </td>
-                                            <td>
-                                                <span t-esc="line['receipt_no']"/>
-                                            </td>
-                                            <td>
-                                                <span t-esc="line['partner_name']"/>
-                                            </td>
-                                            <td>
-                                                <span t-esc="line['journal_name']"/>
-                                            </td>
-                                            <td>
-                                                <span t-esc="line['mgs_sender_phone']"/>
-                                            </td>
-                                            <td>
-                                                <span t-esc="line['memo']"/>
-                                            </td>
-                                            <td>
-                                                <span t-esc="line['mgs_transaction_ref']"/>
-                                            </td>
-                                            <td style="text-align:right">
-                                                <span t-esc="'{0:,.2f}'.format(line['amount_paid'])"/>
-                                            </td>
-                                            <t t-set="total_amount" t-value="total_amount+line['amount_paid']"/>
-                                        </tr>
-                                        <tr style="font-weight:bold; background:#ffe6e6;">
-                                            <td colspan="7">Grand Total</td>
-                                            <td style="text-align:right">
-                                                <span t-esc="'{0:,.2f}'.format(total_amount)"/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </t>
-                        </div>
+                        <!-- Call Summary or Detailed -->
+                        <t t-if="doc.report_type == 'summary'">
+                            <t t-call="mgs_payment_integration.receipt_and_payment_report_summary_table"/>
+                        </t>
+                        <t t-else="">
+                            <t t-call="mgs_payment_integration.receipt_and_payment_report_detailed_table"/>
+                        </t>
                     </div>
-                </t>
+                </div>
             </t>
         </t>
-    </template>
+    </t>
+</template>
+
+
+  
 
 </odoo>

@@ -12,8 +12,10 @@
         "security/groups.xml",
         "security/ir.model.access.csv",
         
-        "reports/receipt_and_payment.xml",
+        "reports/receipt_and_payment_summary.xml",
+        "reports/receipt_and_payment_detailed.xml",
         "reports/payment_receipt.xml",
+        "reports/receipt_and_payment.xml",
         
         "views/payment_integration.xml",
         "wizards/receipt_and_payment.xml",

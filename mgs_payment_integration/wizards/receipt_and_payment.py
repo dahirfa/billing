@@ -26,6 +26,15 @@ class ReceiptAndPayment(models.TransientModel):
     datas_fname = fields.Char('Filename', readonly=True)
     
     group_by_option = fields.Selection(string='Group By', selection=[('cashier', 'Cashier'), ('account', 'Account')])
+
+    
+    report_type = fields.Selection(
+        string='Report Type',
+        required=True,
+        selection=[('summary', 'Summary'), ('detailed', 'Detailed')],
+        default="summary"
+    )
+    
     
 
     @api.constrains('date_from', 'date_to')
@@ -49,7 +58,8 @@ class ReceiptAndPayment(models.TransientModel):
                 'payment_type': self.payment_type,
                 'mgs_sender_phone': self.mgs_sender_phone,
                 'mgs_transaction_ref': self.mgs_transaction_ref,
-                "group_by_option": self.group_by_option
+                "group_by_option": self.group_by_option,
+                "report_type": self.report_type,
             },
         }
 
