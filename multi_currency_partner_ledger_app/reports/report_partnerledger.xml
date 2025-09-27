@@ -133,6 +133,7 @@
 
                                                             <td>
                                                                 <t t-esc="line['description']" />
+                                                                
                                                                 <t t-foreach="get_invoice_data(line['invoice_id'])" t-as="invoice_line">
                                                                     <t t-if="invoice_line.journal_id.type == 'sale'">
                                                                         <br/>
@@ -143,7 +144,12 @@
                                                                         <span t-esc="invoice_line.price_unit" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;}"/> =
                                                                         <span t-esc="invoice_line.currency_id.symbol"/>
                                                                         <span t-esc="invoice_line.price_subtotal" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;res_company.currency_id&quot;}"/>
+                                                                        <t t-if="invoice_line.tax_ids">
+                                                                            + Tax: <span t-esc="', '.join(invoice_line.tax_ids.mapped('name'))"/>
+                                                                            
+                                                                        </t>
                                                                     </t>
+                                                                    
                                                                 </t>
                                                             </td>
                                                             <td>

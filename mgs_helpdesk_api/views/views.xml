@@ -18,12 +18,12 @@
                 <field name="street"/>
             </xpath>
 
-            <field name="tag_ids" position="after">
+            <!-- <field name="tag_ids" position="after">
                 <field name="qr_code" widget="qr" readonly="1" />
                 <field name="qr_image" invisible="qr_code == False or qr_code == ''" widget='image' class="oe_avatar"/>
-            </field>
+            </field> -->
 
-            <xpath expr="//notebook/page[@name='description']" position="after">
+            <!-- <xpath expr="//notebook/page[@name='description']" position="after">
                 <page name="work_images" string="Work Images">
                     <group>
                         <group name="before_work_starts_image" string="Before Work Image">
@@ -34,7 +34,7 @@
                         </group>
                     </group>
                 </page>
-            </xpath>
+            </xpath> -->
 
         </field>
     </record>

@@ -97,6 +97,7 @@ class MgsHelpdeskApi(http.Controller):
                         "description": record.description,
                         "created_by": record.create_uid.name,
                         "qr_code": record.qr_code,
+                        "team_name": record.team_id.name,
                         "priority": record.priority,
                         "stage_name": record.stage_id.name if record.stage_id else None,
                         "partner_name": record.partner_id.name if record.partner_id else None,
@@ -201,15 +202,17 @@ class MgsHelpdeskApi(http.Controller):
                     raise BadRequest("Done stage not configured")
                 ticket_obj.stage_id = done_stage
                 if kw.get("comments"):
-                    ticket_obj.message_post(body=f"Comment: {kw.get('comments')}")
+                    ticket_obj.message_post(body=f"Finish Comment: {kw.get('comments')}")
                 return {"success": True, "message": "Ticket finished"}
                 
-            elif action == "suspend":
+            elif action == "hold":
                 suspended_stage = request.env.company.suspended_stage_id
                 if not suspended_stage:
-                    raise BadRequest("Suspended stage not configured")
+                    raise BadRequest("On Hold stage not configured")
                 ticket_obj.stage_id = suspended_stage
-                return {"success": True, "message": "Ticket suspended"}
+                if kw.get("comments"):
+                    ticket_obj.message_post(body=f"On Hold Comment: {kw.get('comments')}")
+                return {"success": True, "message": "Ticket moved to on hold"}
                 
             elif action == "accept":
                 ticket_obj.accepted_rejected_state = "accepted"
