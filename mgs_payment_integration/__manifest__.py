@@ -18,6 +18,7 @@
         "wizards/receipt_and_payment.xml",
         "views/bulk_payment.xml",
         "views/res_config.xml",
+        "views/payment_receipt.xml",
         
         "wizards/receipt_and_payment.xml",
     ],
