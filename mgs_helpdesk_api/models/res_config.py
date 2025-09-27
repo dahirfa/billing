@@ -9,7 +9,7 @@ class ResCompany(models.Model):
     done_stage_id = fields.Many2one('helpdesk.stage', string="Done Stage", help="Stage for completed tickets",)
     to_review_stage_id = fields.Many2one('helpdesk.stage', string="To Review Stage", help="Stage for tickets pending review",)
     cancel_stage_id = fields.Many2one('helpdesk.stage', string="Cancelled Stage", help="Stage for cancelled tickets",)
-    suspended_stage_id = fields.Many2one('helpdesk.stage', string="Suspended Stage", help="Stage for suspended tickets",)
+    suspended_stage_id = fields.Many2one('helpdesk.stage', string="On Hold Stage", help="Stage for on Hold tickets",)
     team_id = fields.Many2one('helpdesk.team', string="Default Helpdesk Team", help="Default Team for Helpdesk Ticket")
     tag_id = fields.Many2one('helpdesk.tag', string="Default Tag", help="Default Tag for Helpdesk Ticket")
     
