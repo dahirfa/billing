@@ -52,7 +52,7 @@ class MGSBillingMeterReadings(models.Model):
                 r.previous_reading = r.reading_id.last_reading
                 r.reading_difference = r.reading_id.difference
                 r.rate = r.reading_id.rate
-                r.state = r.reading_id.state
+                # r.state = r.reading_id.state
                 r.invoice_amount = r.reading_id.amount_total
 
     def unlink(self):
@@ -178,6 +178,7 @@ class MGSBillingReading(models.Model):
                 r.move_id.with_context(allow_action=True).button_draft()
                 r.move_id.with_context(allow_action=True).button_cancel()
             r.write({'state': 'cancel'})
+            r.meter_reading_id.write({'state': r.state})
 
     def action_confirm(self):
         move_obj = self.env['account.move']
@@ -200,6 +201,7 @@ class MGSBillingReading(models.Model):
                 post_meter_reading = meter_reading_obj.create({'reading_id': rec.id})
                 if post_meter_reading:
                     rec.meter_reading_id = post_meter_reading.id
+                    rec.meter_reading_id.state = rec.state
                     prepared_invoice = rec._prepare_invoice(
                         start_date, end_date, service_ids)
                     creatd_move = move_obj.create(prepared_invoice)
@@ -210,17 +212,20 @@ class MGSBillingReading(models.Model):
             if move_id:
                 move_id.write(rec._prepare_invoice_data(start_date, end_date))
                 rec.meter_reading_id.write({'reading_id': rec.id})
+                
                 move_id.invoice_line_ids = None
                 move_id.invoice_line_ids = rec._prepare_invoice_line(
                     service_ids)
                 move_id.with_context(allow_action=True).action_post()
             rec.write({'state': 'posted'})
+            rec.meter_reading_id.write({'state': rec.state})
 
     def action_draft(self):
         for r in self:
             if r.move_id:
                 r.move_id.with_context(allow_action=True).button_draft()
             r.write({'state': 'draft'})
+            r.meter_reading_id.write({'state': r.state})
 
     def action_pend(self):
         self.write({'state': 'pending'})

@@ -10,7 +10,7 @@
           <button string="Confirm" name="action_confirm" confirm="Are you Sure?" type="object" class="oe_highlight" invisible="state not in ['draft']"/>
           <!-- <button string="Validate" name="action_validate" confirm="Are you Sure?" type="object" class="oe_highlight" states="pending"/> -->
 
-          <button string="Cancel" name="action_cancel" type="object"/>
+          <button string="Cancel" name="action_cancel" invisible="state not in ['posted']" type="object"/>
           <!--TODO: Result from converting "states='cancel'" attribute into an 'invisible' attribute
                  Manually combine states condition into any 'invisible' overrides in inheriting views as well-->
           <button string="Reset To Draft" name="action_draft" invisible="state not in ['cancel']" type="object"/>
