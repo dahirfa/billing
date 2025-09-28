@@ -1,0 +1,36 @@
+<odoo>
+    <record id="view_helpdesk_report_wizard_form" model="ir.ui.view">
+        <field name="name">helpdesk.report.wizard.form</field>
+        <field name="model">helpdesk.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Helpdesk Report Wizard">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="team_id"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="zone_id"/>
+                            <field name="partner_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="print_report" string="View" type="object" class="btn btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_helpdesk_report_wizard" model="ir.actions.act_window">
+        <field name="name">Helpdesk Report</field>
+        <field name="res_model">helpdesk.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_helpdesk_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_helpdesk_report" name="Helpdesk Report" parent="helpdesk.helpdesk_ticket_report_menu_main" action="action_helpdesk_report_wizard"/>
+</odoo>

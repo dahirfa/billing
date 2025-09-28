@@ -23,6 +23,10 @@
         "views/templates.xml",
         "views/stages.xml",
         "views/hr_employee.xml",
+        
+        "reports/helpdesk.xml",
+
+        "wizards/helpdesk_report_wizard.xml",
     ],
     "demo": [
         "demo/demo.xml",

@@ -18,6 +18,7 @@
         "views/property.xml",
         "views/crm.xml",
         "wizards/create_billing_customer.xml",
+        "reports/crm_report.xml",
     ],
     # only loaded in demonstration mode
 }

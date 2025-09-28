@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_report_payment_cancellation" model="ir.actions.report">
+        <field name="name">Payment Cancellation Report</field>
+        <field name="model">mgs_payment_integration.payment_cancellation</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_payment_integration.report_payment_cancellation</field>
+        <field name="report_file">mgs_payment_integration.report_payment_cancellation</field>
+        <field name="binding_model_id" ref="model_mgs_payment_integration_payment_cancellation"/>
+        <field name="binding_type">report</field>
+    </record>
+   
+    <template id="report_payment_cancellation">
+        <t t-call="web.basic_layout">
+            
+            <t t-call="web.external_layout" t-lang="en_US">
+                <div class="page">
+                    <style>
+                        th, td {
+                            padding: 0.30rem !important;
+                            border-top: 1.5px solid #212529 !important;
+                            border-bottom: 1.5px solid #212529 !important;
+                        }
+                        th {
+                            font-weight: bold;
+                        }
+                    </style>
+                    <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
+                        <h2>Payment Cancellation Report</h2>
+                        <div class="row" style="margin-top: 32px !important;font-size: 1.1em;">
+                            <div class="col-3" t-if="date_from or date_to">
+                                <strong>Date:</strong>
+                                <p t-esc="date_from" class="m-0"/>
+                                <p t-esc="date_to"/>
+                            </div>
+                            <div class="col-3" t-if="partner">
+                                <strong>Partner:</strong>
+                                <p class="m-0" t-esc="partner.name"/>
+                            </div>
+                            <div class="col-4" t-if="company_id" groups="base.group_multi_company">
+                                <strong>Company:</strong>
+                                <span style="border: 1px solid black; padding: 1px; border-radius: 4px; background: #eeebeb; margin-right: 2px" t-esc="company_id.name"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-condensed table-sm">
+                            <thead >
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Number</th>
+                                    <th>Partner</th>
+                                    <th>Journal</th>
+                                    <th>Cashier</th>
+                                    <th>Sender</th>
+                                    <th>Memo</th>
+                                    <th>Transaction #</th>
+                                    <th style="text-align:right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="o">
+                                    <tr>
+                                        <td><t t-esc="o.date"/></td>
+                                        <td><t t-esc="o.name"/></td>
+                                        <td><t t-esc="o.partner_id.name"/></td>
+                                        <td><t t-esc="o.journal_id.name"/></td>
+                                        <td><t t-esc="o.create_uid.name"/></td>
+                                        <td><t t-esc="o.mgs_sender_phone"/></td>
+                                        <td><t t-esc="o.memo"/></td>
+                                        <td><t t-esc="o.mgs_transaction_ref"/></td>
+                                        <td style="text-align:right"><t t-esc="o.amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                </t>
+                                <!-- Total Row -->
+                                <tr t-if="docs" style="font-weight:bold; background:#ffe6e6;">
+                                    <td colspan="8" class="text-right">Total</td>
+                                    <td style="text-align:right">
+                                        <t t-set="total_amount" t-value="sum(d.amount for d in docs)"/>
+                                        <t t-esc="total_amount" t-options='{"widget": "monetary", "display_currency": docs[0].currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="not docs">
+                                    <td colspan="9" class="text-center">No payments found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+    
+    
+</odoo>

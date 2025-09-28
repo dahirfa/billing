@@ -16,6 +16,7 @@
         "reports/receipt_and_payment_detailed.xml",
         "reports/payment_receipt.xml",
         "reports/receipt_and_payment.xml",
+        "reports/payment_cancellation.xml",
         
         "views/payment_integration.xml",
         "wizards/receipt_and_payment.xml",
@@ -23,5 +24,6 @@
         "views/res_config.xml",
         
         "wizards/receipt_and_payment.xml",
+        "wizards/payment_cancellation.xml",
     ],
 }

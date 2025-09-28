@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_crm_lead" model="ir.actions.report">
+        <field name="name">Qiimayn Biyo Galin</field>
+        <field name="model">crm.lead</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mgs_billing_addons.report_crm_lead_view</field>
+        <field name="report_file">mgs_billing_addons.report_crm_lead_view</field>
+        <field name="print_report_name">'%s' % object.name</field>
+        <field name="binding_model_id" ref="model_crm_lead"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_crm_lead_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <div style=" font-size:15px;">
+                            Golis 907794512 / 907794898 / 907794818  somtel: 607794818 / 90667794512 nudricom@gmail.com
+                        </div>
+                        <h3 style="text-align:center; margin-top:10px;">
+                            Qimayn Biyo Galin
+                        </h3>
+        
+                        <p>
+                            Anigoo ah <strong><t  t-esc="doc.name"/></strong>
+                            waxaan maamulka shirkadda biyaha ka codsanayaa in daraasad la igu sameeyo gurigayga/meheradayda kuna yaal xaafadda (Zone) <strong><t  t-esc="doc.zone_id.name"/></strong>
+                            Taleefonkayguna yahay <strong><t  t-esc="doc.mobile"/></strong> Nooca guriga <strong><t  t-esc="doc.property_type_id.name"/></strong>
+                        </p>
+        
+                        <div style="margin-top:20px; font-size:13px;">
+
+                            <span style="margin-right:5%;">
+                                <b>Mulkile:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:25%;"></span>
+                            </span>
+
+                            <span style="margin-right:5%;">
+                                <b>Tel:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:20%;"></span>
+                            </span>
+
+                            <span>
+                                <b>Kiraale:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:25%;"></span>
+                            </span>
+
+                        </div>
+
+                        <table style="width:100%; border:1px solid black; border-collapse:collapse; margin-top:15px;">
+                            <thead>
+                                <tr style="background:#eee;">
+                                    <th style="border:1px solid black; padding:4px;">No</th>
+                                    <th style="border:1px solid black; padding:4px;">Faahfaahinta adeega iyo Qalabka</th>
+                                    <th style="border:1px solid black; padding:4px;">Halbeega</th>
+                                    <th style="border:1px solid black; padding:4px;">Caddadka</th>
+                                    <th style="border:1px solid black; padding:4px;">Qiimaha</th>
+                                    <th style="border:1px solid black; padding:4px;">Wadarta USD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border:1px solid black; padding:4px;">1</td>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        Qimahaa Biyo-galinta guriga diiwangalinta, qalabka iyo 20 meter ee u horeeya
+                                        masaafada guriga biyaha u jiraan
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px;">LM</td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid black; padding:4px;">2</td>
+                                    <td style="border:1px solid black; padding:4px;">
+                                        Qimahaa pipeka iyo dhuuljeexa cabirka dheeriga ka 20m ee u horeeya
+                                    </td>
+                                    <td style="border:1px solid black; padding:4px;">Meter</td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid black; padding:4px;">3</td>
+                                    <td style="border:1px solid black; padding:4px;">Adeeg kale:</td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                    <td style="border:1px solid black; padding:4px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+        
+                        <p style="text-align:right; font-weight:bold; margin-top:10px;">
+                            Wadarta: __________________
+                        </p>
+        
+                        <div style="margin-top:20px; font-size:13px;">
+
+                            <span style="margin-right:5%;">
+                                <b>GPS E:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:20%;"></span>
+                            </span>
+
+                            <span style="margin-right:5%;">
+                                <b>N:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:20%;"></span>
+                            </span>
+
+                            <span>
+                                <b>EL:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:20%;"></span>
+                            </span>
+
+                        </div>
+
+
+                        <div style="margin-top:20px; font-size:13px; line-height:2;">
+
+                            <div style="margin-bottom:10px;">
+                                <b>Nooca Tuubada biyaha laga qabanayo:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:35%;"></span>
+
+                                <b style="margin-left:5%;">Nooca Saacada:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:20%;"></span>
+                            </div>
+
+                            <div>
+                                <b>Nooca Tuubada la jiidayo:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:40%;"></span>
+                            </div>
+
+                        </div>
+        
+                        <!-- Signatures Section -->
+                        <div style="margin-top:30px; font-size:13px;">
+
+                            <div style="margin-bottom:25px;">
+                                <span style="margin-right:10%;">
+                                    <b>Saxiixa Macmiilka:</b>
+                                    <span style="display:inline-block; border-bottom:1px solid #000; width:30%;"></span>
+                                </span>
+
+                                <span>
+                                    <b>Saxiixa Qiimeeyaha Adeegga:</b>
+                                    <span style="display:inline-block; border-bottom:1px solid #000; width:25%;"></span>
+                                </span>
+                            </div>
+
+                            <div style="margin-bottom:10px; text-align:center">
+                                <b>Saxiixa Xafiiska Macaamiisha:</b>
+                                
+                            </div>
+
+                            <div style="margin-left:20px; margin-bottom:25px;">
+                                <b>Magaca:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:30%;"></span>
+
+                                <b style="margin-left:5%;">Saxiixa:</b>
+                                <span style="display:inline-block; border-bottom:1px solid #000; width:30%;"></span>
+                            </div>
+
+                        </div>
+
+
+        
+                        <div style="margin-top:20px; ">
+                            Fadlan marka qiimayntaan kusoo gaarto booqo xafiiska shirkadda Nuwaco, adoo nuqulkan sita si aad u saxiixdo heshiiska isticmaalka adeega biyaha, lacagtana aad ugu bixiso <br/>
+                            <b>Xafiiska macaamiisha:</b> 907700076 <b>Qeybta lacag bixinta:</b> Sahal A/c 400422 edahab 48844 <br/>
+                            <b>Farsamada:</b> 907795742 / 907672994 <b>Maamulka:</b> 907794820 / 907794818
+                        </div>
+        
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

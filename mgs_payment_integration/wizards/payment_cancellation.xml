@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<record id="payment_cancellation_form" model="ir.ui.view">
+			<field name="name">mgs_payment_integration.payment_cancellation.form</field>
+			<field name="model">mgs_payment_integration.payment_cancellation</field>
+			<field name="arch" type="xml">
+			   <form>
+					<sheet>
+						<group>
+							<group>
+								<field name="date_from" string="From"/>
+                                <field name="partner_id" options="{'no_create': True}" />
+							</group>
+
+
+							<group>
+								<field name="date_to" string="To"/>
+								
+							</group>
+						</group>
+					</sheet>
+
+				<footer>
+					<button name="print_report" string="View" type="object" class="btn btn-primary"/>
+				     or
+					<button string="Cancel" special="cancel"/>
+				</footer>
+
+			   </form>
+			</field>
+		</record>
+
+
+
+		<record id="action_payment_cancellation_report" model="ir.actions.act_window">
+			<field name="name">MGS Payment Cancellation</field>
+			<field name="res_model">mgs_payment_integration.payment_cancellation</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_id" ref="payment_cancellation_form"/>
+			<field name="target">new</field>
+		</record>
+
+    <menuitem id="menu_payment_integration_payment_cancellation_report" name="Payment Cancellation" parent="menu_payment_integration_report_root" action="action_payment_cancellation_report" sequence="2" />
+</odoo>

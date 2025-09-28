@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_report_helpdesk" model="ir.actions.report">
+        <field name="name">Helpdesk Report</field>
+        <field name="model">helpdesk.report.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_helpdesk_api.report_helpdesk</field>
+        <field name="report_file">mgs_helpdesk_api.report_helpdesk</field>
+        <field name="binding_model_id" ref="model_helpdesk_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_helpdesk">
+        <t t-call="web.basic_layout">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <style>
+                        th, td {
+                            padding: 0.30rem !important;
+                            border-top: 1.5px solid #212529 !important;
+                            border-bottom: 1.5px solid #212529 !important;
+                        }
+                        th {
+                            font-weight: bold;
+                        }
+                    </style>
+                    <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
+                        <h2>Helpdesk Report</h2>
+                        <table class="table table-condensed table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Team</th>
+                                    <th>Assigned User</th>
+                                    <th>Customer</th>
+                                    <th>Zone</th>
+                                    <th>Phone</th>
+                                    <th>Street</th>
+                                    <th>Description</th>
+                                    <th>Stage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="o">
+                                    <tr>
+                                        <td><t t-esc="o.team_id.name"/></td>
+                                        <td><t t-esc="o.user_id.name"/></td>
+                                        <td><t t-esc="o.partner_id.name"/></td>
+                                        <td><t t-esc="o.partner_id.zone_id.name"/></td>
+                                        <td><t t-esc="o.partner_id.phone"/></td>
+                                        <td><t t-esc="o.partner_id.street"/></td>
+                                        <td><t t-esc="o.name"/></td>
+                                        <td><t t-esc="o.stage_id.name"/></td>
+                                    </tr>
+                                </t>
+                                <tr t-if="not docs">
+                                    <td colspan="7" class="text-center">No tickets found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>
