@@ -12,8 +12,12 @@ class HelpdeskReportWizard(models.TransientModel):
     def print_report(self):
         datas = {
             'team_id': self.team_id.id if self.team_id else False,
+            'team_name': self.team_id.name if self.team_id else False,
             'user_id': self.user_id.id if self.user_id else False,
+            'user_name': self.user_id.name if self.user_id else False,
             'zone_id': self.zone_id.id if self.zone_id else False,
+            'zone_name': self.zone_id.name if self.zone_id else False,
             'partner_id': self.partner_id.id if self.partner_id else False,
+            'partner_name': self.partner_id.name if self.partner_id else False,
         }
         return self.env.ref('mgs_helpdesk_api.action_report_helpdesk').report_action(self, data=datas)
