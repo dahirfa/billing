@@ -36,6 +36,7 @@
         "reports/calling_report.xml",
         "reports/collection_report_pdf.xml",
         "reports/all_receivables_pdf.xml",
+        "reports/meter_reader.xml",
         
         
         "wizards/all_receivables_wiz.xml",
@@ -49,6 +50,7 @@
         "wizards/property_log_wiz.xml",
         "wizards/calling_report.xml",
         "wizards/create_billing_customer.xml",
+        "wizards/meter_reader_wiz.xml",
         
         "views/billing_customer.xml",
         "views/billing_account.xml",

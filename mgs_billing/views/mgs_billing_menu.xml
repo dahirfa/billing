@@ -208,5 +208,11 @@
       parent="mgs_billing.mgs_billing_reports_root" 
       action="action_calling_report_report" 
       sequence="1" />
+    
+    <menuitem id="menu_necsom_addons_meter_reader_report" 
+      name="Meter Reader Summary" 
+      parent="mgs_billing.mgs_billing_reports_root" 
+      action="action_meter_reader_summary_wizard" 
+      sequence="20" />
 
 </odoo>
