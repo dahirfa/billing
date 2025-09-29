@@ -1,4 +1,6 @@
 from odoo import models, api
+import logging
+_logger = logging.getLogger(__name__)
 
 class ReportHelpdesk(models.AbstractModel):
     _name = 'report.mgs_helpdesk_api.report_helpdesk'
@@ -14,10 +16,15 @@ class ReportHelpdesk(models.AbstractModel):
         if data.get('zone_id'):
             domain.append(('partner_id.zone_id', '=', data['zone_id']))
         if data.get('partner_id'):
-            domain.append(('partner_id', '=', data['partner_id']))
-
+            domain.append(('partner_id', '=', data['partner_id']))        
+        
+        
         tickets = self.env['helpdesk.ticket'].search(domain)
 
         return {
             'docs': tickets,
+            'team_name': data.get('team_name'),
+            'user_name': data.get('user_name'),
+            'zone_name': data.get('zone_name'),
+            'partner_name': data.get('partner_name'),
         }

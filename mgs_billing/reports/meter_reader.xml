@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_meter_reader_summary" model="ir.actions.report">
+        <field name="name">Meter Reader Summary</field>
+        <field name="model">mgs_billing.meter.reader.summary.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mgs_billing.report_meter_reader_summary</field>
+        <field name="report_file">mgs_billing.report_meter_reader_summary</field>
+        <field name="binding_model_id" ref="mgs_billing.model_mgs_billing_meter_reader_summary_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+        
+    <template id="report_meter_reader_summary">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <style>
+                        th, td {
+                            padding: 0.30rem !important;
+                            border-top: 1.5px solid #212529 !important;
+                            border-bottom: 1.5px solid #212529 !important;
+                        }
+                        th {
+                            font-weight: bold;
+                        }
+                    </style>
+                    <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
+                        <h2>Meter Reader Summary</h2>
+                        <h4><t t-esc="month_name"/> <t t-esc="year"/></h4>
+
+                        <table class="table table-condensed table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Collector</th>
+                                    <th>Zone</th>
+                                    <t t-foreach="date_headers" t-as="d">
+                                        <th><t t-esc="d.day"/></th>
+                                    </t>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="report_data" t-as="row">
+                                    <tr>
+                                        <td><t t-esc="row['collector'].name"/></td>
+                                        <td><t t-esc="row['zone'].name"/></td>
+                                        <t t-foreach="row['counts_per_day']" t-as="count">
+                                            <td><t t-esc="count"/></td>
+                                        </t>
+                                        <td><strong><t t-esc="row['row_total']"/></strong></td>
+                                    </tr>
+                                </t>
+                                <!-- Grand Total Row -->
+                                <tr>
+                                    <td colspan="2"><strong>Grand Total</strong></td>
+                                    <t t-foreach="grand_totals" t-as="gt">
+                                        <td><strong><t t-esc="gt"/></strong></td>
+                                    </t>
+                                    <td><strong><t t-esc="grand_total_all"/></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+    
+    
+</odoo>

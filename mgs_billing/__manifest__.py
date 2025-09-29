@@ -52,6 +52,12 @@
         "reports/meter_cubic_sold.xml",
         "reports/payment_collection.xml",
         "reports/property_log_rep.xml",
+        "reports/calling_report.xml",
+        "reports/collection_report_pdf.xml",
+        "reports/all_receivables_pdf.xml",
+        "reports/meter_reader.xml",
+        
+        
         "wizards/all_receivables_wiz.xml",
         "wizards/apply_extra_charge_wiz.xml",
         "wizards/billed_percentage_wiz.xml",
@@ -60,6 +66,7 @@
         "wizards/con_desc_comment.xml",
         "wizards/connect_disconnect_wiz.xml",
         "wizards/create_billing_customer.xml",
+        "wizards/meter_reader_wiz.xml",
         "wizards/get_monthes_due.xml",
         "wizards/meter_cubic_sold_wiz.xml",
         "wizards/payment_collection_wizard.xml",

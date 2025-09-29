@@ -12,3 +12,5 @@ from . import property_log_wiz
 from . import calling_report
 from . import create_billing_customer
 from . import payment_collection_wizard
+
+from . import meter_reader_wiz

@@ -11,7 +11,7 @@
     </record>
 
     <template id="report_helpdesk">
-        <t t-call="web.basic_layout">
+        <t t-call="web.html_container">
             <t t-call="web.external_layout">
                 <div class="page">
                     <style>
@@ -26,11 +26,34 @@
                     </style>
                     <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
                         <h2>Helpdesk Report</h2>
+
+                        <div class="row" style="margin-top: 32px !important;font-size: 1.1em;">
+                            <div class="col-3">
+                                <strong>Team:</strong>
+                                <p t-esc="team_name or 'All Teams'" class="m-0"/>
+
+                            </div>
+                            <div class="col-3">
+                                <strong>Zone:</strong>
+                                <p class="m-0" t-esc="zone_name or 'All Zones'"/>
+                            </div>
+                            <div class="col-3">
+                                <strong>User:</strong>
+                                <p class="m-0" t-esc="user_name or 'All Users'"/>
+                            </div>
+                            <div class="col-3">
+                                <strong>Customer:</strong>
+                                <p class="m-0" t-esc="partner_name or 'All Customers'"/>
+                            </div>
+                        </div>
+
+                        <br />
+
                         <table class="table table-condensed table-sm">
                             <thead>
                                 <tr>
                                     <th>Team</th>
-                                    <th>Assigned User</th>
+                                    <th>User</th>
                                     <th>Customer</th>
                                     <th>Zone</th>
                                     <th>Phone</th>
@@ -42,14 +65,30 @@
                             <tbody>
                                 <t t-foreach="docs" t-as="o">
                                     <tr>
-                                        <td><t t-esc="o.team_id.name"/></td>
-                                        <td><t t-esc="o.user_id.name"/></td>
-                                        <td><t t-esc="o.partner_id.name"/></td>
-                                        <td><t t-esc="o.partner_id.zone_id.name"/></td>
-                                        <td><t t-esc="o.partner_id.phone"/></td>
-                                        <td><t t-esc="o.partner_id.street"/></td>
-                                        <td><t t-esc="o.name"/></td>
-                                        <td><t t-esc="o.stage_id.name"/></td>
+                                        <td>
+                                            <t t-esc="o.team_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.user_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.partner_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.partner_id.zone_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.partner_id.phone"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.partner_id.street"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="o.stage_id.name"/>
+                                        </td>
                                     </tr>
                                 </t>
                                 <tr t-if="not docs">
