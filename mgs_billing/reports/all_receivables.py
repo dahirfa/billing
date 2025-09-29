@@ -211,10 +211,8 @@ class MgsSaleReport(models.Model):
         rp.complete_name AS display_name,
         rp.company_id AS company_id,
         mbz.name AS zone_name,
-        -- collector.id AS collector_id,
-        NULL::int AS collector_id,
-        -- collector.name AS collector_name,
-        NULL::varchar AS collector_name,
+        collector.id AS collector_id,
+        collector.name AS collector_name,
         mbp.name as property_name,
         rp.mobile as partner_mobile,
         COALESCE(sum(CASE WHEN aml.date < '%s' THEN aml.debit-aml.credit else 0.0 END), 0) AS initial_balance,
@@ -232,8 +230,8 @@ class MgsSaleReport(models.Model):
             FROM res_partner rp
             LEFT JOIN mgs_billing_property mbp ON rp.property_id = mbp.id
             LEFT JOIN mgs_billing_zone mbz ON mbp.zone_id = mbz.id
-            --LEFT JOIN res_partner collector ON mbz.collector_id=collector.id
-            --left join res_users as ru on ru.partner_id=collector.id
+            LEFT JOIN res_partner collector ON mbz.collector_id=collector.id
+            left join res_users as ru on ru.partner_id=collector.id
             LEFT JOIN account_move_line aml ON aml.partner_id=rp.id
             LEFT JOIN account_account AS aa ON aml.account_id = aa.id
             """
@@ -246,8 +244,8 @@ class MgsSaleReport(models.Model):
 
     @api.model
     def _group_by(self):
-        # return " GROUP BY rp.id, rp.company_id, mbz.id, collector.id, mbp.name, rp.mobile"
-        return " GROUP BY rp.id, rp.company_id, mbz.id, mbp.name, rp.mobile"
+        return " GROUP BY rp.id, rp.company_id, mbz.id, collector.id, mbp.name, rp.mobile"
+        # return " GROUP BY rp.id, rp.company_id, mbz.id, mbp.name, rp.mobile"
 
     def query_execute(self, having=" ", date_from=fields.Date.today().replace(day=1), date_to=fields.Date.today(), move_states="('posted')", where_clause=" "):
         result = """

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View mgs_billing.payment.collection.wizard form -->
+    <record id="view_mgs_billing_payment_collection_wizard_form" model="ir.ui.view">
+        <field name="name">view.mgs_billing.payment.collection.wizard.form</field>
+        <field name="model">mgs_billing.payment.collection.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Mgs_billing Payment Collection Wizard">
+                <div class="oe_title">
+                    <label for="name"/>
+                    <h1>
+                        <field name="name" placeholder="Name..."/>
+                    </h1>
+                </div>
+                <footer>
+                    <button name="get_payment_collection" type="object" string="View" class="btn btn-primary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action mgs_billing.payment.collection.wizard -->
+    <record id="action_mgs_billing_payment_collection" model="ir.actions.act_window">
+        <field name="name">Payment Collection</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mgs_billing.payment.collection.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

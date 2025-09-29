@@ -209,4 +209,10 @@
       action="action_calling_report_report" 
       sequence="1" />
 
+
+    <menuitem id="menu_payment_collection_report" 
+      name="Payment Collection" 
+      parent="mgs_billing_reports_root"
+      action="action_mgs_billing_payment_collection" />
+
 </odoo>
