@@ -10,16 +10,14 @@ class Mgs_billingPaymentCollectionWizard(models.TransientModel):
     _name = "mgs_billing.payment.collection.wizard"
     _description = _("Payment Collection Report")
 
-    name = fields.Char(_("Name"))
-
     date_from = fields.Date(default=date.today().replace(day=1))
     date_to = fields.Date(default=date.today())
 
-    zone_id = fields.Many2many("mgs_billing.zone", string="Zone")
+    zone_id = fields.Many2one("mgs_billing.zone", string="Zone")
 
-    collector_id = fields.Many2many("res.users",  string="Collector", domain=[('is_collector', '=', True)])
+    collector_id = fields.Many2one("res.users",  string="Collector", domain=[('is_collector', '=', True)])
 
-    report_type = fields.Selection([("detailed", "Detailed"),("summary", "Summary"),], string="Report Type",default="summary",required=True)
+    report_type = fields.Selection([("summary", "Summary"), ("detailed", "Detailed")], string="Report Type",default="summary",required=True)
     
     
     

@@ -31,7 +31,7 @@
         "views/guarantor.xml",
         "views/meter_reading.xml",
         "views/meters.xml",
-        "views/mgs_billing_menu.xml",
+        
         "views/product.xml",
         "views/property_type.xml",
         "views/property.xml",
@@ -70,7 +70,9 @@
         "wizards/get_monthes_due.xml",
         "wizards/meter_cubic_sold_wiz.xml",
         "wizards/payment_collection_wizard.xml",
-        "wizards/property_log_wiz.xml"
+        "wizards/property_log_wiz.xml",
+        
+        "views/mgs_billing_menu.xml",
     ],
     "license": "LGPL-3",
     "installable": True,

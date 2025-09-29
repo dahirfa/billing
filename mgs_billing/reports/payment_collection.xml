@@ -10,27 +10,218 @@
         <field name="binding_type">report</field>
     </record>
 
+
     <template id="payment_collection_report">
         <t t-call="web.html_container">
-
             <t t-call="web.external_layout">
                 <div class="page">
-                    <h2>Payment Collection by</h2>
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <t t-esc="data"/>
-                        </tbody>
-                    </table>
-                </div>
+                    <style>
+                        th, td {
+                            padding: 0.30rem !important;
+                            border-top: 1px solid #212529 !important;
+                            border-bottom: 1px solid #212529 !important;
+                        }
+                        th {
+                            font-weight: bold;
+                        }
+                    </style>
 
-            </t>
+                    <div class="container" style="font-size:14px;font-family:Arial;margin-top:1px;">
+                        <h2>Payment Collection Report</h2>
+                        <p>
+                            From: <t t-esc="data['date_from']"/>
+                            To: <t t-esc="data['date_to']"/>
+                    </p>
+
+                    <!-- Summary Report -->
+                    <t t-if="data['report_type'] == 'summary'">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Zone</th>
+                                    <th>Collector</th>
+                                    <th>Initial Balance</th>
+                                    <th>Invoiced</th>
+                                    <th>Paid</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Initialize grand totals -->
+                                <t t-set="grand_initial" t-value="0"/>
+                                <t t-set="grand_invoiced" t-value="0"/>
+                                <t t-set="grand_paid" t-value="0"/>
+                                <t t-set="grand_balance" t-value="0"/>
+
+                                <t t-foreach="docs" t-as="rec">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="rec['zone_name']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="rec['collector_name']"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="rec['initial_balance']"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="rec['invoiced']"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="rec['paid']"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="rec['balance']"/>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Update grand totals -->
+                                    <t t-set="grand_initial" t-value="grand_initial + rec['initial_balance']"/>
+                                    <t t-set="grand_invoiced" t-value="grand_invoiced + rec['invoiced']"/>
+                                    <t t-set="grand_paid" t-value="grand_paid + rec['paid']"/>
+                                    <t t-set="grand_balance" t-value="grand_balance + rec['balance']"/>
+                                </t>
+
+                                <!-- Grand total row -->
+                                <tr style="font-weight:bold;background:#ffe6e6;">
+                                    <td colspan="2" class="text-right">Grand Total</td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_initial"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_invoiced"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_paid"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_balance"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <t t-if="data['report_type'] == 'detailed'">
+                        <table class="table table-condensed" style="margin-top:20px;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Property</th>
+                                    <th>Mobile</th>
+                                    <th>Initial Balance</th>
+                                    <th>Invoiced</th>
+                                    <th>Paid</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Initialize grand totals -->
+                                <t t-set="grand_initial" t-value="0"/>
+                                <t t-set="grand_invoiced" t-value="0"/>
+                                <t t-set="grand_paid" t-value="0"/>
+                                <t t-set="grand_balance" t-value="0"/>
+
+                                <t t-foreach="docs.items()" t-as="z">
+                                    <!-- Zone subtotal variables -->
+                                    <t t-set="zone_initial" t-value="0"/>
+                                    <t t-set="zone_invoiced" t-value="0"/>
+                                    <t t-set="zone_paid" t-value="0"/>
+                                    <t t-set="zone_balance" t-value="0"/>
+
+                                    <!-- Zone row -->
+                                    <tr style="background:#f0f0f0; font-weight:bold; font-size:16px">
+                                        <td colspan="8">
+                                            <t t-esc="z[0]"/>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Customer rows -->
+                                    <t t-foreach="z[1]" t-as="rec">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="rec['move_date']"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec['display_name']"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec['property_name']"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec['partner_mobile']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc="rec['initial_balance']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc="rec['invoiced']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc="rec['paid']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc="rec['balance']"/>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Update subtotals -->
+                                        <t t-set="zone_initial" t-value="zone_initial + rec['initial_balance']"/>
+                                        <t t-set="zone_invoiced" t-value="zone_invoiced + rec['invoiced']"/>
+                                        <t t-set="zone_paid" t-value="zone_paid + rec['paid']"/>
+                                        <t t-set="zone_balance" t-value="zone_balance + rec['balance']"/>
+
+                                        <!-- Update grand totals -->
+                                        <t t-set="grand_initial" t-value="grand_initial + rec['initial_balance']"/>
+                                        <t t-set="grand_invoiced" t-value="grand_invoiced + rec['invoiced']"/>
+                                        <t t-set="grand_paid" t-value="grand_paid + rec['paid']"/>
+                                        <t t-set="grand_balance" t-value="grand_balance + rec['balance']"/>
+                                    </t>
+
+                                    <!-- Zone subtotal row -->
+                                    <tr style="font-weight:bold;background:#e6f2ff;">
+                                        <td colspan="4" class="text-right">Subtotal for <t t-esc="z[0]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="zone_initial"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="zone_invoiced"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="zone_paid"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="zone_balance"/>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                                <!-- Grand total row -->
+                                <tr style="font-weight:bold;background:#ffe6e6;">
+                                    <td colspan="4" class="text-right">Grand Total</td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_initial"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_invoiced"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_paid"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="grand_balance"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                </div>
+            </div>
         </t>
-    </template>
+    </t>
+</template>
 
 </odoo>
