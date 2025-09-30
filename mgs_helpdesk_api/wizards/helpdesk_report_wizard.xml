@@ -7,10 +7,13 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="date_from" required="1"/>
+                            <field name="stage_id"/>
                             <field name="team_id"/>
                             <field name="user_id"/>
                         </group>
                         <group>
+                            <field name="date_to" required="1"/>
                             <field name="zone_id"/>
                             <field name="partner_id"/>
                         </group>

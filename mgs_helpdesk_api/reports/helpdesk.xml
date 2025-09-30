@@ -52,8 +52,10 @@
                         <table class="table table-condensed table-sm">
                             <thead>
                                 <tr>
+
+                                    <th>Date</th>
                                     <th>Team</th>
-                                    <th>User</th>
+                                    <th>Assigned To</th>
                                     <th>Customer</th>
                                     <th>Zone</th>
                                     <th>Phone</th>
@@ -65,6 +67,9 @@
                             <tbody>
                                 <t t-foreach="docs" t-as="o">
                                     <tr>
+                                        <td>
+                                            <t t-esc="o.create_date.strftime('%d-%m-%Y')"/>
+                                        </td>
                                         <td>
                                             <t t-esc="o.team_id.name"/>
                                         </td>
@@ -92,7 +97,7 @@
                                     </tr>
                                 </t>
                                 <tr t-if="not docs">
-                                    <td colspan="7" class="text-center">No tickets found</td>
+                                    <td colspan="9" class="text-center">No tickets found</td>
                                 </tr>
                             </tbody>
                         </table>

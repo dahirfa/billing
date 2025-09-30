@@ -40,7 +40,7 @@
                                 <tr>
                                     <th>Zone</th>
                                     <th>Collector</th>
-                                    <th>Initial Balance</th>
+                                    <!-- <th>Initial Balance</th> -->
                                     <th>Invoiced</th>
                                     <th>Paid</th>
                                     <th>Balance</th>
@@ -48,7 +48,7 @@
                             </thead>
                             <tbody>
                                 <!-- Initialize grand totals -->
-                                <t t-set="grand_initial" t-value="0"/>
+                                <!-- <t t-set="grand_initial" t-value="0"/> -->
                                 <t t-set="grand_invoiced" t-value="0"/>
                                 <t t-set="grand_paid" t-value="0"/>
                                 <t t-set="grand_balance" t-value="0"/>
@@ -61,9 +61,9 @@
                                         <td>
                                             <t t-esc="rec['collector_name']"/>
                                         </td>
-                                        <td class="text-right">
+                                        <!-- <td class="text-right">
                                             <t t-esc="rec['initial_balance']"/>
-                                        </td>
+                                        </td> -->
                                         <td class="text-right">
                                             <t t-esc="rec['invoiced']"/>
                                         </td>
@@ -76,7 +76,7 @@
                                     </tr>
 
                                     <!-- Update grand totals -->
-                                    <t t-set="grand_initial" t-value="grand_initial + rec['initial_balance']"/>
+                                    <!-- <t t-set="grand_initial" t-value="grand_initial + rec['initial_balance']"/> -->
                                     <t t-set="grand_invoiced" t-value="grand_invoiced + rec['invoiced']"/>
                                     <t t-set="grand_paid" t-value="grand_paid + rec['paid']"/>
                                     <t t-set="grand_balance" t-value="grand_balance + rec['balance']"/>
@@ -85,9 +85,9 @@
                                 <!-- Grand total row -->
                                 <tr style="font-weight:bold;background:#ffe6e6;">
                                     <td colspan="2" class="text-right">Grand Total</td>
-                                    <td class="text-right">
+                                    <!-- <td class="text-right">
                                         <t t-esc="grand_initial"/>
-                                    </td>
+                                    </td> -->
                                     <td class="text-right">
                                         <t t-esc="grand_invoiced"/>
                                     </td>
