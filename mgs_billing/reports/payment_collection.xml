@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="action_payment_collection_report" model="ir.actions.report">
-        <field name="name">Payment_collection</field>
+        <field name="name">Payment Collection</field>
         <field name="model">mgs_billing.payment.collection.wizard</field>
         <field name="report_type">qweb-html</field>
         <field name="report_name">mgs_billing.payment_collection_report</field>
@@ -55,7 +55,7 @@
 
                                 <t t-foreach="docs" t-as="rec">
                                     <tr>
-                                        <td>
+                                        <td style="font-weight:bold;">
                                             <t t-esc="rec['zone_name']"/>
                                         </td>
                                         <td>
@@ -65,13 +65,13 @@
                                             <t t-esc="rec['initial_balance']"/>
                                         </td> -->
                                         <td class="text-right">
-                                            <t t-esc="rec['invoiced']"/>
+                                             <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(rec['invoiced'])"/>
                                         </td>
                                         <td class="text-right">
-                                            <t t-esc="rec['paid']"/>
+                                             <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(rec['paid'])"/>
                                         </td>
                                         <td class="text-right">
-                                            <t t-esc="rec['balance']"/>
+                                             <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(rec['balance'])"/>
                                         </td>
                                     </tr>
 
@@ -86,16 +86,16 @@
                                 <tr style="font-weight:bold;background:#ffe6e6;">
                                     <td colspan="2" class="text-right">Grand Total</td>
                                     <!-- <td class="text-right">
-                                        <t t-esc="grand_initial"/>
+                                         <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_initial)"/>
                                     </td> -->
                                     <td class="text-right">
-                                        <t t-esc="grand_invoiced"/>
+                                         <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_invoiced)"/>
                                     </td>
                                     <td class="text-right">
-                                        <t t-esc="grand_paid"/>
+                                         <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_paid)"/>
                                     </td>
                                     <td class="text-right">
-                                        <t t-esc="grand_balance"/>
+                                         <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_balance)"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -153,16 +153,16 @@
                                                 <t t-esc="rec['partner_mobile']"/>
                                             </td>
                                             <td class="text-right">
-                                                <t t-esc="rec['initial_balance']"/>
+                                                <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(rec['initial_balance'])"/>
                                             </td>
                                             <td class="text-right">
-                                                <t t-esc="rec['invoiced']"/>
+                                                <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(rec['invoiced'])"/>
                                             </td>
                                             <td class="text-right">
-                                                <t t-esc="rec['paid']"/>
+                                                <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(rec['paid'])"/>
                                             </td>
                                             <td class="text-right">
-                                                <t t-esc="rec['balance']"/>
+                                                <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(rec['balance'])"/>
                                             </td>
                                         </tr>
 
@@ -184,16 +184,16 @@
                                         <td colspan="4" class="text-right">Subtotal for <t t-esc="z[0]"/>
                                         </td>
                                         <td class="text-right">
-                                            <t t-esc="zone_initial"/>
+                                            <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(zone_initial)"/>
                                         </td>
                                         <td class="text-right">
-                                            <t t-esc="zone_invoiced"/>
+                                            <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(zone_invoiced)"/>
                                         </td>
                                         <td class="text-right">
-                                            <t t-esc="zone_paid"/>
+                                            <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(zone_paid)"/>
                                         </td>
                                         <td class="text-right">
-                                            <t t-esc="zone_balance"/>
+                                            <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(zone_balance)"/>
                                         </td>
                                     </tr>
                                 </t>
@@ -202,16 +202,16 @@
                                 <tr style="font-weight:bold;background:#ffe6e6;">
                                     <td colspan="4" class="text-right">Grand Total</td>
                                     <td class="text-right">
-                                        <t t-esc="grand_initial"/>
+                                        <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_initial)"/>
                                     </td>
                                     <td class="text-right">
-                                        <t t-esc="grand_invoiced"/>
+                                        <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_invoiced)"/>
                                     </td>
                                     <td class="text-right">
-                                        <t t-esc="grand_paid"/>
+                                        <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_paid)"/>
                                     </td>
                                     <td class="text-right">
-                                        <t t-esc="grand_balance"/>
+                                        <span t-esc="res_company.currency_id.symbol"/><t t-esc="'{0:,.2f}'.format(grand_balance)"/>
                                     </td>
                                 </tr>
                             </tbody>

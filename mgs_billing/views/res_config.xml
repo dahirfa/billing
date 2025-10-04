@@ -97,6 +97,21 @@
         <setting string="Billing Plan Product Category">
           <field name="mgs_plan_categ_id" options="{'no_create': True}"/>
         </setting>
+
+
+        <setting string="Enable Global Sequence">
+          <div class="o_setting_left_pane">
+                <field name="mgs_billing_global_seq"/>
+              </div>
+    
+              <div>
+                <label for="mgs_billing_global_seq_id" string="Global Sequence"/>
+                <div class="text-muted" invisible="mgs_billing_global_seq!=True">
+                  Select Global Sequence
+                </div>
+                <field name="mgs_billing_global_seq_id" invisible="mgs_billing_global_seq!=True"/>
+              </div>
+        </setting>
       </block>
 
 
