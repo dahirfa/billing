@@ -17,6 +17,7 @@
     "data": [
         "views/property.xml",
         "views/crm.xml",
+        "views/account_move.xml",
         "wizards/create_billing_customer.xml",
         "reports/crm_report.xml",
     ],
