@@ -12,6 +12,11 @@
         'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
         'views/transfer_views.xml',
+        
+        'wizards/transfer_wizard.xml',
+        
+        'reports/transfer_report.xml',
+        
     ],
     'license': 'LGPL-3',
     'installable': True,
