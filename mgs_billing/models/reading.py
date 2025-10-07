@@ -1,7 +1,13 @@
 from odoo import models, fields, api, _
 import calendar
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import date_utils
+import logging
+_logger = logging.getLogger(__name__)
+
+
 
 
 class MGSBillingMeterReadings(models.Model):
@@ -156,6 +162,36 @@ class MGSBillingReading(models.Model):
         for r in self:
             r.billed_before = self._get_billed_unbilled(
                 r.date, r.property_id.id)
+
+
+    @api.constrains('property_id', 'date', 'allow_extra_reading')
+    def check_property_billed_outside_cycle(self):
+        for r in self:
+            if r.allow_extra_reading:
+                continue
+
+            start = self.env.company.billing_period_start
+            end = self.env.company.billing_period_end
+            st, en = date_utils.get_billing_start_and_end_dates(r.date, start, end)
+
+            if st <= r.date <= en:
+                continue
+            month_start = r.date.replace(day=1)
+            month_end = (month_start + relativedelta(months=1)) - relativedelta(days=1)
+            
+            month = date.today().month
+            next_month = month + 1 if month != 12 else 1
+            cycle_start = r.date.replace(day=start)
+            cycle_end = r.date.replace(day=end, month=next_month)
+
+            # Build domain using variables
+            domain = [('property_id', '=', r.property_id.id), ('state', '=', 'posted'), ('date', '>=', month_start), ('date', '<=', month_end), ('id', '!=', r.id), 
+                    '|',
+                    ('date', '<', cycle_start), ('date', '>', cycle_end)
+                ]        
+            
+            if self.search_count(domain) > 0:
+                raise ValidationError('A reading already exists outside the billing cycle for this property in %s.' % r.date.strftime('%B %Y'))
 
 
     @api.model_create_multi
