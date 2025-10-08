@@ -127,7 +127,7 @@ class MGSBillingReading(models.Model):
     unusual_usage = fields.Boolean(
         string='unusual Usage', compute='_check_usage', store=True, tracking=True)
 
-    average_usage = fields.Float(compute="_get_tenant", string="Normal Usage")
+    average_usage = fields.Float(compute="_get_average_usage", string="Normal Usage")
 
     invoiced_amount = fields.Monetary(related='move_id.amount_total')
     allow_extra_reading = fields.Boolean(default=False)
@@ -399,6 +399,10 @@ class MGSBillingReading(models.Model):
         for r in self:
             r.billing_account_id = res_partner_obj.search(
                 [('property_id.id', '=', r.property_id.id)], limit=1).id
+            
+    @api.depends('property_id')
+    def _get_average_usage(self):
+        for r in self:
             r.average_usage = r.billing_account_id.average_usage
 
     @api.depends('current_reading', 'last_reading')

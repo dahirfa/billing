@@ -11,10 +11,10 @@ class BalanceTransfer(models.Model):
     name = fields.Char(string='Transfer #')
 
     date = fields.Date(string='Date', default=lambda self: fields.Date.today())
-    billing_account_id = fields.Many2one('res.partner', compute='_get_tenant', string='Billing Account', index=True, domain=[
-                                         ('is_tenancy', '=', True)], store=True, tracking=True)
-    cust_balance = fields.Float(
-        string='Balance', default=0.0, compute='_compute_cust_balance', store=True)
+    
+    billing_account_id = fields.Many2one('res.partner', string='Billing Account', index=True, domain=[('is_tenancy', '=', True)], tracking=True)
+    
+    cust_balance = fields.Float(string='Balance', default=0.0, compute='_compute_cust_balance', store=True)
 
     transfer_lines = fields.One2many(
         'mgs_billing.balance_transfer_line', 'transfer_id', string='Transfer Lines')

@@ -14,7 +14,7 @@
     # 'external_dependencies': {
     #     'python': ['google-auth', 'google-auth-oauthlib', 'google-auth-httplib2'],
     # },
-    "depends": ["base", "helpdesk", "mgs_billing", "hr", "crm"],
+    "depends": ["base", "helpdesk", "mgs_billing", "hr", "crm", "mgs_billing_sms"],
     "data": [
         'security/ir.model.access.csv',
         "wizards/create_helpdesk_ticket_wizard.xml",
