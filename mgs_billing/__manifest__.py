@@ -20,8 +20,12 @@
     
     "data": [
         "data/seq.xml",
-        "security/ir.model.access.csv",
         "security/security_groups.xml",
+        "security/ir.model.access.csv",
+        
+        "wizards/create_billing_customer.xml",
+        "wizards/con_desc_comment.xml",
+        
         "views/balance_transfer.xml",
         "views/billing_account.xml",
         "views/billing_customer.xml",
@@ -63,9 +67,7 @@
         "wizards/billed_percentage_wiz.xml",
         "wizards/calling_report.xml",
         "wizards/collection_report_wiz.xml",
-        "wizards/con_desc_comment.xml",
         "wizards/connect_disconnect_wiz.xml",
-        "wizards/create_billing_customer.xml",
         "wizards/meter_reader_wiz.xml",
         "wizards/get_monthes_due.xml",
         "wizards/meter_cubic_sold_wiz.xml",
