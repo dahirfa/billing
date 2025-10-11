@@ -10,7 +10,8 @@
             <field name="inherit_id" ref="base.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//form" position="inside">
-                    <div class="app_settings_block" data-string="MGS SMS" string="MGS SMS Config" web_icon="mgs_sms_integration,static/description/icon.png" data-key="mgs_sms_integration">
+                    <!-- <div class="app_settings_block" data-string="MGS SMS" string="MGS SMS Config" web_icon="mgs_sms_integration,static/description/icon.png" data-key="mgs_sms_integration"> -->
+                    <app data-string="mgs_sms_integration" string="MGS SMS" name="mgs_sms_integration">
                         <h2>SMS</h2>
                         <div class="row mt16 o_settings_container" name="sms_config_container">
                             <div class="col-12 col-lg-6 o_setting_box" id="sms_config0">
@@ -30,12 +31,12 @@
                                             <label for="mgs_golis_sender" class="col-lg-3 o_light_label"/>
                                             <field name="mgs_golis_sender"/>
                                         </div>
-              
+
                                         <div class="row mt16">
                                             <label for="mgs_golis_token" class="col-lg-3 o_light_label"/>
                                             <field name="mgs_golis_token"/>
                                         </div>
-        
+
                                         <div class="row mt16">
                                             <label for="mgs_golis_overwrite_odoo_sms" class="col-lg-3 o_light_label"/>
                                             <field name="mgs_golis_overwrite_odoo_sms"/>
@@ -73,7 +74,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </app>
+                    <!-- </div> -->
                 </xpath>
             </field>
         </record>
